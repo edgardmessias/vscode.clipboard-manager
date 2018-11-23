@@ -3,11 +3,11 @@
     "name": "clipboard-manager",
     "displayName": "Clipboard Manager",
     "description": "Clipboard Manager",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "preview": true,
     "icon": "media/clipboard.png",
     "engines": {
-        "vscode": "^1.29.0"
+        "vscode": "^1.22.0"
     },
     "bugs": {
         "url": "https://github.com/edgardmessias/vscode.clipboard-manager/issues"
@@ -71,7 +71,7 @@
                 "when": "textInputFocus && !editorReadonly"
             }
         ],
-        "configuration":[
+        "configuration": [
             {
                 "title": "Clipboard Manager",
                 "properties": {
