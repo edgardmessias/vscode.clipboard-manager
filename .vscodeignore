@@ -1,0 +1,12 @@
+.gitattributes
+.gitignore
+.vscode-test/**
+.vscode/**
+*.vsix
+out/**/*.map
+out/test/**
+package-lock.json
+src/**
+tsconfig.json
+tslint.json
+vsc-extension-quickstart.md

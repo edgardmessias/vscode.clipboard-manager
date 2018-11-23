@@ -1,0 +1,108 @@
+{
+    "publisher": "EdgardMessias",
+    "name": "clipboard-manager",
+    "displayName": "Clipboard Manager",
+    "description": "Clipboard Manager",
+    "version": "0.0.1",
+    "preview": true,
+    "engines": {
+        "vscode": "^1.29.0"
+    },
+    "bugs": {
+        "url": "https://github.com/edgardmessias/vscode.clipboard-manager/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/edgardmessias/vscode.clipboard-manager.git"
+    },
+    "homepage": "https://github.com/edgardmessias/vscode.clipboard-manager",
+    "categories": [
+        "Other"
+    ],
+    "keywords": [
+        "clipboard",
+        "copy",
+        "ditto",
+        "history",
+        "paste"
+    ],
+    "activationEvents": [
+        "*"
+    ],
+    "main": "./out/extension",
+    "contributes": {
+        "commands": [
+            {
+                "command": "clipboard-manager.editor.pickAndPaste",
+                "title": "Pick and Paste",
+                "category": "Clipboard Manager"
+            }
+        ],
+        "menus": {
+            "commandPalette": [
+                {
+                    "command": "clipboard-manager.editor.pickAndPaste",
+                    "when": "editorFocus && !editorReadonly"
+                }
+            ]
+        },
+        "keybindings": [
+            {
+                "command": "clipboard-manager.editor.pickAndPaste",
+                "key": "Ctrl+Shift+V",
+                "when": "textInputFocus && !editorReadonly"
+            }
+        ],
+        "configuration":[
+            {
+                "title": "Clipboard Manager",
+                "properties": {
+                    "clipboard-manager.checkInterval": {
+                        "type": "integer",
+                        "default": 500,
+                        "description": "Time in milliseconds to check changes in clipboard"
+                    },
+                    "clipboard-manager.maxClips": {
+                        "type": "integer",
+                        "default": 100,
+                        "description": "Maximum number of clips to save in clipboard"
+                    },
+                    "clipboard-manager.avoidDuplicates": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Avoid duplicate clips in the list"
+                    },
+                    "clipboard-manager.onlyWindowFocused": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Get clips only from VSCode"
+                    },
+                    "clipboard-manager.snippetPrefix": {
+                        "scope": "resource",
+                        "type": "string",
+                        "default": "clip",
+                        "description": "Default prefix for snippets completion (clip1, clip2, ...)"
+                    }
+                }
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "npm run compile && node ./node_modules/vscode/bin/test"
+    },
+    "devDependencies": {
+        "@types/clipboardy": "^1.1.0",
+        "@types/mocha": "^2.2.42",
+        "@types/node": "^8.10.25",
+        "tslint": "^5.8.0",
+        "typescript": "^2.6.1",
+        "vscode": "^1.1.21"
+    },
+    "dependencies": {
+        "clipboardy": "^1.2.3"
+    }
+}
