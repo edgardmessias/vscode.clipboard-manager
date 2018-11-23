@@ -19,13 +19,18 @@ export class ClipboardCompletion implements vscode.CompletionItemProvider {
 
     const clips = this.manager.clips;
 
+    const zeros = "0".repeat(`${clips.length}`.length);
+
     const completions: vscode.CompletionItem[] = clips.map((clip, index) => {
+      // Add left zero pad from max number of clips
+      const number = `${zeros}${index + 1}`.substr(-zeros.length);
+
       const c: vscode.CompletionItem = {
-        label: `${prefix}${index + 1}`,
-        detail: `Clipboard ${index + 1}`,
+        label: `${prefix}${number}`,
+        detail: `Clipboard ${number}`,
         insertText: clip.value,
         kind: vscode.CompletionItemKind.Text,
-        filterText: `${prefix}${index + 1} ${clip.value}`
+        filterText: `${prefix}${number} ${clip.value}`
       };
 
       // Highlight the syntax of clip

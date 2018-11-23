@@ -3,7 +3,7 @@
     "name": "clipboard-manager",
     "displayName": "Clipboard Manager",
     "description": "Clipboard Manager",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "preview": true,
     "icon": "media/clipboard.png",
     "engines": {
