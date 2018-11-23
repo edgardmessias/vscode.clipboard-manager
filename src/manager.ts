@@ -17,6 +17,9 @@ export class ClipboardManager implements vscode.Disposable {
     return this._clipboard;
   }
 
+  private _onDidClipListChange = new vscode.EventEmitter<void>();
+  readonly onDidChangeClipList = this._onDidClipListChange.event;
+
   constructor(
     protected context: vscode.ExtensionContext,
     protected _clipboard: IClipboard = defaultClipboard
@@ -47,6 +50,8 @@ export class ClipboardManager implements vscode.Disposable {
     if (maxClips > 0) {
       this._clips = this._clips.slice(0, maxClips);
     }
+
+    this._onDidClipListChange.fire();
 
     this.saveClips();
   }

@@ -28,9 +28,7 @@ export abstract class BaseClipboard implements IClipboard {
   public onlyWindowFocused: boolean = true;
 
   private _onDidChangeText = new vscode.EventEmitter<IClipboardTextChange>();
-  get onDidChangeText() {
-    return this._onDidChangeText.event;
-  }
+  readonly onDidChangeText = this._onDidChangeText.event;
 
   protected _timer: NodeJS.Timer | undefined;
   protected _checkInterval: number = 500;
