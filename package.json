@@ -5,6 +5,7 @@
     "description": "Clipboard Manager",
     "version": "0.0.1",
     "preview": true,
+    "icon": "media/clipboard.png",
     "engines": {
         "vscode": "^1.29.0"
     },
@@ -31,6 +32,23 @@
     ],
     "main": "./out/extension",
     "contributes": {
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "clipboard-manager",
+                    "title": "Clipboard Manager",
+                    "icon": "media/clipboard.svg"
+                }
+            ]
+        },
+        "views": {
+            "clipboard-manager": [
+                {
+                    "id": "clipboardHistory",
+                    "name": "Clipboard History"
+                }
+            ]
+        },
         "commands": [
             {
                 "command": "clipboard-manager.editor.pickAndPaste",
