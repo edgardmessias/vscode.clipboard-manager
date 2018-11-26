@@ -3,7 +3,7 @@
     "name": "clipboard-manager",
     "displayName": "Clipboard Manager",
     "description": "Clipboard Manager",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "preview": true,
     "icon": "media/clipboard.png",
     "engines": {
@@ -66,6 +66,10 @@
                 {
                     "command": "clipboard-manager.editor.pickAndPaste",
                     "when": "editorFocus && !editorReadonly"
+                },
+                {
+                    "command": "clipboard-manager.history.remove",
+                    "when": "false"
                 }
             ],
             "view/item/context": [
