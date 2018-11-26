@@ -16,8 +16,12 @@ export class ClipboardCompletion implements vscode.CompletionItemProvider {
     );
 
     const prefix = config.get("snippetPrefix", "clip");
+    const maxSnippets = config.get("maxSnippets", 10);
 
-    const clips = this.manager.clips;
+    const clips =
+      maxSnippets > 0
+        ? this.manager.clips.slice(0, maxSnippets)
+        : this.manager.clips;
 
     const zeros = "0".repeat(`${clips.length}`.length);
 
