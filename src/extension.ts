@@ -3,6 +3,7 @@ import * as vscode from "vscode";
 import { defaultClipboard } from "./clipboard";
 import { HistoryTreeDoubleClickCommand } from "./commads/historyTreeDoubleClick";
 import { PickAndPasteCommand } from "./commads/pickAndPaste";
+import { RemoveClipboardHistory } from "./commads/removeClipboardHistory";
 import { SetClipboardValueCommand } from "./commads/setClipboardValue";
 import { ClipboardCompletion } from "./completion";
 import { ClipboardManager } from "./manager";
@@ -25,6 +26,7 @@ export function activate(context: vscode.ExtensionContext) {
   disposable.push(new PickAndPasteCommand(manager));
   disposable.push(new HistoryTreeDoubleClickCommand(manager));
   disposable.push(new SetClipboardValueCommand(manager));
+  disposable.push(new RemoveClipboardHistory(manager));
 
   const completion = new ClipboardCompletion(manager);
   // disposable.push(completion);

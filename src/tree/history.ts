@@ -3,23 +3,24 @@ import * as vscode from "vscode";
 import { commandList } from "../commads/common";
 import { ClipboardManager, IClipboardItem } from "../manager";
 
-class ClipHistoryItem extends vscode.TreeItem {
-  constructor(protected _clip: IClipboardItem) {
-    super(_clip.value);
+export class ClipHistoryItem extends vscode.TreeItem {
+  constructor(readonly clip: IClipboardItem) {
+    super(clip.value);
 
-    this.label = this._clip.value.replace(/\s+/g, " ").trim();
-    this.tooltip = this._clip.value;
+    this.contextValue = "clipHistoryItem:";
+    this.label = this.clip.value.replace(/\s+/g, " ").trim();
+    this.tooltip = this.clip.value;
 
     this.command = {
       command: commandList.historyTreeDoubleClick,
       title: "Paste",
       tooltip: "Paste",
-      arguments: [this._clip]
+      arguments: [this.clip]
     };
 
-    if (this._clip.createdLocation) {
-      this.resourceUri = this._clip.createdLocation.uri;
-      this.contextValue = "file";
+    if (this.clip.createdLocation) {
+      this.resourceUri = this.clip.createdLocation.uri;
+      this.contextValue += "file";
     } else {
       const basePath = path.join(__filename, "..", "..", "..", "resources");
 

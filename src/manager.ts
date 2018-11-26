@@ -101,6 +101,15 @@ export class ClipboardManager implements vscode.Disposable {
     return await this._clipboard.writeText(value);
   }
 
+  public async removeClipboardValue(value: string) {
+    const prevLength = this._clips.length;
+
+    this._clips = this._clips.filter(c => c.value !== value);
+    this._onDidClipListChange.fire();
+
+    return prevLength !== this._clips.length;
+  }
+
   protected jsonReplacer(key: string, value: any) {
     if (key === "createdLocation") {
       value = {
@@ -176,6 +185,8 @@ export class ClipboardManager implements vscode.Disposable {
 
       return clip;
     });
+
+    this._onDidClipListChange.fire();
   }
 
   public dispose() {

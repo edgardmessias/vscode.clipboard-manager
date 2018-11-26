@@ -54,6 +54,11 @@
                 "command": "clipboard-manager.editor.pickAndPaste",
                 "title": "Pick and Paste",
                 "category": "Clipboard Manager"
+            },
+            {
+                "command": "clipboard-manager.history.remove",
+                "title": "Remove",
+                "category": "Clipboard Manager"
             }
         ],
         "menus": {
@@ -61,6 +66,12 @@
                 {
                     "command": "clipboard-manager.editor.pickAndPaste",
                     "when": "editorFocus && !editorReadonly"
+                }
+            ],
+            "view/item/context": [
+                {
+                    "command": "clipboard-manager.history.remove",
+                    "when": "viewItem =~ /^clipHistoryItem:/"
                 }
             ]
         },
