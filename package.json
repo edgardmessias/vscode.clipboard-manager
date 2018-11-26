@@ -90,6 +90,11 @@
                         "default": true,
                         "description": "Avoid duplicate clips in the list"
                     },
+                    "clipboard-manager.moveToTop": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Move used clip to top int the list"
+                    },
                     "clipboard-manager.onlyWindowFocused": {
                         "type": "boolean",
                         "default": true,

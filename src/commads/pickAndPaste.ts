@@ -84,7 +84,7 @@ export class PickAndPasteCommand implements vscode.Disposable {
     }
 
     // Update current clip in clipboard
-    await this._manager.clipboard.writeText(pick.clip.value);
+    await this._manager.setClipboardValue(pick.clip.value);
 
     // If text changed, only need remove selecion
     // If a error occur on replace, run paste command for fallback

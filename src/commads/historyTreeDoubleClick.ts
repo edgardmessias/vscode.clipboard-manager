@@ -45,7 +45,7 @@ export class HistoryTreeDoubleClickCommand implements vscode.Disposable {
     this.prevClip = undefined;
 
     // Update current clip in clipboard
-    await this._manager.clipboard.writeText(clip.value);
+    await this._manager.setClipboardValue(clip.value);
 
     // Force to focus on editor to paste command works
     await vscode.commands.executeCommand(

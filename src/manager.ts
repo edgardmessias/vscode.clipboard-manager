@@ -23,9 +23,9 @@ export class ClipboardManager implements vscode.Disposable {
     return this._clips;
   }
 
-  get clipboard() {
-    return this._clipboard;
-  }
+  // get clipboard() {
+  //   return this._clipboard;
+  // }
 
   private _onDidClipListChange = new vscode.EventEmitter<void>();
   readonly onDidChangeClipList = this._onDidClipListChange.event;
@@ -79,6 +79,26 @@ export class ClipboardManager implements vscode.Disposable {
     this._onDidClipListChange.fire();
 
     this.saveClips();
+  }
+
+  public async setClipboardValue(value: string) {
+    const config = vscode.workspace.getConfiguration("clipboard-manager");
+    const moveToTop = config.get("moveToTop", true);
+
+    const index = this._clips.findIndex(c => c.value == value);
+
+    if (index >= 0) {
+      this._clips[index].useCount++;
+
+      if (moveToTop) {
+        const clips = this.clips.splice(index, 1);
+        this._clips.unshift(...clips);
+        this._onDidClipListChange.fire();
+        this.saveClips();
+      }
+    }
+
+    return await this._clipboard.writeText(value);
   }
 
   protected jsonReplacer(key: string, value: any) {
