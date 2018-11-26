@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { ClipboardManager } from "./manager";
+import { commandList } from "./commads/common";
 
 export class ClipboardCompletion implements vscode.CompletionItemProvider {
   constructor(protected manager: ClipboardManager) {}
@@ -45,6 +46,13 @@ export class ClipboardCompletion implements vscode.CompletionItemProvider {
         const date = new Date(clip.createdAt);
         c.detail += " - " + date.toLocaleString();
       }
+
+      c.command = {
+        command: commandList.setClipboardValue,
+        title: "Paste",
+        tooltip: "Paste",
+        arguments: [clip.value]
+      };
 
       return c;
     });

@@ -6,6 +6,7 @@ import { defaultClipboard } from "./clipboard";
 import { PickAndPasteCommand } from "./commads/pickAndPaste";
 import { ClipboardTreeDataProvider } from "./tree/history";
 import { HistoryTreeDoubleClickCommand } from "./commads/historyTreeDoubleClick";
+import { SetClipboardValueCommand } from "./commads/setClipboardValue";
 
 // this method is called when your extension is activated
 export function activate(context: vscode.ExtensionContext) {
@@ -19,6 +20,10 @@ export function activate(context: vscode.ExtensionContext) {
   const manager = new ClipboardManager(context);
   disposable.push(manager);
 
+  disposable.push(new PickAndPasteCommand(manager));
+  disposable.push(new HistoryTreeDoubleClickCommand(manager));
+  disposable.push(new SetClipboardValueCommand(manager));
+
   const completion = new ClipboardCompletion(manager);
   // disposable.push(completion);
 
@@ -29,9 +34,6 @@ export function activate(context: vscode.ExtensionContext) {
     completion
   );
 
-  const pickAndPasteCommand = new PickAndPasteCommand(manager);
-  disposable.push(pickAndPasteCommand);
-
   const clipboardTreeDataProvider = new ClipboardTreeDataProvider(manager);
   disposable.push(clipboardTreeDataProvider);
 
@@ -39,9 +41,6 @@ export function activate(context: vscode.ExtensionContext) {
     "clipboardHistory",
     clipboardTreeDataProvider
   );
-
-  const historyTreeDoubleClickCommand = new HistoryTreeDoubleClickCommand(manager);
-  disposable.push(historyTreeDoubleClickCommand);
 
   const updateConfig = () => {
     defaultClipboard.checkInterval = config.get("checkInterval", 500);
