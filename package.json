@@ -110,7 +110,7 @@
                     "clipboard-manager.moveToTop": {
                         "type": "boolean",
                         "default": true,
-                        "description": "Move used clip to top int the list"
+                        "description": "Move used clip to top in the list"
                     },
                     "clipboard-manager.onlyWindowFocused": {
                         "type": "boolean",
