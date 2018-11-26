@@ -1,11 +1,10 @@
 import * as vscode from "vscode";
 import * as path from "path";
-import { ClipboardManager } from "../manager";
-import { IClipboardTextChange } from "../clipboard";
+import { ClipboardManager, IClipboardItem } from "../manager";
 import { commandList } from "../commads/common";
 
 class ClipHistoryItem extends vscode.TreeItem {
-  constructor(protected _clip: IClipboardTextChange) {
+  constructor(protected _clip: IClipboardItem) {
     super(_clip.value);
 
     this.label = this._clip.value.replace(/\s+/g, " ").trim();
@@ -18,8 +17,8 @@ class ClipHistoryItem extends vscode.TreeItem {
       arguments: [this._clip]
     };
 
-    if (this._clip.location) {
-      this.resourceUri = this._clip.location.uri;
+    if (this._clip.createdLocation) {
+      this.resourceUri = this._clip.createdLocation.uri;
       this.contextValue = "file";
     } else {
       const basePath = path.join(__filename, "..", "..", "..", "resources");

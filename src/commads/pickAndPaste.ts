@@ -1,7 +1,6 @@
 import * as vscode from "vscode";
-import { ClipboardManager } from "../manager";
+import { ClipboardManager, IClipboardItem } from "../manager";
 import { commandList } from "./common";
-import { IClipboardTextChange } from "../clipboard";
 
 class ClipPickItem implements vscode.QuickPickItem {
   get label() {
@@ -9,8 +8,8 @@ class ClipPickItem implements vscode.QuickPickItem {
   }
 
   get description() {
-    if (this._clip.timestamp) {
-      const date = new Date(this._clip.timestamp);
+    if (this._clip.createdAt) {
+      const date = new Date(this._clip.createdAt);
       return date.toLocaleString();
     }
   }
@@ -19,7 +18,7 @@ class ClipPickItem implements vscode.QuickPickItem {
     return this._clip;
   }
 
-  constructor(protected _clip: IClipboardTextChange) {}
+  constructor(protected _clip: IClipboardItem) {}
 }
 
 export class PickAndPasteCommand implements vscode.Disposable {

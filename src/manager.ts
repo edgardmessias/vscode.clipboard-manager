@@ -5,10 +5,20 @@ import {
   defaultClipboard
 } from "./clipboard";
 
+export interface IClipboardItem {
+  value: string;
+  createdAt: number;
+  lastUse?: number;
+  copyCount: number;
+  useCount: number;
+  language?: string;
+  createdLocation?: vscode.Location;
+}
+
 export class ClipboardManager implements vscode.Disposable {
   protected _disposable: vscode.Disposable[] = [];
 
-  protected _clips: IClipboardTextChange[] = [];
+  protected _clips: IClipboardItem[] = [];
   get clips() {
     return this._clips;
   }
@@ -38,13 +48,28 @@ export class ClipboardManager implements vscode.Disposable {
     const maxClips = config.get("maxClips", 100);
     const avoidDuplicates = config.get("avoidDuplicates", true);
 
+    let item: IClipboardItem = {
+      value: change.value,
+      createdAt: change.timestamp,
+      copyCount: 1,
+      useCount: 0,
+      language: change.language,
+      createdLocation: change.location
+    };
+
     if (avoidDuplicates) {
-      // Remove same clips to move recent to top
-      this._clips = this._clips.filter(c => c.value !== change.value);
+      const index = this._clips.findIndex(c => c.value == change.value);
+
+      // Remove same clips and move recent to top
+      if (index >= 0) {
+        this._clips[index].copyCount++;
+        item = this._clips[index];
+        this._clips = this._clips.filter(c => c.value !== change.value);
+      }
     }
 
     // Add to top
-    this._clips.unshift(change);
+    this._clips.unshift(item);
 
     // Max clips to store
     if (maxClips > 0) {
@@ -56,29 +81,29 @@ export class ClipboardManager implements vscode.Disposable {
     this.saveClips();
   }
 
+  protected jsonReplacer(key: string, value: any) {
+    if (key === "createdLocation") {
+      value = {
+        range: {
+          start: value.range.start,
+          end: value.range.end
+        },
+        uri: value.uri.toString()
+      };
+    } else if (value instanceof vscode.Uri) {
+      value = value.toString();
+    }
+
+    return value;
+  }
+
   protected saveClips() {
-    const replacer = (key: string, value: any) => {
-      if (key === "location") {
-        value = {
-          range: {
-            start: value.range.start,
-            end: value.range.end
-          },
-          uri: value.uri.toString()
-        };
-      } else if (value instanceof vscode.Uri) {
-        value = value.toString();
-      }
-
-      return value;
-    };
-
     const json = JSON.stringify(
       {
-        version: 1,
+        version: 2,
         clips: this._clips
       },
-      replacer
+      this.jsonReplacer
     );
     this.context.globalState.update("clips", json);
   }
@@ -96,24 +121,37 @@ export class ClipboardManager implements vscode.Disposable {
       return;
     }
 
-    const clips = stored.clips as any[];
+    let clips = stored.clips as any[];
+
+    if (stored.version === 1) {
+      clips = clips.map(c => {
+        c.createdAt = c.timestamp;
+        c.copyCount = 1;
+        c.useCount = 0;
+        c.createdLocation = c.location;
+        return c;
+      });
+      stored.version = 2;
+    }
 
     this._clips = clips.map(c => {
-      const clip: IClipboardTextChange = {
+      const clip: IClipboardItem = {
         value: c.value,
-        timestamp: c.timestamp,
+        createdAt: c.createdAt,
+        copyCount: c.copyCount,
+        useCount: c.copyCount,
         language: c.language
       };
 
-      if (c.location) {
-        const uri = vscode.Uri.parse(c.location.uri);
+      if (c.createdLocation) {
+        const uri = vscode.Uri.parse(c.createdLocation.uri);
         const range = new vscode.Range(
-          c.location.range.start.line,
-          c.location.range.start.character,
-          c.location.range.end.line,
-          c.location.range.end.character
+          c.createdLocation.range.start.line,
+          c.createdLocation.range.start.character,
+          c.createdLocation.range.end.line,
+          c.createdLocation.range.end.character
         );
-        clip.location = new vscode.Location(uri, range);
+        clip.createdLocation = new vscode.Location(uri, range);
       }
 
       return clip;
