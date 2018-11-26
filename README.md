@@ -1,5 +1,18 @@
 # Clipboard Manager
 
+[![Version](https://vsmarketplacebadge.apphb.com/version-short/EdgardMessias.clipboard-manager.svg)](https://marketplace.visualstudio.com/items?itemName=EdgardMessias.clipboard-manager)
+[![Installs](https://vsmarketplacebadge.apphb.com/installs-short/EdgardMessias.clipboard-manager.svg)](https://marketplace.visualstudio.com/items?itemName=EdgardMessias.clipboard-manager)
+[![Ratings](https://vsmarketplacebadge.apphb.com/rating-short/EdgardMessias.clipboard-manager.svg)](https://marketplace.visualstudio.com/items?itemName=EdgardMessias.clipboard-manager)
+
+[![Dependencies Status](https://david-dm.org/edgardmessias/vscode.clipboard-manager/status.svg)](https://david-dm.org/edgardmessias/vscode.clipboard-manager)
+[![DevDependencies Status](https://david-dm.org/edgardmessias/vscode.clipboard-manager/dev-status.svg)](https://david-dm.org/edgardmessias/vscode.clipboard-manager?type=dev)
+[![Greenkeeper badge](https://badges.greenkeeper.io/edgardmessias/vscode.clipboard.svg)](https://greenkeeper.io/)
+
+[![Known Vulnerabilities](https://snyk.io/test/github/edgardmessias/vscode.clipboard-manager/badge.svg)](https://snyk.io/test/github/edgardmessias/vscode.clipboard-manager)
+
+[![Average time to resolve an issue](https://isitmaintained.com/badge/resolution/edgardmessias/vscode.clipboard-manager.svg)](https://isitmaintained.com/project/edgardmessias/vscode.clipboard-manager "Average time to resolve an issue")
+[![Percentage of issues still open](https://isitmaintained.com/badge/open/edgardmessias/vscode.clipboard-manager.svg)](https://isitmaintained.com/project/edgardmessias/vscode.clipboard-manager "Percentage of issues still open")
+
 Keep a history of your copied and cut items and re-paste.
 
 ## Features
