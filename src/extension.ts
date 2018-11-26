@@ -20,13 +20,16 @@ export async function activate(context: vscode.ExtensionContext) {
     await defaultClipboard.readText(); // Read test
   } catch (error) {
     console.log(error);
-    if (error.message) {
-      vscode.window.showErrorMessage(error.message);
-    } else {
-      vscode.window.showErrorMessage(
-        "Failed to read value from clipboard, check the console log"
-      );
-    }
+    // Small delay to force show error
+    setTimeout(() => {
+      if (error.message) {
+        vscode.window.showErrorMessage(error.message);
+      } else {
+        vscode.window.showErrorMessage(
+          "Failed to read value from clipboard, check the console log"
+        );
+      }
+    }, 2000);
     // Disable clipboard listening
     defaultClipboard.dispose();
     return;
