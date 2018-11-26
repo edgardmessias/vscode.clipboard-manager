@@ -3,7 +3,7 @@
     "name": "clipboard-manager",
     "displayName": "Clipboard Manager",
     "description": "Clipboard Manager",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "preview": true,
     "icon": "media/clipboard.png",
     "engines": {
@@ -128,7 +128,7 @@
         "@types/mocha": "^2.2.42",
         "@types/node": "^8.10.25",
         "tslint": "^5.8.0",
-        "typescript": "^2.6.1",
+        "typescript": "^3.1.6",
         "vscode": "^1.1.21"
     },
     "dependencies": {
