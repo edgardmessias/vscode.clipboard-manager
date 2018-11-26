@@ -1,11 +1,11 @@
 import * as vscode from "vscode";
-import { ClipboardManager } from "./manager";
 import { commandList } from "./commads/common";
+import { ClipboardManager } from "./manager";
 
 export class ClipboardCompletion implements vscode.CompletionItemProvider {
   constructor(protected manager: ClipboardManager) {}
 
-  provideCompletionItems(
+  public provideCompletionItems(
     document: vscode.TextDocument,
     position: vscode.Position,
     token: vscode.CancellationToken,
@@ -28,14 +28,14 @@ export class ClipboardCompletion implements vscode.CompletionItemProvider {
 
     const completions: vscode.CompletionItem[] = clips.map((clip, index) => {
       // Add left zero pad from max number of clips
-      const number = `${zeros}${index + 1}`.substr(-zeros.length);
+      const indexNumber = `${zeros}${index + 1}`.substr(-zeros.length);
 
       const c: vscode.CompletionItem = {
-        label: `${prefix}${number}`,
-        detail: `Clipboard ${number}`,
+        label: `${prefix}${indexNumber}`,
+        detail: `Clipboard ${indexNumber}`,
         insertText: clip.value,
         kind: vscode.CompletionItemKind.Text,
-        filterText: `${prefix}${number} ${clip.value}`
+        filterText: `${prefix}${indexNumber} ${clip.value}`
       };
 
       // Highlight the syntax of clip

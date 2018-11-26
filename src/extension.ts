@@ -1,12 +1,14 @@
 "use strict";
 import * as vscode from "vscode";
+import { defaultClipboard } from "./clipboard";
+import { HistoryTreeDoubleClickCommand } from "./commads/historyTreeDoubleClick";
+import { PickAndPasteCommand } from "./commads/pickAndPaste";
+import { SetClipboardValueCommand } from "./commads/setClipboardValue";
 import { ClipboardCompletion } from "./completion";
 import { ClipboardManager } from "./manager";
-import { defaultClipboard } from "./clipboard";
-import { PickAndPasteCommand } from "./commads/pickAndPaste";
 import { ClipboardTreeDataProvider } from "./tree/history";
-import { HistoryTreeDoubleClickCommand } from "./commads/historyTreeDoubleClick";
-import { SetClipboardValueCommand } from "./commads/setClipboardValue";
+
+let manager: ClipboardManager;
 
 // this method is called when your extension is activated
 export function activate(context: vscode.ExtensionContext) {
@@ -17,7 +19,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   const config = vscode.workspace.getConfiguration("clipboard-manager");
 
-  const manager = new ClipboardManager(context);
+  manager = new ClipboardManager(context);
   disposable.push(manager);
 
   disposable.push(new PickAndPasteCommand(manager));
@@ -56,4 +58,8 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() {
+  if (manager) {
+    manager.saveClips();
+  }
+}

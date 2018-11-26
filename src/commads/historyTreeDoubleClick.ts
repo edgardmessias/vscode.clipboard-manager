@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
-import { commandList } from "./common";
 import { IClipboardTextChange } from "../clipboard";
 import { ClipboardManager } from "../manager";
+import { commandList } from "./common";
 
 /**
  * Command to paste from double click on history item
@@ -26,7 +26,7 @@ export class HistoryTreeDoubleClickCommand implements vscode.Disposable {
    * Emulate double click on tree view history
    * @param clip
    */
-  async execute(clip: IClipboardTextChange) {
+  protected async execute(clip: IClipboardTextChange) {
     const now = Date.now();
     if (this.prevClip !== clip) {
       this.prevClip = clip;
@@ -58,7 +58,7 @@ export class HistoryTreeDoubleClickCommand implements vscode.Disposable {
     );
   }
 
-  dispose() {
+  public dispose() {
     this._disposable.forEach(d => d.dispose());
   }
 }

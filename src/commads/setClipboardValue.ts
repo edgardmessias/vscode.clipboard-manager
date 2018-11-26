@@ -15,12 +15,12 @@ export class SetClipboardValueCommand implements vscode.Disposable {
     );
   }
 
-  async execute(value: string) {
+  protected async execute(value: string) {
     // Update current clip in clipboard
     await this._manager.setClipboardValue(value);
   }
 
-  dispose() {
+  public dispose() {
     this._disposable.forEach(d => d.dispose());
   }
 }

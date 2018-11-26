@@ -28,7 +28,7 @@ export abstract class BaseClipboard implements IClipboard {
   public onlyWindowFocused: boolean = true;
 
   private _onDidChangeText = new vscode.EventEmitter<IClipboardTextChange>();
-  readonly onDidChangeText = this._onDidChangeText.event;
+  public readonly onDidChangeText = this._onDidChangeText.event;
 
   protected _timer: NodeJS.Timer | undefined;
   protected _checkInterval: number = 500;
@@ -85,8 +85,8 @@ export abstract class BaseClipboard implements IClipboard {
     });
   }
 
-  abstract readTextInternal(): Thenable<string>;
-  abstract writeTextInternal(value: string): Thenable<void>;
+  protected abstract readTextInternal(): Thenable<string>;
+  protected abstract writeTextInternal(value: string): Thenable<void>;
 
   protected async onDidChangeWindowState(state: vscode.WindowState) {
     // Prevent detect change from external copy
@@ -97,7 +97,7 @@ export abstract class BaseClipboard implements IClipboard {
     this._windowFocused = state.focused;
   }
 
-  async checkChangeText() {
+  protected async checkChangeText() {
     // Don't check the clipboard when windows is not focused
     if (this.onlyWindowFocused && !this._windowFocused) {
       return;
@@ -136,25 +136,25 @@ export abstract class BaseClipboard implements IClipboard {
     this._prevText = newText;
   }
 
-  dispose() {
+  public dispose() {
     this._disposables.forEach(d => d.dispose());
   }
 }
 
 export class VSCodeClipboard extends BaseClipboard {
-  readTextInternal(): Thenable<string> {
+  protected readTextInternal(): Thenable<string> {
     return vscode.env.clipboard.readText();
   }
-  writeTextInternal(value: string): Thenable<void> {
+  protected writeTextInternal(value: string): Thenable<void> {
     return vscode.env.clipboard.writeText(value);
   }
 }
 
 export class ClipboardyClipboard extends BaseClipboard {
-  readTextInternal(): Thenable<string> {
+  protected readTextInternal(): Thenable<string> {
     return clipboardy.read();
   }
-  writeTextInternal(value: string): Thenable<void> {
+  protected writeTextInternal(value: string): Thenable<void> {
     return clipboardy.write(value);
   }
 }
@@ -165,6 +165,7 @@ export function getNewDefaultInstance() {
   try {
     vscode.env.clipboard.readText();
     clipboard = new VSCodeClipboard();
+    // tslint:disable-next-line:no-empty
   } catch (error) {}
 
   if (!clipboard) {

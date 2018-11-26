@@ -1,8 +1,8 @@
 import * as vscode from "vscode";
 import {
+  defaultClipboard,
   IClipboard,
-  IClipboardTextChange,
-  defaultClipboard
+  IClipboardTextChange
 } from "./clipboard";
 
 export interface IClipboardItem {
@@ -28,7 +28,7 @@ export class ClipboardManager implements vscode.Disposable {
   // }
 
   private _onDidClipListChange = new vscode.EventEmitter<void>();
-  readonly onDidChangeClipList = this._onDidClipListChange.event;
+  public readonly onDidChangeClipList = this._onDidClipListChange.event;
 
   constructor(
     protected context: vscode.ExtensionContext,
@@ -58,7 +58,7 @@ export class ClipboardManager implements vscode.Disposable {
     };
 
     if (avoidDuplicates) {
-      const index = this._clips.findIndex(c => c.value == change.value);
+      const index = this._clips.findIndex(c => c.value === change.value);
 
       // Remove same clips and move recent to top
       if (index >= 0) {
@@ -85,7 +85,7 @@ export class ClipboardManager implements vscode.Disposable {
     const config = vscode.workspace.getConfiguration("clipboard-manager");
     const moveToTop = config.get("moveToTop", true);
 
-    const index = this._clips.findIndex(c => c.value == value);
+    const index = this._clips.findIndex(c => c.value === value);
 
     if (index >= 0) {
       this._clips[index].useCount++;
@@ -117,7 +117,7 @@ export class ClipboardManager implements vscode.Disposable {
     return value;
   }
 
-  protected saveClips() {
+  public saveClips() {
     const json = JSON.stringify(
       {
         version: 2,
@@ -128,7 +128,7 @@ export class ClipboardManager implements vscode.Disposable {
     this.context.globalState.update("clips", json);
   }
 
-  protected loadClips() {
+  public loadClips() {
     const json = this.context.globalState.get<any>("clips");
 
     if (!json) {
@@ -178,7 +178,7 @@ export class ClipboardManager implements vscode.Disposable {
     });
   }
 
-  dispose() {
+  public dispose() {
     this._disposable.forEach(d => d.dispose());
 
     if (this._clipboard) {

@@ -34,7 +34,7 @@ export class PickAndPasteCommand implements vscode.Disposable {
     );
   }
 
-  async execute() {
+  protected async execute() {
     /**
      * @todo Create option to enable/disable
      */
@@ -98,7 +98,7 @@ export class PickAndPasteCommand implements vscode.Disposable {
     }
   }
 
-  dispose() {
+  public dispose() {
     this._disposable.forEach(d => d.dispose());
   }
 }

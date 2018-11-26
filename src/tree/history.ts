@@ -1,7 +1,7 @@
-import * as vscode from "vscode";
 import * as path from "path";
-import { ClipboardManager, IClipboardItem } from "../manager";
+import * as vscode from "vscode";
 import { commandList } from "../commads/common";
+import { ClipboardManager, IClipboardItem } from "../manager";
 
 class ClipHistoryItem extends vscode.TreeItem {
   constructor(protected _clip: IClipboardItem) {
@@ -36,7 +36,7 @@ export class ClipboardTreeDataProvider
   private _disposables: vscode.Disposable[] = [];
 
   private _onDidChangeTreeData: vscode.EventEmitter<ClipHistoryItem | null> = new vscode.EventEmitter<ClipHistoryItem | null>();
-  readonly onDidChangeTreeData: vscode.Event<ClipHistoryItem | null> = this
+  public readonly onDidChangeTreeData: vscode.Event<ClipHistoryItem | null> = this
     ._onDidChangeTreeData.event;
 
   constructor(protected _manager: ClipboardManager) {
@@ -45,13 +45,13 @@ export class ClipboardTreeDataProvider
     });
   }
 
-  getTreeItem(
+  public getTreeItem(
     element: ClipHistoryItem
   ): vscode.TreeItem | Thenable<vscode.TreeItem> {
     return element;
   }
 
-  getChildren(
+  public getChildren(
     element?: ClipHistoryItem | undefined
   ): vscode.ProviderResult<ClipHistoryItem[]> {
     const clips = this._manager.clips;
@@ -61,7 +61,7 @@ export class ClipboardTreeDataProvider
     return childs;
   }
 
-  dispose() {
+  public dispose() {
     this._disposables.forEach(d => d.dispose());
   }
 }
