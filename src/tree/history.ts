@@ -22,6 +22,8 @@ export class ClipHistoryItem extends vscode.TreeItem {
     if (this.clip.createdLocation) {
       this.resourceUri = this.clip.createdLocation.uri;
       this.contextValue += "file";
+
+      this.tooltip = `File: ${this.resourceUri.fsPath}\nValue: ${this.tooltip}\n`;
     } else {
       const basePath = path.join(__filename, "..", "..", "..", "resources");
 

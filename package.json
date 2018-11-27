@@ -59,6 +59,11 @@
                 "command": "clipboard-manager.history.remove",
                 "title": "Remove",
                 "category": "Clipboard Manager"
+            },
+            {
+                "command": "clipboard-manager.editor.showClipboardInFile",
+                "title": "Show in the file",
+                "category": "Clipboard Manager"
             }
         ],
         "menus": {
@@ -70,12 +75,22 @@
                 {
                     "command": "clipboard-manager.history.remove",
                     "when": "false"
+                },
+                {
+                    "command": "clipboard-manager.editor.showClipboardInFile",
+                    "when": "false"
                 }
             ],
             "view/item/context": [
                 {
+                    "command": "clipboard-manager.editor.showClipboardInFile",
+                    "when": "viewItem =~ /^clipHistoryItem:file/",
+                    "group": "0_navigation"
+                },
+                {
                     "command": "clipboard-manager.history.remove",
-                    "when": "viewItem =~ /^clipHistoryItem:/"
+                    "when": "viewItem =~ /^clipHistoryItem:/",
+                    "group": "1_modification"
                 }
             ]
         },

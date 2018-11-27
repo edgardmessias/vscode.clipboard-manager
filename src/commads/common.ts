@@ -2,5 +2,6 @@ export enum commandList {
   historyTreeDoubleClick = "clipboard-manager.historyTree.doubleClick",
   pickAndPaste = "clipboard-manager.editor.pickAndPaste",
   removeClipboardHistory = "clipboard-manager.history.remove",
-  setClipboardValue = "clipboard-manager.setClipboardValue"
+  setClipboardValue = "clipboard-manager.setClipboardValue",
+  showClipboardInFile = "clipboard-manager.editor.showClipboardInFile"
 }
