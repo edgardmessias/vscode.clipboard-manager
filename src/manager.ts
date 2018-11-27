@@ -1,3 +1,6 @@
+import * as fs from "fs";
+import * as os from "os";
+import * as path from "path";
 import * as vscode from "vscode";
 import {
   defaultClipboard,
@@ -23,6 +26,8 @@ export class ClipboardManager implements vscode.Disposable {
     return this._clips;
   }
 
+  protected lastUpdate: number = 0;
+
   // get clipboard() {
   //   return this._clipboard;
   // }
@@ -41,9 +46,21 @@ export class ClipboardManager implements vscode.Disposable {
     );
 
     this.loadClips();
+
+    vscode.window.onDidChangeWindowState(
+      state => {
+        if (state.focused) {
+          this.checkClipsUpdate();
+        }
+      },
+      this,
+      this._disposable
+    );
   }
 
   protected updateClipList(change: IClipboardTextChange) {
+    this.checkClipsUpdate();
+
     const config = vscode.workspace.getConfiguration("clipboard-manager");
     const maxClips = config.get("maxClips", 100);
     const avoidDuplicates = config.get("avoidDuplicates", true);
@@ -82,6 +99,8 @@ export class ClipboardManager implements vscode.Disposable {
   }
 
   public async setClipboardValue(value: string) {
+    this.checkClipsUpdate();
+
     const config = vscode.workspace.getConfiguration("clipboard-manager");
     const moveToTop = config.get("moveToTop", true);
 
@@ -102,6 +121,8 @@ export class ClipboardManager implements vscode.Disposable {
   }
 
   public async removeClipboardValue(value: string) {
+    this.checkClipsUpdate();
+
     const prevLength = this._clips.length;
 
     this._clips = this._clips.filter(c => c.value !== value);
@@ -109,6 +130,22 @@ export class ClipboardManager implements vscode.Disposable {
     this.saveClips();
 
     return prevLength !== this._clips.length;
+  }
+
+  /**
+   * `clipboard.history.json`
+   */
+  protected getStoreFile() {
+    let folder = os.tmpdir();
+
+    if (this.context.storagePath) {
+      const parts = this.context.storagePath.split(
+        /[\\\/]workspaceStorage[\\\/]/
+      );
+      folder = parts[0];
+    }
+
+    return path.join(folder, "clipboard.history.json");
   }
 
   protected jsonReplacer(key: string, value: any) {
@@ -133,13 +170,46 @@ export class ClipboardManager implements vscode.Disposable {
         version: 2,
         clips: this._clips
       },
-      this.jsonReplacer
+      this.jsonReplacer,
+      2
     );
-    this.context.globalState.update("clips", json);
+
+    const file = this.getStoreFile();
+
+    fs.writeFileSync(file, json);
+    this.lastUpdate = fs.statSync(file).mtimeMs;
+  }
+
+  /**
+   * Check the clip history changed from another workspace
+   */
+  public checkClipsUpdate() {
+    const file = this.getStoreFile();
+
+    if (!fs.existsSync(file)) {
+      return;
+    }
+
+    const stat = fs.statSync(file);
+
+    if (this.lastUpdate < stat.mtimeMs) {
+      this.lastUpdate = stat.mtimeMs;
+      this.loadClips();
+    }
   }
 
   public loadClips() {
-    const json = this.context.globalState.get<any>("clips");
+    let json;
+
+    const file = this.getStoreFile();
+
+    if (fs.existsSync(file)) {
+      json = fs.readFileSync(file);
+      this.lastUpdate = fs.statSync(file).mtimeMs;
+    } else {
+      // Read from old storage
+      json = this.context.globalState.get<any>("clips");
+    }
 
     if (!json) {
       return;
@@ -192,9 +262,5 @@ export class ClipboardManager implements vscode.Disposable {
 
   public dispose() {
     this._disposable.forEach(d => d.dispose());
-
-    if (this._clipboard) {
-      this._clipboard.dispose();
-    }
   }
 }
