@@ -2,6 +2,7 @@ import * as path from "path";
 import * as vscode from "vscode";
 import { commandList } from "../commads/common";
 import { ClipboardManager, IClipboardItem } from "../manager";
+import { leftPad } from "../util";
 
 export class ClipHistoryItem extends vscode.TreeItem {
   constructor(readonly clip: IClipboardItem) {
@@ -57,7 +58,16 @@ export class ClipboardTreeDataProvider
   ): vscode.ProviderResult<ClipHistoryItem[]> {
     const clips = this._manager.clips;
 
-    const childs = clips.map(c => new ClipHistoryItem(c));
+    const maxLength = `${clips.length}`.length;
+
+    const childs = clips.map((c, index) => {
+      const item = new ClipHistoryItem(c);
+      const indexNumber = leftPad(index + 1, maxLength, "0");
+
+      item.label = `${indexNumber}) ${item.label}`;
+
+      return item;
+    });
 
     return childs;
   }

@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { commandList } from "./commads/common";
 import { ClipboardManager } from "./manager";
+import { leftPad } from "./util";
 
 export class ClipboardCompletion implements vscode.CompletionItemProvider {
   constructor(protected manager: ClipboardManager) {}
@@ -24,11 +25,11 @@ export class ClipboardCompletion implements vscode.CompletionItemProvider {
         ? this.manager.clips.slice(0, maxSnippets)
         : this.manager.clips;
 
-    const zeros = "0".repeat(`${clips.length}`.length);
+    const maxLength = `${clips.length}`.length;
 
     const completions: vscode.CompletionItem[] = clips.map((clip, index) => {
       // Add left zero pad from max number of clips
-      const indexNumber = `${zeros}${index + 1}`.substr(-zeros.length);
+      const indexNumber = leftPad(index + 1, maxLength, "0");
 
       const c: vscode.CompletionItem = {
         label: `${prefix}${indexNumber}`,

@@ -1,24 +1,21 @@
 import * as vscode from "vscode";
 import { ClipboardManager, IClipboardItem } from "../manager";
+import { leftPad } from "../util";
 import { commandList } from "./common";
 
 class ClipPickItem implements vscode.QuickPickItem {
-  get label() {
-    return this._clip.value;
-  }
+  public label: string;
 
   get description() {
-    if (this._clip.createdAt) {
-      const date = new Date(this._clip.createdAt);
+    if (this.clip.createdAt) {
+      const date = new Date(this.clip.createdAt);
       return date.toLocaleString();
     }
   }
 
-  get clip() {
-    return this._clip;
+  constructor(readonly clip: IClipboardItem) {
+    this.label = this.clip.value.replace(/\s+/g, " ").trim();
   }
-
-  constructor(protected _clip: IClipboardItem) {}
 }
 
 export class PickAndPasteCommand implements vscode.Disposable {
@@ -42,7 +39,16 @@ export class PickAndPasteCommand implements vscode.Disposable {
 
     const clips = this._manager.clips;
 
-    const picks = clips.map(c => new ClipPickItem(c));
+    const maxLength = `${clips.length}`.length;
+
+    const picks = clips.map((c, index) => {
+      const item = new ClipPickItem(c);
+      const indexNumber = leftPad(index + 1, maxLength, "0");
+
+      item.label = `${indexNumber}) ${item.label}`;
+
+      return item;
+    });
 
     // Variable to check changes in document by preview
     let needUndo = false;

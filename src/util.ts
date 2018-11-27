@@ -5,3 +5,15 @@ export interface IDisposable {
 export function toDisposable(dispose: () => void): IDisposable {
   return { dispose };
 }
+
+export function leftPad(
+  value: string | number,
+  size: number,
+  char: string = " "
+) {
+  const chars = char.repeat(size);
+
+  const paddedNumber = `${chars}${value}`.substr(-chars.length);
+
+  return paddedNumber;
+}
