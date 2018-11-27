@@ -106,6 +106,7 @@ export class ClipboardManager implements vscode.Disposable {
 
     this._clips = this._clips.filter(c => c.value !== value);
     this._onDidClipListChange.fire();
+    this.saveClips();
 
     return prevLength !== this._clips.length;
   }
