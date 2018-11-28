@@ -1,3 +1,4 @@
+.*.yml
 .gitattributes
 .gitignore
 .vscode-test/**

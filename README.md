@@ -16,13 +16,21 @@
 [![Average time to resolve an issue](https://isitmaintained.com/badge/resolution/edgardmessias/vscode.clipboard-manager.svg)](https://isitmaintained.com/project/edgardmessias/vscode.clipboard-manager "Average time to resolve an issue")
 [![Percentage of issues still open](https://isitmaintained.com/badge/open/edgardmessias/vscode.clipboard-manager.svg)](https://isitmaintained.com/project/edgardmessias/vscode.clipboard-manager "Percentage of issues still open")
 
-Keep a history of your copied and cut items and re-paste.
+Keep a history of your copied and cut items and re-paste, without override the `Ctrl+C` and `Ctrl+V` keyboard shortcuts.
+
+To pick a copied item, only run `Ctrl+Shift+V`
 
 ## Features
 
 1. Save history of all copied and cut items
-1. Paste from history
-1. Snippets to paste
+1. Can check copied items outside the VSCode (`"clipboard-manager.onlyWindowFocused": false`)
+1. Paste from history (`Ctrl+Shift+V` => Pick and Paste)
+1. Preview the paste
+1. Snippets to paste (Ex. `clip01, clip02, ...`)
+1. Remove selected item from history
+1. Clear all history
+1. Open copy location
+1. Double click in history view to paste
 
 ## Extension Settings
 
@@ -48,6 +56,9 @@ This extension contributes the following settings (default values):
 
   // Get clips only from VSCode
   "clipboard-manager.onlyWindowFocused": true,
+
+  // View a preview while you are choosing the clip
+  "clipboard-manager.preview": true,
 
   // Default prefix for snippets completion (clip1, clip2, ...)
   "clipboard-manager.snippetPrefix": "clip"

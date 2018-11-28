@@ -152,6 +152,11 @@
                         "default": true,
                         "description": "Get clips only from VSCode"
                     },
+                    "clipboard-manager.preview": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "View a preview while you are choosing the clip"
+                    },
                     "clipboard-manager.snippetPrefix": {
                         "scope": "resource",
                         "type": "string",
