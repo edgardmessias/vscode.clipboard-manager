@@ -56,6 +56,15 @@
                 "category": "Clipboard Manager"
             },
             {
+                "command": "clipboard-manager.history.clear",
+                "title": "Clear History",
+                "category": "Clipboard Manager",
+                "icon":{
+                    "dark": "resources/dark/clear-history.svg",
+                    "light": "resources/light/clear-history.svg"
+                }
+            },
+            {
                 "command": "clipboard-manager.history.remove",
                 "title": "Remove",
                 "category": "Clipboard Manager"
@@ -91,6 +100,13 @@
                     "command": "clipboard-manager.history.remove",
                     "when": "viewItem =~ /^clipHistoryItem:/",
                     "group": "1_modification"
+                }
+            ],
+            "view/title": [
+                {
+                    "command": "clipboard-manager.history.clear",
+                    "when": "view == clipboardHistory",
+                    "group": "navigation"
                 }
             ]
         },

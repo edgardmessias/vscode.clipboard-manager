@@ -120,7 +120,7 @@ export class ClipboardManager implements vscode.Disposable {
     return await this._clipboard.writeText(value);
   }
 
-  public async removeClipboardValue(value: string) {
+  public removeClipboardValue(value: string) {
     this.checkClipsUpdate();
 
     const prevLength = this._clips.length;
@@ -130,6 +130,16 @@ export class ClipboardManager implements vscode.Disposable {
     this.saveClips();
 
     return prevLength !== this._clips.length;
+  }
+
+  public clearAll() {
+    this.checkClipsUpdate();
+
+    this._clips = [];
+    this._onDidClipListChange.fire();
+    this.saveClips();
+
+    return true;
   }
 
   /**
