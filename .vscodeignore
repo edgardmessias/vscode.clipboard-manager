@@ -5,6 +5,7 @@
 *.vsix
 out/**/*.map
 out/test/**
+out/tools/**
 package-lock.json
 src/**
 tsconfig.json

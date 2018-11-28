@@ -56,6 +56,11 @@
                 "category": "Clipboard Manager"
             },
             {
+                "command": "clipboard-manager.editor.showClipboardInFile",
+                "title": "Show in the file",
+                "category": "Clipboard Manager"
+            },
+            {
                 "command": "clipboard-manager.history.clear",
                 "title": "Clear History",
                 "category": "Clipboard Manager",
@@ -68,11 +73,6 @@
                 "command": "clipboard-manager.history.remove",
                 "title": "Remove",
                 "category": "Clipboard Manager"
-            },
-            {
-                "command": "clipboard-manager.editor.showClipboardInFile",
-                "title": "Show in the file",
-                "category": "Clipboard Manager"
             }
         ],
         "menus": {
@@ -82,11 +82,11 @@
                     "when": "editorFocus && !editorReadonly"
                 },
                 {
-                    "command": "clipboard-manager.history.remove",
+                    "command": "clipboard-manager.editor.showClipboardInFile",
                     "when": "false"
                 },
                 {
-                    "command": "clipboard-manager.editor.showClipboardInFile",
+                    "command": "clipboard-manager.history.remove",
                     "when": "false"
                 }
             ],
@@ -121,6 +121,11 @@
             {
                 "title": "Clipboard Manager",
                 "properties": {
+                    "clipboard-manager.avoidDuplicates": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Avoid duplicate clips in the list"
+                    },
                     "clipboard-manager.checkInterval": {
                         "type": "integer",
                         "default": 500,
@@ -136,11 +141,6 @@
                         "type": "integer",
                         "default": 10,
                         "description": "Maximum number of clips to suggests in snippets"
-                    },
-                    "clipboard-manager.avoidDuplicates": {
-                        "type": "boolean",
-                        "default": true,
-                        "description": "Avoid duplicate clips in the list"
                     },
                     "clipboard-manager.moveToTop": {
                         "type": "boolean",
@@ -165,6 +165,7 @@
     "scripts": {
         "compile": "tsc -p ./",
         "lint": "tslint -p tsconfig.json",
+        "organize": "node ./out/tools/organize.js",
         "postinstall": "node ./node_modules/vscode/bin/install",
         "test": "npm run compile && node ./node_modules/vscode/bin/test",
         "vscode:prepublish": "npm run compile",
