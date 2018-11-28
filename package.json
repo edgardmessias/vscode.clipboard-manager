@@ -3,7 +3,7 @@
     "name": "clipboard-manager",
     "displayName": "Clipboard Manager",
     "description": "Clipboard Manager",
-    "version": "0.0.9",
+    "version": "0.0.10",
     "preview": true,
     "icon": "media/clipboard.png",
     "engines": {
@@ -59,7 +59,7 @@
                 "command": "clipboard-manager.history.clear",
                 "title": "Clear History",
                 "category": "Clipboard Manager",
-                "icon":{
+                "icon": {
                     "dark": "resources/dark/clear-history.svg",
                     "light": "resources/light/clear-history.svg"
                 }
