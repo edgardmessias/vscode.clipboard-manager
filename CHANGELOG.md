@@ -1,7 +1,5 @@
-# Change Log
-All notable changes to the "clipboard-manager" extension will be documented in this file.
+# [1.0.0](https://github.com/edgardmessias/vscode.clipboard-manager/releases/tag/v1.0.0) (2018-11-28)
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+### Features
 
-## [Unreleased]
-- Initial release
+- First Release

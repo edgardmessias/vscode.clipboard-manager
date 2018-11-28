@@ -3,8 +3,7 @@
     "name": "clipboard-manager",
     "displayName": "Clipboard Manager",
     "description": "Clipboard Manager",
-    "version": "0.0.10",
-    "preview": true,
+    "version": "1.0.0",
     "icon": "media/clipboard.png",
     "engines": {
         "vscode": "^1.22.0"
