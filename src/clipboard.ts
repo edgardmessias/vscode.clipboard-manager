@@ -122,13 +122,10 @@ export abstract class BaseClipboard implements IClipboard {
       // Try get position of clip
       if (editor.selection) {
         const selection = editor.selection;
-        const text = editor.document.getText(selection);
-        if (text === newText) {
-          change.location = {
-            range: new vscode.Range(selection.start, selection.end),
-            uri: editor.document.uri
-          };
-        }
+        change.location = {
+          range: new vscode.Range(selection.start, selection.end),
+          uri: editor.document.uri
+        };
       }
     }
 
