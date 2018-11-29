@@ -65,3 +65,12 @@ This extension contributes the following settings (default values):
 }
 ```
 <!--end-settings-->
+
+## Examples
+
+Copy to history:
+![Clipboard Manager - Copy](screenshots/copy.gif)
+
+Pick and Paste:
+![Clipboard Manager - Pick and Paste](screenshots/pick-and-paste.gif)
+
