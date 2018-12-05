@@ -10,15 +10,14 @@ const testRunner = IstanbulTestRunner;
 
 const mochaOpts: Mocha.MochaOptions = {
   ui: "tdd", // the TDD UI is being used in extension.test.ts (suite, test, etc.)
-  useColors: true // colored output from test results,
+  useColors: true, // colored output from test results,
+  reporter: "mocha-jenkins-reporter",
+  reporterOptions: {
+    junit_report_name: "Extension Tests",
+    junit_report_stack: 1,
+    junit_report_path: __dirname + "/../../test-reports/extension_tests.xml"
+  }
 };
-
-// Enable appveyor reporter if exists
-try {
-  require.resolve("mocha-appveyor-reporter");
-  mochaOpts.reporter = "mocha-appveyor-reporter";
-  // tslint:disable-next-line:no-empty
-} catch (error) {}
 
 testRunner.configure(
   mochaOpts,
