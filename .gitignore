@@ -1,4 +1,5 @@
 .vscode-test/
 *.vsix
+coverage/
 node_modules
 out

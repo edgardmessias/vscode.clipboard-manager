@@ -4,6 +4,7 @@
 .vscode-test/**
 .vscode/**
 *.vsix
+coverage/**
 out/**/*.map
 out/test/**
 out/tools/**
