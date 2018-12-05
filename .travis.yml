@@ -30,7 +30,12 @@ install:
 
 before_script:
   - npm run vscode:prepublish
+  # Enable coverage for `extension.ts`
+  - sed -i.bak 's/"\*"//g' package.json
 
 script:
   - npm run lint
   - npm test --silent
+
+after_script:
+  - node_modules/.bin/coveralls < coverage/lcov.info
