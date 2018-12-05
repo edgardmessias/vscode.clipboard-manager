@@ -5,7 +5,7 @@
 [![Ratings](https://vsmarketplacebadge.apphb.com/rating-short/EdgardMessias.clipboard-manager.svg)](https://marketplace.visualstudio.com/items?itemName=EdgardMessias.clipboard-manager)
 
 [![Build Status](https://travis-ci.org/edgardmessias/vscode.clipboard-manager.svg?branch=master)](https://travis-ci.org/edgardmessias/vscode.clipboard-manager)
-[![Build Status](https://ci.appveyor.com/api/projects/status/github/edgardmessias/vscode.clipboard-manager?branch=master&svg=true)](https://ci.appveyor.com/project/edgardmessias/vscode.clipboard-manager)
+[![Build Status](https://ci.appveyor.com/api/projects/status/github/edgardmessias/vscode.clipboard-manager?branch=master&svg=true)](https://ci.appveyor.com/project/edgardmessias/vscode-clipboard-manager)
 
 [![Dependencies Status](https://david-dm.org/edgardmessias/vscode.clipboard-manager/status.svg)](https://david-dm.org/edgardmessias/vscode.clipboard-manager)
 [![DevDependencies Status](https://david-dm.org/edgardmessias/vscode.clipboard-manager/dev-status.svg)](https://david-dm.org/edgardmessias/vscode.clipboard-manager?type=dev)
