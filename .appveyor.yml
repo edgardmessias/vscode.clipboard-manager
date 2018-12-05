@@ -18,6 +18,7 @@ install:
   - node --version
   - npm --version
   - npm install --no-audit
+  - npm install mocha-appveyor-reporter
 
 before_test:
   - npm run vscode:prepublish
