@@ -1,4 +1,5 @@
 import * as clipboardy from "clipboardy";
+import { ExecaReturns } from "execa";
 import * as vscode from "vscode";
 import { toDisposable } from "./util";
 
@@ -149,7 +150,27 @@ export class VSCodeClipboard extends BaseClipboard {
 
 export class ClipboardyClipboard extends BaseClipboard {
   protected readTextInternal(): Thenable<string> {
-    return clipboardy.read();
+    let promise = clipboardy.read();
+
+    /**
+     * Fix problem in `clipboardy` when clipboard text is empty on windows
+     * Example: After power up or after a print screen
+     */
+    if (process.platform === "win32") {
+      promise = promise.then(null, (reason: ExecaReturns) => {
+        const ignoreMessage =
+          "thread 'main' panicked at 'Error: Could not paste from clipboard: Error { repr: Os { code: 0, message:";
+
+        if (reason.stderr && reason.stderr.startsWith(ignoreMessage)) {
+          // return empty content
+          return "";
+        }
+
+        throw reason;
+      });
+    }
+
+    return promise;
   }
   protected writeTextInternal(value: string): Thenable<void> {
     return clipboardy.write(value);
