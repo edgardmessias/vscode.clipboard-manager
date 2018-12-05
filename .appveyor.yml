@@ -4,6 +4,7 @@ shallow_clone: true
 environment:
   ELECTRON_NO_ATTACH_CONSOLE: 1
   VSCODE_BUILD_VERBOSE: true
+  COVERALLS_PARALLEL: true
 
   matrix:
     # - CODE_VERSION: "1.20.0" # Minimal Version
