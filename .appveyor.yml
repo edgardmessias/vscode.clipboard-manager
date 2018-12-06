@@ -34,4 +34,4 @@ on_finish:
   - ps: $wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path 'test-reports\extension_tests.xml'))
 
   # Update coverage
-  - type coverage\lcov.info | node_modules\.bin\coveralls
+  - node_modules\.bin\codecov --disable=gcov

@@ -183,7 +183,7 @@
         "@types/istanbul": "^0.4.30",
         "@types/mocha": "^5.2.5",
         "@types/node": "^10.12.10",
-        "coveralls": "^3.0.2",
+        "codecov": "^3.1.0",
         "decache": "^4.5.0",
         "istanbul": "^0.4.5",
         "mocha-jenkins-reporter": "^0.4.1",

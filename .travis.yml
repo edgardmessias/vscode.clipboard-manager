@@ -41,4 +41,4 @@ script:
   - npm test --silent
 
 after_script:
-  - node_modules/.bin/coveralls < coverage/lcov.info
+  - node_modules/.bin/codecov --disable=gcov
