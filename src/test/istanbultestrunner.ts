@@ -236,6 +236,7 @@ class CoverageRunner {
     fs.writeFileSync(coverageFile, JSON.stringify(cov), "utf8");
 
     const remappedCollector: istanbul.Collector = remapIstanbul.remap(cov, {
+      useAbsolutePaths: true,
       warn: (warning: any) => {
         // We expect some warnings as any JS file without a typescript mapping will cause this.
         // By default, we'll skip printing these to the console as it clutters it up
