@@ -5,27 +5,23 @@
 
 // The module 'assert' provides assertion methods from node
 import * as assert from "assert";
-import { defaultClipboard } from "../clipboard";
-import { activateExtension } from "./stubs";
+import * as vscode from "vscode";
+import { activateExtension } from "./common";
 
 suiteSetup(async function() {
-  await activateExtension();
+  if (!(await activateExtension())) {
+    this.skip();
+  }
 });
 
-// Defines a Mocha test suite to group tests of similar kind together
 suite("Extension Tests", function() {
+  test("Active Extension", async function() {
+    const ext = vscode.extensions.getExtension(
+      "EdgardMessias.clipboard-manager"
+    ) as vscode.Extension<any>;
 
-  test("Read/Write Clipboard", async function() {
-    await defaultClipboard.writeText("test");
+    assert.ok(ext, "Extension not found");
 
-    const actual = await defaultClipboard.readText();
-
-    assert.equal(actual, "test");
-  });
-
-  // Defines a Mocha unit test
-  test("Something 1", function() {
-    assert.equal(-1, [1, 2, 3].indexOf(5));
-    assert.equal(-1, [1, 2, 3].indexOf(0));
+    assert.equal(ext.isActive, true, "Extension not activated");
   });
 });

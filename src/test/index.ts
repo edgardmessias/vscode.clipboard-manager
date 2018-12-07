@@ -11,6 +11,7 @@ const testRunner = IstanbulTestRunner;
 const mochaOpts: Mocha.MochaOptions = {
   ui: "tdd", // the TDD UI is being used in extension.test.ts (suite, test, etc.)
   useColors: true, // colored output from test results,
+  timeout: 10000, // default timeout: 10 seconds
   reporter: "mocha-jenkins-reporter",
   reporterOptions: {
     junit_report_name: "Extension Tests",
