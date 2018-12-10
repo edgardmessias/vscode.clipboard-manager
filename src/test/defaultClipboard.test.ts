@@ -91,10 +91,10 @@ suite("Clipboard Tests", function() {
 
     clipboard.onDidChangeText(onDidChangeTextSpy);
 
-    clipboard.checkInterval = 100; // Reset setInterval
+    clipboard.checkInterval = 200; // Reset setInterval
 
     await externalClipboard.writeText("new value");
-    await sleep(clipboard.checkInterval + 100);
+    await sleep(clipboard.checkInterval + 300);
 
     assert.equal(onDidChangeTextSpy.callCount, 1);
   });
@@ -103,25 +103,25 @@ suite("Clipboard Tests", function() {
     const onDidChangeTextSpy = sandbox.spy();
 
     clipboard.onDidChangeText(onDidChangeTextSpy);
-    clipboard.checkInterval = 100; // Reset setInterval
+    clipboard.checkInterval = 200; // Reset setInterval
 
     await externalClipboard.writeText("new value");
-    await sleep(clipboard.checkInterval + 100);
+    await sleep(clipboard.checkInterval + 300);
     assert.equal(onDidChangeTextSpy.callCount, 1);
 
     // Not emit the event when window is not focused
     await setWindowsFocus(false);
     await externalClipboard.writeText("external change");
-    await sleep(clipboard.checkInterval + 100);
+    await sleep(clipboard.checkInterval + 300);
     assert.equal(onDidChangeTextSpy.callCount, 1);
 
     // Not emit the event when window regains focus
     await setWindowsFocus(true);
-    await sleep(clipboard.checkInterval + 100);
+    await sleep(clipboard.checkInterval + 300);
     assert.equal(onDidChangeTextSpy.callCount, 1);
 
     await externalClipboard.writeText("internal change");
-    await sleep(clipboard.checkInterval + 100);
+    await sleep(clipboard.checkInterval + 300);
     assert.equal(onDidChangeTextSpy.callCount, 2);
   });
 
@@ -140,7 +140,7 @@ suite("Clipboard Tests", function() {
 
     await vscode.commands.executeCommand("editor.action.clipboardCopyAction");
 
-    await sleep(clipboard.checkInterval + 100);
+    await sleep(clipboard.checkInterval + 300);
 
     // Check clipboard content
     const current = await clipboard.readText();
