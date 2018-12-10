@@ -46,3 +46,12 @@ export async function activateExtension() {
 
   return ext.isActive;
 }
+
+export async function showSidebar() {
+  try {
+    await vscode.commands.executeCommand(
+      "workbench.view.extension.clipboard-manager"
+    );
+  // tslint:disable-next-line:no-empty
+  } catch (error) {}
+}
