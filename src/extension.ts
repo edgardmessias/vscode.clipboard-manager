@@ -55,11 +55,24 @@ export async function activate(context: vscode.ExtensionContext) {
   const completion = new ClipboardCompletion(manager);
   // disposable.push(completion);
 
-  vscode.languages.registerCompletionItemProvider(
-    {
-      scheme: "file"
-    },
-    completion
+  // All files types
+  disposable.push(
+    vscode.languages.registerCompletionItemProvider(
+      {
+        scheme: "file"
+      },
+      completion
+    )
+  );
+
+  // All files types (New file)
+  disposable.push(
+    vscode.languages.registerCompletionItemProvider(
+      {
+        scheme: "untitled"
+      },
+      completion
+    )
   );
 
   const clipboardTreeDataProvider = new ClipboardTreeDataProvider(manager);
