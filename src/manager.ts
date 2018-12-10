@@ -159,7 +159,7 @@ export class ClipboardManager implements vscode.Disposable {
   }
 
   protected jsonReplacer(key: string, value: any) {
-    if (key === "createdLocation") {
+    if (key === "createdLocation" && value) {
       value = {
         range: {
           start: value.range.start,
@@ -175,14 +175,20 @@ export class ClipboardManager implements vscode.Disposable {
   }
 
   public saveClips() {
-    const json = JSON.stringify(
-      {
-        version: 2,
-        clips: this._clips
-      },
-      this.jsonReplacer,
-      2
-    );
+    let json = "[]";
+    try {
+      json = JSON.stringify(
+        {
+          version: 2,
+          clips: this._clips
+        },
+        this.jsonReplacer,
+        2
+      );
+    } catch (error) {
+      console.log(error);
+      return;
+    }
 
     const file = this.getStoreFile();
 
@@ -225,7 +231,14 @@ export class ClipboardManager implements vscode.Disposable {
       return;
     }
 
-    const stored = JSON.parse(json);
+    let stored: any = {};
+
+    try {
+      stored = JSON.parse(json);
+    } catch (error) {
+      console.log(error);
+      return;
+    }
 
     if (!stored.version || !stored.clips) {
       return;
