@@ -35,7 +35,8 @@ suite("Completion Tests", function() {
     await defaultClipboard.writeText("Initial Value");
 
     // Show sidebar
-    await vscode.commands.executeCommand("clipboardHistory.focus");
+    // await vscode.commands.executeCommand("clipboardHistory.focus");
+    await vscode.commands.executeCommand("workbench.view.extension.clipboard-manager");
 
     // Clear clipboard history
     await vscode.commands.executeCommand(commandList.clearClipboardHistory);
