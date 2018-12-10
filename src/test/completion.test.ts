@@ -62,11 +62,11 @@ suite("Completion Tests", function() {
       "provideCompletionItems"
     );
 
-    await externalClipboard.writeText("alfa");
+    await externalClipboard.writeText("alpha");
     await sleep(defaultClipboard.checkInterval + 300);
     await externalClipboard.writeText("beta");
     await sleep(defaultClipboard.checkInterval + 300);
-    await externalClipboard.writeText("gama");
+    await externalClipboard.writeText("gamma");
     await sleep(defaultClipboard.checkInterval + 300);
 
     const document = await vscode.workspace.openTextDocument({
@@ -92,7 +92,7 @@ suite("Completion Tests", function() {
     await sleep(500);
 
     assert.ok(!editor.document.getText().includes("clip"));
-    assert.ok(editor.document.getText().includes("gama"));
+    assert.ok(editor.document.getText().includes("gamma"));
 
     await vscode.commands.executeCommand("workbench.action.closeActiveEditor");
   });
