@@ -1,3 +1,9 @@
+# [1.1.0](https://github.com/edgardmessias/vscode.clipboard-manager/releases/tag/v1.1.0) (2018-12-11)
+
+### Features
+
+- Added option to disable snippets
+
 # [1.0.2](https://github.com/edgardmessias/vscode.clipboard-manager/releases/tag/v1.0.2) (2018-12-10)
 
 ### Features
