@@ -49,9 +49,6 @@ This extension contributes the following settings (default values):
   // Maximum number of clips to save in clipboard
   "clipboard-manager.maxClips": 100,
 
-  // Maximum number of clips to suggests in snippets
-  "clipboard-manager.maxSnippets": 10,
-
   // Move used clip to top in the list
   "clipboard-manager.moveToTop": true,
 
@@ -61,8 +58,14 @@ This extension contributes the following settings (default values):
   // View a preview while you are choosing the clip
   "clipboard-manager.preview": true,
 
+  // Enable completion snippets
+  "clipboard-manager.snippet.enabled": true,
+
+  // Maximum number of clips to suggests in snippets (Zero for all)
+  "clipboard-manager.snippet.max": 10,
+
   // Default prefix for snippets completion (clip1, clip2, ...)
-  "clipboard-manager.snippetPrefix": "clip"
+  "clipboard-manager.snippet.prefix": "clip"
 }
 ```
 <!--end-settings-->

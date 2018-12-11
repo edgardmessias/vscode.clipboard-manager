@@ -135,12 +135,6 @@
                         "default": 100,
                         "description": "Maximum number of clips to save in clipboard"
                     },
-                    "clipboard-manager.maxSnippets": {
-                        "scope": "resource",
-                        "type": "integer",
-                        "default": 10,
-                        "description": "Maximum number of clips to suggests in snippets"
-                    },
                     "clipboard-manager.moveToTop": {
                         "type": "boolean",
                         "default": true,
@@ -156,7 +150,19 @@
                         "default": true,
                         "description": "View a preview while you are choosing the clip"
                     },
-                    "clipboard-manager.snippetPrefix": {
+                    "clipboard-manager.snippet.enabled": {
+                        "scope": "resource",
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Enable completion snippets"
+                    },
+                    "clipboard-manager.snippet.max": {
+                        "scope": "resource",
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Maximum number of clips to suggests in snippets (Zero for all)"
+                    },
+                    "clipboard-manager.snippet.prefix": {
                         "scope": "resource",
                         "type": "string",
                         "default": "clip",
