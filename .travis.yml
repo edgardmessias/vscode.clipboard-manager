@@ -9,7 +9,7 @@ os:
 
 env:
   global:
-    - COVERALLS_PARALLEL=true
+    - MOCHA_COLORS=1 # Force Mocha Colors
   matrix:
     - CODE_VERSION=1.22.0 # Minimal Version
     - CODE_VERSION=* # Last Stable Version
@@ -29,7 +29,7 @@ before_install:
 install:
   - node --version
   - npm --version
-  - npm install
+  - travis_retry npm install
 
 before_script:
   - npm run vscode:prepublish

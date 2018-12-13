@@ -2,9 +2,7 @@ build: false
 shallow_clone: true
 
 environment:
-  ELECTRON_NO_ATTACH_CONSOLE: 1
-  VSCODE_BUILD_VERBOSE: true
-  COVERALLS_PARALLEL: true
+  MOCHA_COLORS: "1" # Force Mocha Colors
 
   matrix:
     # - CODE_VERSION: "1.20.0" # Minimal Version
@@ -18,7 +16,7 @@ cache:
 install:
   - node --version
   - npm --version
-  - npm install --no-audit
+  - appveyor-retry npm install --no-audit
 
 before_test:
   - npm run vscode:prepublish
