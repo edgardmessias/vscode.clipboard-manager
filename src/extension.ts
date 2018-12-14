@@ -1,6 +1,7 @@
 "use strict";
 import * as vscode from "vscode";
 import { defaultClipboard } from "./clipboard";
+import { ApiGetMonitor } from "./commads/apiGetMonitor";
 import { ClearClipboardHistory } from "./commads/clearClipboardHistory";
 import { HistoryTreeDoubleClickCommand } from "./commads/historyTreeDoubleClick";
 import { PickAndPasteCommand } from "./commads/pickAndPaste";
@@ -9,6 +10,7 @@ import { SetClipboardValueCommand } from "./commads/setClipboardValue";
 import { ShowClipboardInFile } from "./commads/showClipboardInFile";
 import { ClipboardCompletion } from "./completion";
 import { ClipboardManager } from "./manager";
+import { Monitor } from "./monitor";
 import { ClipboardTreeDataProvider } from "./tree/history";
 
 let manager: ClipboardManager;
@@ -42,9 +44,16 @@ export async function activate(context: vscode.ExtensionContext) {
 
   const config = vscode.workspace.getConfiguration("clipboard-manager");
 
-  manager = new ClipboardManager(context, defaultClipboard);
+  const monitor = new Monitor(defaultClipboard);
+  disposable.push(monitor);
+
+  manager = new ClipboardManager(context, monitor);
   disposable.push(manager);
 
+  // API Commands
+  disposable.push(new ApiGetMonitor(monitor));
+
+  // Commands
   disposable.push(new PickAndPasteCommand(manager));
   disposable.push(new HistoryTreeDoubleClickCommand(manager));
   disposable.push(new SetClipboardValueCommand(manager));
@@ -84,8 +93,8 @@ export async function activate(context: vscode.ExtensionContext) {
   );
 
   const updateConfig = () => {
-    defaultClipboard.checkInterval = config.get("checkInterval", 500);
-    defaultClipboard.onlyWindowFocused = config.get("onlyWindowFocused", true);
+    monitor.checkInterval = config.get("checkInterval", 500);
+    monitor.onlyWindowFocused = config.get("onlyWindowFocused", true);
   };
   updateConfig();
 
