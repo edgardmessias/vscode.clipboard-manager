@@ -173,7 +173,7 @@
         ]
     },
     "scripts": {
-        "clean": "rimraf ./out ./coverage",
+        "clean": "rimraf ./out ./coverage ./test-reports",
         "compile": "tsc -p ./",
         "lint": "tslint -p tsconfig.json",
         "organize": "node ./out/tools/organize.js",
@@ -188,7 +188,7 @@
         "@types/glob": "^7.1.1",
         "@types/istanbul": "^0.4.30",
         "@types/mocha": "^5.2.5",
-        "@types/node": "^10.12.14",
+        "@types/node": "^10.12.15",
         "@types/sinon": "^7.0.0",
         "codecov": "^3.1.0",
         "decache": "^4.5.0",
@@ -196,10 +196,10 @@
         "mocha-jenkins-reporter": "^0.4.1",
         "remap-istanbul": "^0.12.0",
         "rimraf": "^2.6.2",
-        "sinon": "^7.1.1",
+        "sinon": "^7.2.2",
         "tslint": "^5.8.0",
-        "typescript": "^3.1.6",
-        "vscode": "^1.1.22"
+        "typescript": "^3.2.2",
+        "vscode": "^1.1.26"
     },
     "dependencies": {
         "clipboardy": "^1.2.3"
