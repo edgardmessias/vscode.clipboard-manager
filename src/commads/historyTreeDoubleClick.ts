@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
-import { IClipboardTextChange } from "../clipboard";
 import { ClipboardManager } from "../manager";
+import { IClipboardTextChange } from "../monitor";
 import { commandList } from "./common";
 
 /**

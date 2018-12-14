@@ -2,11 +2,12 @@ import * as assert from "assert";
 import * as sinon from "sinon";
 import * as vscode from "vscode";
 import {
+  BaseClipboard,
   defaultClipboard,
-  getNewDefaultInstance,
-  IClipboard
+  getNewDefaultInstance
 } from "../clipboard";
 import { commandList } from "../commads/common";
+import { Monitor } from "../monitor";
 import { sleep } from "../util";
 import * as common from "./common";
 
@@ -20,16 +21,20 @@ suiteSetup(async function() {
 suite("Completion Tests", function() {
   let sandbox: sinon.SinonSandbox;
 
-  let externalClipboard: IClipboard;
+  let externalClipboard: BaseClipboard;
+  let monitor: Monitor;
 
   setup(async function() {
     sandbox = sinon.createSandbox();
 
     externalClipboard = getNewDefaultInstance();
-    externalClipboard.checkInterval = 0;
 
-    defaultClipboard.checkInterval = 300;
-    defaultClipboard.onlyWindowFocused = false;
+    monitor = (await vscode.commands.executeCommand(
+      commandList.apiGetMonitor
+    )) as Monitor;
+
+    monitor.checkInterval = 300;
+    monitor.onlyWindowFocused = false;
 
     // Reset initial value
     await defaultClipboard.writeText("Initial Value");
@@ -63,11 +68,11 @@ suite("Completion Tests", function() {
     );
 
     await externalClipboard.writeText("alpha");
-    await sleep(defaultClipboard.checkInterval + 300);
+    await sleep(monitor.checkInterval + 300);
     await externalClipboard.writeText("beta");
-    await sleep(defaultClipboard.checkInterval + 300);
+    await sleep(monitor.checkInterval + 300);
     await externalClipboard.writeText("gamma");
-    await sleep(defaultClipboard.checkInterval + 300);
+    await sleep(monitor.checkInterval + 300);
 
     const document = await vscode.workspace.openTextDocument({
       content:

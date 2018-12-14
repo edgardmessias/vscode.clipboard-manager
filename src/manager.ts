@@ -2,11 +2,7 @@ import * as fs from "fs";
 import * as os from "os";
 import * as path from "path";
 import * as vscode from "vscode";
-import {
-  defaultClipboard,
-  IClipboard,
-  IClipboardTextChange
-} from "./clipboard";
+import { IClipboardTextChange, Monitor } from "./monitor";
 
 export interface IClipboardItem {
   value: string;
@@ -37,9 +33,9 @@ export class ClipboardManager implements vscode.Disposable {
 
   constructor(
     protected context: vscode.ExtensionContext,
-    protected _clipboard: IClipboard = defaultClipboard
+    protected _monitor: Monitor
   ) {
-    this._clipboard.onDidChangeText(
+    this._monitor.onDidChangeText(
       this.updateClipList,
       this,
       this._disposable
@@ -117,7 +113,7 @@ export class ClipboardManager implements vscode.Disposable {
       }
     }
 
-    return await this._clipboard.writeText(value);
+    return await this._monitor.clipboard.writeText(value);
   }
 
   public removeClipboardValue(value: string) {

@@ -2,11 +2,12 @@ import * as assert from "assert";
 import * as sinon from "sinon";
 import * as vscode from "vscode";
 import {
+  BaseClipboard,
   defaultClipboard,
-  getNewDefaultInstance,
-  IClipboard
+  getNewDefaultInstance
 } from "../clipboard";
 import { commandList } from "../commads/common";
+import { Monitor } from "../monitor";
 import { sleep } from "../util";
 import * as common from "./common";
 
@@ -21,7 +22,8 @@ suite("Pick and Paste Tests", function() {
   let sandbox: sinon.SinonSandbox;
   let showQuickPickStub: sinon.SinonStub;
 
-  let externalClipboard: IClipboard;
+  let externalClipboard: BaseClipboard;
+  let monitor: Monitor;
   let editor: vscode.TextEditor;
 
   setup(async function() {
@@ -30,10 +32,13 @@ suite("Pick and Paste Tests", function() {
     showQuickPickStub = sandbox.stub(vscode.window, "showQuickPick");
 
     externalClipboard = getNewDefaultInstance();
-    externalClipboard.checkInterval = 0;
 
-    defaultClipboard.checkInterval = 300;
-    defaultClipboard.onlyWindowFocused = false;
+    monitor = (await vscode.commands.executeCommand(
+      commandList.apiGetMonitor
+    )) as Monitor;
+
+    monitor.checkInterval = 300;
+    monitor.onlyWindowFocused = false;
 
     // Reset initial value
     await defaultClipboard.writeText("Initial Value");
@@ -46,11 +51,11 @@ suite("Pick and Paste Tests", function() {
     await sleep(500);
 
     await externalClipboard.writeText("alpha");
-    await sleep(defaultClipboard.checkInterval + 300);
+    await sleep(monitor.checkInterval + 300);
     await externalClipboard.writeText("beta");
-    await sleep(defaultClipboard.checkInterval + 300);
+    await sleep(monitor.checkInterval + 300);
     await externalClipboard.writeText("gamma");
-    await sleep(defaultClipboard.checkInterval + 300);
+    await sleep(monitor.checkInterval + 300);
 
     const document = await vscode.workspace.openTextDocument({
       content:
