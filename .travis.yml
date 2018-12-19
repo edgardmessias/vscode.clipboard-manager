@@ -38,6 +38,7 @@ before_script:
 
 script:
   - npm run lint
+  - travis_retry node bin/vscode-download
   - npm test --silent
 
 after_script:

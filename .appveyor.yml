@@ -24,6 +24,7 @@ before_test:
   - ps: (get-content package.json) | %{$_ -replace '"\*"',''} | set-content package.json
 
 test_script:
+  - appveyor-retry node bin\vscode-download
   - npm test --silent
 
 on_finish:

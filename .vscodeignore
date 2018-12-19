@@ -4,6 +4,7 @@
 .vscode-test/**
 .vscode/**
 *.vsix
+bin/**
 coverage/**
 coverconfig.json
 out/**/*.map
