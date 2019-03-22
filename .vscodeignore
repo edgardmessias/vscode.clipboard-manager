@@ -1,6 +1,7 @@
 .*.yml
 .gitattributes
 .gitignore
+.greenkeeper
 .vscode-test/**
 .vscode/**
 *.vsix

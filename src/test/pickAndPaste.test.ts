@@ -20,7 +20,7 @@ suiteSetup(async function() {
 // Defines a Mocha test suite to group tests of similar kind together
 suite("Pick and Paste Tests", function() {
   let sandbox: sinon.SinonSandbox;
-  let showQuickPickStub: sinon.SinonStub;
+  let showQuickPickStub: sinon.SinonStub<any[]|any>;
 
   let externalClipboard: BaseClipboard;
   let monitor: Monitor;
