@@ -15,7 +15,7 @@ suiteSetup(async function() {
 // Defines a Mocha test suite to group tests of similar kind together
 suite("Monitor Tests", function() {
   let sandbox: sinon.SinonSandbox;
-  let onDidChangeWindowState: sinon.SinonStub;
+  let onDidChangeWindowState: sinon.SinonStub<any[]|any, any>;
 
   let disposables: vscode.Disposable[] = [];
   let externalClipboard: BaseClipboard;
