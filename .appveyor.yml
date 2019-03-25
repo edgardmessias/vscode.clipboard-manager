@@ -6,7 +6,7 @@ environment:
 
   matrix:
     # - CODE_VERSION: "1.20.0" # Minimal Version
-    - CODE_VERSION: "*" # Last Stable Version
+    - CODE_VERSION: "" # Last Stable Version
     # - CODE_VERSION: "insiders" # Insider Version
 
 cache:
@@ -24,7 +24,7 @@ before_test:
   - ps: (get-content package.json) | %{$_ -replace '"\*"',''} | set-content package.json
 
 test_script:
-  - appveyor-retry node bin\vscode-download
+  - appveyor-retry npm test -- --download-only
   - npm test --silent
 
 on_finish:
