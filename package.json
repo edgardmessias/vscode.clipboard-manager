@@ -183,7 +183,7 @@
         "watch": "tsc -watch -p ./"
     },
     "devDependencies": {
-        "@types/clipboardy": "^1.1.0",
+        "@types/clipboardy": "^2.0.1",
         "@types/execa": "^0.9.0",
         "@types/glob": "^7.1.1",
         "@types/istanbul": "^0.4.30",
