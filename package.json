@@ -87,6 +87,9 @@
                 {
                     "command": "clipboard-manager.history.remove",
                     "when": "false"
+                },
+                {
+                    "command": "clipboard-manager.history.clear"
                 }
             ],
             "view/item/context": [
