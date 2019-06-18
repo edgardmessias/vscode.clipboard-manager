@@ -205,6 +205,6 @@
         "vscode": "^1.1.34"
     },
     "dependencies": {
-        "clipboardy": "^2.0.0"
+        "clipboardy": "^2.1.0"
     }
 }
