@@ -66,7 +66,9 @@ export class PickAndPasteCommand implements vscode.Disposable {
         if (editor) {
           editor.edit(
             edit => {
-              edit.replace(editor.selection, selected.clip.value);
+              for (const selection of editor.selections) {
+                edit.replace(selection, selected.clip.value);
+              }
               needUndo = true;
             },
             {
@@ -93,8 +95,15 @@ export class PickAndPasteCommand implements vscode.Disposable {
     // If text changed, only need remove selecion
     // If a error occur on replace, run paste command for fallback
     if (needUndo) {
-      // Remove cursor selecion
-      return await vscode.commands.executeCommand("cancelSelection");
+      // Fix editor selection
+      const editor = vscode.window.activeTextEditor;
+      if (editor) {
+        const selecions = editor.selections.map(s => new vscode.Selection(s.end, s.end));
+        editor.selections = selecions;
+      } else {
+        return await vscode.commands.executeCommand("cancelSelection");
+      }
+
     } else {
       return await vscode.commands.executeCommand(
         "editor.action.clipboardPasteAction"
