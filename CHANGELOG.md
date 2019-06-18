@@ -1,3 +1,13 @@
+# [1.2.0](https://github.com/edgardmessias/vscode.clipboard-manager/releases/tag/v1.2.0) (2019-06-18)
+
+### Features
+
+- Added option to set path for clipboard file (close #25)
+
+### Bug Fixes
+
+- Fixed pick and paste for multi cursor selection (close #23)
+
 # [1.1.0](https://github.com/edgardmessias/vscode.clipboard-manager/releases/tag/v1.1.0) (2018-12-11)
 
 ### Features
