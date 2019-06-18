@@ -153,6 +153,16 @@
                         "default": true,
                         "description": "View a preview while you are choosing the clip"
                     },
+                    "clipboard-manager.saveTo": {
+                        "type": [
+                            "string",
+                            "null",
+                            "boolean"
+                        ],
+                        "default": null,
+                        "description": "Set location to save the clipboard file, set false to disable",
+                        "scope": "application"
+                    },
                     "clipboard-manager.snippet.enabled": {
                         "scope": "resource",
                         "type": "boolean",
