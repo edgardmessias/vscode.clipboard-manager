@@ -52,6 +52,10 @@ export class ClipboardManager implements vscode.Disposable {
       this,
       this._disposable
     );
+
+    vscode.workspace.onDidChangeConfiguration(
+      e => e.affectsConfiguration("clipboard-manager") && this.saveClips()
+    );
   }
 
   protected updateClipList(change: IClipboardTextChange) {
@@ -151,7 +155,20 @@ export class ClipboardManager implements vscode.Disposable {
       folder = parts[0];
     }
 
-    return path.join(folder, "clipboard.history.json");
+    const filePath = path.join(folder, "clipboard.history.json");
+
+    const config = vscode.workspace.getConfiguration("clipboard-manager");
+    const saveTo = config.get<string | null | boolean>("saveTo");
+
+    if (typeof saveTo === "string") {
+      return saveTo;
+    }
+
+    if (saveTo === false) {
+      return false;
+    }
+
+    return filePath;
   }
 
   protected jsonReplacer(key: string, value: any) {
@@ -171,6 +188,11 @@ export class ClipboardManager implements vscode.Disposable {
   }
 
   public saveClips() {
+    const file = this.getStoreFile();
+    if (!file) {
+      return;
+    }
+
     let json = "[]";
     try {
       json = JSON.stringify(
@@ -182,14 +204,25 @@ export class ClipboardManager implements vscode.Disposable {
         2
       );
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return;
     }
 
-    const file = this.getStoreFile();
-
-    fs.writeFileSync(file, json);
-    this.lastUpdate = fs.statSync(file).mtimeMs;
+    try {
+      fs.writeFileSync(file, json);
+      this.lastUpdate = fs.statSync(file).mtimeMs;
+    } catch (error) {
+      switch (error.code) {
+        case "EPERM":
+          vscode.window.showErrorMessage(`Not permitted to save clipboards on "${file}"`);
+          break;
+        case "EISDIR":
+          vscode.window.showErrorMessage(`Failed to save clipboards on "${file}", because the path is a directory`);
+          break;
+        default:
+          console.error(error);
+      }
+    }
   }
 
   /**
@@ -197,6 +230,10 @@ export class ClipboardManager implements vscode.Disposable {
    */
   public checkClipsUpdate() {
     const file = this.getStoreFile();
+
+    if (!file) {
+      return;
+    }
 
     if (!fs.existsSync(file)) {
       return;
@@ -215,9 +252,13 @@ export class ClipboardManager implements vscode.Disposable {
 
     const file = this.getStoreFile();
 
-    if (fs.existsSync(file)) {
-      json = fs.readFileSync(file);
-      this.lastUpdate = fs.statSync(file).mtimeMs;
+    if (file && fs.existsSync(file)) {
+      try {
+        json = fs.readFileSync(file);
+        this.lastUpdate = fs.statSync(file).mtimeMs;
+      } catch (error) {
+        // ignore
+      }
     } else {
       // Read from old storage
       json = this.context.globalState.get<any>("clips");
