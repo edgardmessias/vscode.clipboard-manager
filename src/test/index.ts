@@ -13,11 +13,12 @@ const mochaOpts: Mocha.MochaOptions = {
   useColors: true, // colored output from test results,
   timeout: 10000, // default timeout: 10 seconds
   retries: 1,
-  reporter: "mocha-jenkins-reporter",
+  reporter: "mocha-junit-reporter",
   reporterOptions: {
-    junit_report_name: "Extension Tests",
-    junit_report_stack: 1,
-    junit_report_path: __dirname + "/../../test-reports/extension_tests.xml"
+    jenkinsMode: true,
+    rootSuiteTitle: "Extension Tests",
+    testsuitesTitle: "Extension Tests",
+    mochaFile: __dirname + "/../../test-reports/extension_tests.xml"
   }
 };
 

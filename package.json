@@ -201,18 +201,18 @@
         "@types/glob": "^7.1.1",
         "@types/istanbul": "^0.4.30",
         "@types/mocha": "^5.2.7",
-        "@types/node": "^12.0.8",
+        "@types/node": "^12.6.2",
         "@types/sinon": "^7.0.13",
         "codecov": "^3.5.0",
         "decache": "^4.5.1",
         "istanbul": "^0.4.5",
-        "mocha-jenkins-reporter": "^0.4.1",
+        "mocha-junit-reporter": "^1.23.0",
         "remap-istanbul": "^0.13.0",
         "rimraf": "^2.6.3",
         "sinon": "^7.3.2",
-        "tslint": "^5.17.0",
-        "typescript": "^3.5.2",
-        "vscode": "^1.1.34"
+        "tslint": "^5.18.0",
+        "typescript": "^3.5.3",
+        "vscode": "^1.1.35"
     },
     "dependencies": {
         "clipboardy": "^2.1.0"
