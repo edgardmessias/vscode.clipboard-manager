@@ -1,4 +1,3 @@
-import * as fs from "fs";
 import * as path from "path";
 import { downloadAndUnzipVSCode, runTests } from "vscode-test";
 
@@ -8,28 +7,28 @@ async function go() {
     return;
   }
 
-  const extensionPath = path.resolve(__dirname, "../../");
+  const extensionDevelopmentPath = path.resolve(__dirname, "../../");
+  let extensionTestsPath = path.resolve(__dirname, "../../out/test");
 
-  let testRunnerPath;
   if (process.env.CODE_TESTS_PATH) {
-    testRunnerPath = process.env.CODE_TESTS_PATH;
-  } else if (fs.existsSync(path.join(process.cwd(), "out", "test"))) {
-    testRunnerPath = path.join(process.cwd(), "out", "test"); // TS extension
-  } else {
-    testRunnerPath = path.join(process.cwd(), "test"); // JS extension
+    extensionTestsPath = process.env.CODE_TESTS_PATH;
   }
-
-  const testWorkspace = process.env.CODE_TESTS_WORKSPACE || testRunnerPath;
 
   /**
    * Basic usage
    */
-  await runTests({
-    version: process.env.CODE_VERSION,
-    extensionPath,
-    testRunnerPath,
-    testWorkspace
-  });
+  try {
+    await runTests({
+      version: process.env.CODE_VERSION,
+      extensionDevelopmentPath,
+      extensionTestsPath,
+      launchArgs: ["--disable-extensions"]
+    });
+  } catch (err) {
+    console.error("Failed to run tests");
+    console.error(err);
+    process.exit(1);
+  }
 }
 
 go();
