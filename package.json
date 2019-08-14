@@ -209,7 +209,7 @@
         "mocha-junit-reporter": "^1.23.0",
         "mocha-multi-reporters": "^1.1.7",
         "remap-istanbul": "^0.13.0",
-        "rimraf": "^2.6.3",
+        "rimraf": "^3.0.0",
         "sinon": "^7.3.2",
         "tslint": "^5.18.0",
         "typescript": "^3.5.3",
