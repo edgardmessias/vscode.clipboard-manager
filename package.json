@@ -210,7 +210,7 @@
         "mocha-multi-reporters": "^1.1.7",
         "remap-istanbul": "^0.13.0",
         "rimraf": "^2.6.3",
-        "sinon": "^7.3.2",
+        "sinon": "^8.0.0",
         "tslint": "^5.18.0",
         "typescript": "^3.5.3",
         "vscode": "^1.1.35",
