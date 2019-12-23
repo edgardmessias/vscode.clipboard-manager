@@ -201,7 +201,7 @@
         "@types/glob": "^7.1.1",
         "@types/istanbul": "^0.4.30",
         "@types/mocha": "^5.2.7",
-        "@types/node": "^12.6.2",
+        "@types/node": "^13.1.0",
         "@types/sinon": "^7.0.13",
         "codecov": "^3.5.0",
         "decache": "^4.5.1",
