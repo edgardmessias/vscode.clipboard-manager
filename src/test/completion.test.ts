@@ -54,13 +54,13 @@ suite("Completion Tests", function() {
   });
 
   test("Completion List", async function() {
-    this.timeout(60000);
-
     const completion = common.getClipboardCompletion();
 
     if (!completion) {
       return this.skip();
     }
+
+    this.timeout(60000);
 
     const provideCompletionItemsSpy = sandbox.spy(
       completion,

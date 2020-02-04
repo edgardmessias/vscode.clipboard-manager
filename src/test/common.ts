@@ -20,10 +20,10 @@ export function getClipboardCompletion() {
   if (!vscodeSpys.registerCompletionItemProviderSpy) {
     return;
   }
+  const calls = vscodeSpys.registerCompletionItemProviderSpy.getCalls();
 
-  const call = vscodeSpys.registerCompletionItemProviderSpy
-    .getCalls()
-    .find(call => call.args[1] instanceof ClipboardCompletion);
+  const call = calls
+    .find(call => call.args[1] && call.args[1].constructor.name === ClipboardCompletion.name);
 
   if (!call) {
     return;
@@ -52,6 +52,6 @@ export async function showSidebar() {
     await vscode.commands.executeCommand(
       "workbench.view.extension.clipboard-manager"
     );
-  // tslint:disable-next-line:no-empty
-  } catch (error) {}
+    // tslint:disable-next-line:no-empty
+  } catch (error) { }
 }
