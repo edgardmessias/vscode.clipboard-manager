@@ -116,6 +116,7 @@
             {
                 "command": "clipboard-manager.editor.pickAndPaste",
                 "key": "Ctrl+Shift+V",
+                "mac": "Cmd+Shift+V",
                 "when": "textInputFocus && !editorReadonly"
             }
         ],
