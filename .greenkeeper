@@ -6,6 +6,7 @@
         "@types/istanbul",
         "@types/mocha",
         "@types/node",
-        "@types/sinon"
+        "@types/sinon",
+        "@types/vscode"
     ]
 }
