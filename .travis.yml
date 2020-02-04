@@ -1,7 +1,6 @@
 language: node_js
 
-node_js:
-  - "node"
+node_js: 8
 
 os:
   - linux
@@ -23,15 +22,15 @@ addons:
   apt:
     packages:
     - libgconf-2-4
-
-before_install:
-  - if [ $TRAVIS_OS_NAME == "linux" ]; then
-    export CXX="g++-4.9" CC="gcc-4.9" DISPLAY=:99.0;
-    sh -e /etc/init.d/xvfb start;
-    sleep 3;
-    fi
+    - libsecret-1-dev
+    - xvfb
 
 install:
+  - |
+    if [ $TRAVIS_OS_NAME == "linux" ]; then
+      export DISPLAY=':99.0'
+      /usr/bin/Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+    fi
   - node --version
   - npm --version
   - travis_retry npm install
