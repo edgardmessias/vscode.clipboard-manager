@@ -1,13 +1,15 @@
-name: build
+name: test
 
 on: [push]
 
 jobs:
-  build:
+  test:
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
-        version: ["1.26.0", "", "insiders"]
+        version: ["1.26.0", "stable", "insiders"]
+    env:
+      MOCHA_COLORS: 1
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
@@ -21,9 +23,21 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      - name: Enable full coverage
+        run: sed -i.bak 's/"\*"//g' package.json
+        shell: bash
+
       - name: Run tests
         uses: GabrielBB/xvfb-action@v1.0
         with:
           run: npm test
         env:
           CODE_VERSION: ${{ matrix.version }}
+
+      - name: Upload coverage
+        run: |
+          curl -s https://codecov.io/bash -o codecov.sh
+          bash codecov.sh -X gcov -f ./coverage/coverage-final.json -f ./coverage/lcov.info
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          CODECOV_NAME: ${{ matrix.os }} ${{ matrix.version }}
