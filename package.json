@@ -6,7 +6,7 @@
     "version": "1.2.0",
     "icon": "media/clipboard.png",
     "engines": {
-        "vscode": "^1.22.0"
+        "vscode": "^1.26.0"
     },
     "bugs": {
         "url": "https://github.com/edgardmessias/vscode.clipboard-manager/issues"
@@ -208,7 +208,7 @@
         "@types/mocha": "^5.2.7",
         "@types/node": "^12.6.2",
         "@types/sinon": "~7.5.1",
-        "@types/vscode": "1.22.0",
+        "@types/vscode": "1.26.0",
         "codecov": "^3.6.4",
         "decache": "^4.5.1",
         "glob": "^7.1.6",

@@ -10,7 +10,7 @@ env:
   global:
     - MOCHA_COLORS=1 # Force Mocha Colors
   matrix:
-    - CODE_VERSION=1.22.0 # Minimal Version
+    - CODE_VERSION=1.26.0 # Minimal Version
     - CODE_VERSION= # Last Stable Version
     - CODE_VERSION=insiders # Insider Version
 
