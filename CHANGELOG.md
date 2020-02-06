@@ -1,3 +1,12 @@
+## [1.2.1](https://github.com/edgardmessias/vscode.clipboard-manager/compare/v1.2.0...v1.2.1) (2020-02-06)
+
+
+### Bug Fixes
+
+* Fixed shortcut for MacOs (close [#27](https://github.com/edgardmessias/vscode.clipboard-manager/issues/27)) ([3be9b73](https://github.com/edgardmessias/vscode.clipboard-manager/commit/3be9b73a403c4f365d5a2dcfa6bbecd119155587))
+
+
+
 # [1.2.0](https://github.com/edgardmessias/vscode.clipboard-manager/compare/v1.1.0...v1.2.0) (2020-02-06)
 
 
