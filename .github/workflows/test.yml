@@ -41,3 +41,23 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
           CODECOV_NAME: ${{ matrix.os }} ${{ matrix.version }}
+
+  artifact:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Package extension
+        uses: lannonbr/vsce-action@master
+        with:
+          args: "package -o clipboard-manager.vsix"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: "clipboard-manager-${{ github.sha }}.vsix"
+          path: "clipboard-manager.vsix"
