@@ -42,8 +42,12 @@ jobs:
 
       - name: Upload coverage
         run: |
-          curl -s https://codecov.io/bash -o codecov.sh
-          bash codecov.sh -X gcov -f ./coverage/coverage-final.json -f ./coverage/lcov.info
+          cover() {
+            curl -s https://codecov.io/bash -o codecov.sh
+            bash codecov.sh -X gcov -f ./coverage/coverage-final.json -f ./coverage/lcov.info
+          }
+          for i in {1..5}; do cover && break || sleep 5; done
+        shell: bash
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
           CODECOV_NAME: ${{ matrix.os }} ${{ matrix.version }}
