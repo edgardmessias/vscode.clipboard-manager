@@ -5,8 +5,8 @@ on:
     branches:
       - master
   pull_request:
-    branches: 
-      - '*'
+    branches:
+      - "*"
 
 jobs:
   test:
@@ -32,6 +32,16 @@ jobs:
       - name: Enable full coverage
         run: sed -i.bak 's/"\*"//g' package.json
         shell: bash
+
+      - name: Cache VSCode binary
+        id: cache-vscode
+        uses: actions/cache@v1
+        with:
+          path: .vscode-test
+          key: vscode-${{ runner.os }}-${{matrix.version}}
+          restore-keys: |
+            vscode-${{ runner.os }}-${{matrix.version}}
+            vscode-${{ runner.os }}-
 
       - name: Run tests
         uses: GabrielBB/xvfb-action@v1.0
