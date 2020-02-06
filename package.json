@@ -213,7 +213,7 @@
         "@types/mocha": "^5.2.7",
         "@types/node": "^12.6.2",
         "@types/sinon": "~7.5.1",
-        "@types/vscode": "1.26.0",
+        "@types/vscode": "1.42.0",
         "codecov": "^3.6.4",
         "conventional-changelog-cli": "^2.0.31",
         "decache": "^4.5.1",
