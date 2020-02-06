@@ -16,8 +16,13 @@ jobs:
         run: npm install
 
       - name: Generate Changelog
-        id: changelog
-        run: echo "##[set-output name=changelog;]$(npm run changelog:preview)"
+        id: generate_changelog
+        run: |
+          changelog=$(npm run changelog:last)
+          changelog="${changelog//'%'/'%25'}"
+          changelog="${changelog//$'\n'/'%0A'}"
+          changelog="${changelog//$'\r'/'%0D'}" 
+          echo "::set-output name=changelog::$changelog"
 
       - name: Package extension
         uses: lannonbr/vsce-action@master
@@ -32,7 +37,7 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: ${{ github.ref }}
-          body: ${{ steps.changelog.outputs.changelog }}
+          body: ${{ steps.generate_changelog.outputs.changelog }}
           draft: false
           prerelease: false
 
