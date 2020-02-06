@@ -1,0 +1,18 @@
+git:
+  commitMessage: "chore(release): v${version} [skip ci]\n\n${changelog}"
+  tagAnnotation: "chore(release): v${version} [skip ci]\n\n${changelog}"
+  tagName: "v${version}"
+
+hooks:
+  after:bump: "npm run changelog:update"
+
+plugins:
+  "@release-it/conventional-changelog":
+    preset: "angular"
+    outputUnreleased: true
+    releaseCount: 1
+
+npm:
+  publish: false
+  private: true
+  registry: "OMITTED"
