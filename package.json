@@ -187,6 +187,7 @@
         ]
     },
     "scripts": {
+        "changelog:preview": "conventional-changelog -p angular -u",
         "changelog:update": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
         "clean": "rimraf ./out ./coverage ./test-reports",
         "compile": "tsc -p ./",
