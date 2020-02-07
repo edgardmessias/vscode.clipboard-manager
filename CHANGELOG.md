@@ -1,3 +1,17 @@
+# [1.3.0](https://github.com/edgardmessias/vscode.clipboard-manager/compare/v1.2.1...v1.3.0) (2020-02-07)
+
+
+### Bug Fixes
+
+* Fixed configuration reload for monitor (checkInterval and onlyWindowFocused) ([5a3e3a7](https://github.com/edgardmessias/vscode.clipboard-manager/commit/5a3e3a7ad215c3576984703a29d566a8b865f5f1))
+
+
+### Features
+
+* Added shortcut key to copy to clipboard history (close [#26](https://github.com/edgardmessias/vscode.clipboard-manager/issues/26)) ([0d24eab](https://github.com/edgardmessias/vscode.clipboard-manager/commit/0d24eabd6c7c03acafb54e46f41b3b02bb030ac1))
+
+
+
 ## [1.2.1](https://github.com/edgardmessias/vscode.clipboard-manager/compare/v1.2.0...v1.2.1) (2020-02-06)
 
 
