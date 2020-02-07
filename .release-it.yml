@@ -4,7 +4,9 @@ git:
   tagName: "v${version}"
 
 hooks:
-  after:bump: "npm run changelog:update"
+  after:bump: 
+    - "npm run changelog:update"
+    - "npm run organize"
 
 plugins:
   "@release-it/conventional-changelog":
