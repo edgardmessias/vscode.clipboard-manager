@@ -1,13 +1,11 @@
-.*.yml
-.gitattributes
-.gitignore
-.greenkeeper
-.vscode-test/**
-.vscode/**
+.*
+.**
+.**/**
 *.vsix
 bin/**
 coverage/**
 coverconfig.json
+greenkeeper.json
 out/**/*.map
 out/test/**
 out/tools/**
@@ -16,5 +14,3 @@ screenshots/**
 src/**
 test-reports/**
 tsconfig.json
-tslint.json
-vsc-extension-quickstart.md
