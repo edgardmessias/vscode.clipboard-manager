@@ -115,7 +115,7 @@ suite("Pick and Paste Tests", function() {
     showQuickPickStub.callsFake(
       async (
         picks: vscode.QuickPickItem[],
-        options: vscode.QuickPickOptions
+        _options: vscode.QuickPickOptions
       ) => {
         return picks[0];
       }
@@ -174,8 +174,8 @@ suite("Pick and Paste Tests", function() {
 
     showQuickPickStub.callsFake(
       async (
-        picks: vscode.QuickPickItem[],
-        options: vscode.QuickPickOptions
+        _picks: vscode.QuickPickItem[],
+        _options: vscode.QuickPickOptions
       ) => {
         return undefined;
       }

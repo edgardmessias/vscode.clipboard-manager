@@ -56,7 +56,7 @@ export class ClipboardTreeDataProvider
   }
 
   public getChildren(
-    element?: ClipHistoryItem | undefined
+    _element?: ClipHistoryItem | undefined
   ): vscode.ProviderResult<ClipHistoryItem[]> {
     const clips = this._manager.clips;
 

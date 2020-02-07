@@ -16,13 +16,13 @@ import * as paths from "path";
 
 // tslint:disable-next-line:no-var-requires
 
-declare var global: {
+declare let global: {
   [key: string]: any; // missing index defintion
 };
 
 // Linux: prevent a weird NPE when mocha on Linux requires the window size from the TTY
 // Since we are not running in a tty environment, we just implementt he method statically
-// tslint:disable-next-line:no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const tty = require("tty");
 if (!tty.getWindowSize) {
   tty.getWindowSize = function(): number[] {
@@ -71,6 +71,7 @@ export function run(testsRoot: string, clb: Function): any {
   let coverageRunner: CoverageRunner;
   if (coverOptions && coverOptions.enabled) {
     // Setup coverage pre-test, including post-test hook to report
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     coverageRunner = new CoverageRunner(coverOptions, testsRoot, clb);
     coverageRunner.setupCoverage();
   }
@@ -90,7 +91,7 @@ export function run(testsRoot: string, clb: Function): any {
 
       mocha
         .run()
-        .on("fail", function(test, err): void {
+        .on("fail", function(_test, _err): void {
           failureCount++;
         })
         .on("end", function(): void {
@@ -135,6 +136,7 @@ class CoverageRunner {
 
   public setupCoverage(): void {
     // Set up Code Coverage, hooking require so that instrumented code is returned
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
     self.instrumenter = istanbulInstrument.createInstrumenter({
       coverageVariable: self.coverageVar
@@ -151,6 +153,7 @@ class CoverageRunner {
     });
 
     // Create a match function - taken from the run-with-cover.js in istanbul.
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const decache = require("decache");
     const fileMap: { [key: string]: any } = {};
     srcFiles.forEach(file => {
@@ -176,7 +179,6 @@ class CoverageRunner {
     // write to a global coverage variable with hit counts whenever they are accessed
     self.transformer = (code, options) => self.instrumenter!.instrumentSync(code, options.filename);
     const hookOpts = { verbose: false, extensions: [".js"] };
-    // @ts-ignore
     self.unhookRequire = istanbulHook.hookRequire(self.matchFn, self.transformer, hookOpts);
 
     // initialize the global variable to stop mocha from complaining about leaks
@@ -191,6 +193,7 @@ class CoverageRunner {
    * @memberOf CoverageRunner
    */
   public async reportCoverage(): Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
     self.unhookRequire();
     let cov: any;
@@ -244,8 +247,7 @@ class CoverageRunner {
       self.options.reports instanceof Array ? self.options.reports : ["lcov"];
 
     reportTypes.forEach(reporter =>
-      // @ts-ignore
-      istanbulReports.create(reporter, {}).execute(context)
+      (istanbulReports.create(reporter as any, {}) as any).execute(context)
     );
   }
 }
