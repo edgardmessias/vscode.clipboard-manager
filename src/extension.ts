@@ -42,8 +42,6 @@ export async function activate(context: vscode.ExtensionContext) {
   // Add to disposable list the default clipboard
   disposable.push(defaultClipboard);
 
-  const config = vscode.workspace.getConfiguration("clipboard-manager");
-
   const monitor = new Monitor(defaultClipboard);
   disposable.push(monitor);
 
@@ -93,6 +91,7 @@ export async function activate(context: vscode.ExtensionContext) {
   );
 
   const updateConfig = () => {
+    const config = vscode.workspace.getConfiguration("clipboard-manager");
     monitor.checkInterval = config.get("checkInterval", 500);
     monitor.onlyWindowFocused = config.get("onlyWindowFocused", true);
   };
