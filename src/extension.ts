@@ -12,6 +12,7 @@ import { ClipboardCompletion } from "./completion";
 import { ClipboardManager } from "./manager";
 import { Monitor } from "./monitor";
 import { ClipboardTreeDataProvider } from "./tree/history";
+import { CopyToHistoryCommand } from "./commads/copyToHistory";
 
 let manager: ClipboardManager;
 
@@ -58,6 +59,7 @@ export async function activate(context: vscode.ExtensionContext) {
   disposable.push(new RemoveClipboardHistory(manager));
   disposable.push(new ShowClipboardInFile(manager));
   disposable.push(new ClearClipboardHistory(manager));
+  disposable.push(new CopyToHistoryCommand(monitor));
 
   const completion = new ClipboardCompletion(manager);
   // disposable.push(completion);

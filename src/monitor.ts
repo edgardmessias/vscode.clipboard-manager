@@ -33,7 +33,8 @@ export class Monitor implements vscode.Disposable {
       clearInterval(this._timer);
       this._timer = undefined;
     }
-    if (timeout > 0) {
+    // Minimum timeout to avoid cpu high usage
+    if (timeout >= 100) {
       this._timer = setInterval(() => this.checkChangeText(), timeout);
     }
   }
@@ -82,7 +83,7 @@ export class Monitor implements vscode.Disposable {
     this._windowFocused = state.focused;
   }
 
-  protected async checkChangeText() {
+  public async checkChangeText() {
     // Don't check the clipboard when windows is not focused
     if (this.onlyWindowFocused && !this._windowFocused) {
       return;

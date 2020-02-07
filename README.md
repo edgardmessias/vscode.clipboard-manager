@@ -40,7 +40,7 @@ This extension contributes the following settings (default values):
   // Avoid duplicate clips in the list
   "clipboard-manager.avoidDuplicates": true,
 
-  // Time in milliseconds to check changes in clipboard
+  // Time in milliseconds to check changes in clipboard. Set zero to disable.
   "clipboard-manager.checkInterval": 500,
 
   // Maximum number of clips to save in clipboard
@@ -54,6 +54,9 @@ This extension contributes the following settings (default values):
 
   // View a preview while you are choosing the clip
   "clipboard-manager.preview": true,
+
+  // Set location to save the clipboard file, set false to disable
+  "clipboard-manager.saveTo": null,
 
   // Enable completion snippets
   "clipboard-manager.snippet.enabled": true,

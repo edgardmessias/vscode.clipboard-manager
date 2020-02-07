@@ -50,6 +50,11 @@
         },
         "commands": [
             {
+                "command": "clipboard-manager.editor.copyToHistory",
+                "title": "Copy to Clipboard History",
+                "category": "Clipboard Manager"
+            },
+            {
                 "command": "clipboard-manager.editor.pickAndPaste",
                 "title": "Pick and Paste",
                 "category": "Clipboard Manager"
@@ -85,11 +90,11 @@
                     "when": "false"
                 },
                 {
-                    "command": "clipboard-manager.history.remove",
-                    "when": "false"
+                    "command": "clipboard-manager.history.clear"
                 },
                 {
-                    "command": "clipboard-manager.history.clear"
+                    "command": "clipboard-manager.history.remove",
+                    "when": "false"
                 }
             ],
             "view/item/context": [
@@ -114,6 +119,12 @@
         },
         "keybindings": [
             {
+                "command": "clipboard-manager.editor.copyToHistory",
+                "key": "Ctrl+Shift+C",
+                "mac": "Cmd+Shift+C",
+                "when": "textInputFocus && !editorReadonly"
+            },
+            {
                 "command": "clipboard-manager.editor.pickAndPaste",
                 "key": "Ctrl+Shift+V",
                 "mac": "Cmd+Shift+V",
@@ -132,7 +143,7 @@
                     "clipboard-manager.checkInterval": {
                         "type": "integer",
                         "default": 500,
-                        "description": "Time in milliseconds to check changes in clipboard"
+                        "description": "Time in milliseconds to check changes in clipboard. Set zero to disable."
                     },
                     "clipboard-manager.maxClips": {
                         "type": "integer",
