@@ -3,7 +3,6 @@
         "@types/clipboardy",
         "@types/execa",
         "@types/glob",
-        "@types/istanbul",
         "@types/mocha",
         "@types/node",
         "@types/sinon",
