@@ -87,9 +87,11 @@ export async function activate(context: vscode.ExtensionContext) {
   const clipboardTreeDataProvider = new ClipboardTreeDataProvider(manager);
   disposable.push(clipboardTreeDataProvider);
 
-  vscode.window.registerTreeDataProvider(
-    "clipboardHistory",
-    clipboardTreeDataProvider
+  disposable.push(
+    vscode.window.registerTreeDataProvider(
+      "clipboardHistory",
+      clipboardTreeDataProvider
+    )
   );
 
   const updateConfig = () => {
@@ -99,8 +101,10 @@ export async function activate(context: vscode.ExtensionContext) {
   };
   updateConfig();
 
-  vscode.workspace.onDidChangeConfiguration(
-    e => e.affectsConfiguration("clipboard-manager") && updateConfig()
+  disposable.push(
+    vscode.workspace.onDidChangeConfiguration(
+      e => e.affectsConfiguration("clipboard-manager") && updateConfig()
+    )
   );
 
   context.subscriptions.push(...disposable);
