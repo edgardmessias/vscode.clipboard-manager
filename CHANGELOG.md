@@ -1,3 +1,12 @@
+# [1.4.0](https://github.com/edgardmessias/vscode.clipboard-manager/compare/v1.3.0...v1.4.0) (2020-02-10)
+
+
+### Features
+
+* Added option to limit size of clipboard ([3ae3427](https://github.com/edgardmessias/vscode.clipboard-manager/commit/3ae3427f94518451d5f4604193537cf7eb2b885e))
+
+
+
 # [1.3.0](https://github.com/edgardmessias/vscode.clipboard-manager/compare/v1.2.1...v1.3.0) (2020-02-07)
 
 
