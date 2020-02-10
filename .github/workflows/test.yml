@@ -40,9 +40,9 @@ jobs:
         uses: actions/cache@v1
         with:
           path: .vscode-test
-          key: vscode-${{ runner.os }}-${{matrix.version}}
+          key: vscode-${{ runner.os }}-${{ matrix.version }}-${{ github.run_id }}
           restore-keys: |
-            vscode-${{ runner.os }}-${{matrix.version}}
+            vscode-${{ runner.os }}-${{ matrix.version }}-
             vscode-${{ runner.os }}-
 
       - name: Run tests
