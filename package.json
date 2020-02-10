@@ -145,6 +145,11 @@
                         "default": 500,
                         "description": "Time in milliseconds to check changes in clipboard. Set zero to disable."
                     },
+                    "clipboard-manager.maxClipboardSize": {
+                        "type": "integer",
+                        "default": 1000000,
+                        "description": "Maximum clipboard size in bytes."
+                    },
                     "clipboard-manager.maxClips": {
                         "type": "integer",
                         "default": 100,

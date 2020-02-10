@@ -98,6 +98,7 @@ export async function activate(context: vscode.ExtensionContext) {
     const config = vscode.workspace.getConfiguration("clipboard-manager");
     monitor.checkInterval = config.get("checkInterval", 500);
     monitor.onlyWindowFocused = config.get("onlyWindowFocused", true);
+    monitor.maxClipboardSize = config.get("maxClipboardSize", 1000000);
   };
   updateConfig();
 

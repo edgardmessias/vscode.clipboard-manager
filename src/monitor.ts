@@ -23,6 +23,8 @@ export class Monitor implements vscode.Disposable {
 
   protected _timer: NodeJS.Timer | undefined;
 
+  public maxClipboardSize: number = 1000000;
+
   protected _checkInterval: number = 500;
   get checkInterval() {
     return this._checkInterval;
@@ -41,7 +43,7 @@ export class Monitor implements vscode.Disposable {
 
   constructor(readonly clipboard: BaseClipboard) {
     // Update current clipboard to check changes after init
-    this.clipboard.readText().then(value => {
+    this.readText().then(value => {
       this._previousText = value;
 
       // Initialize the checkInterval
@@ -74,10 +76,18 @@ export class Monitor implements vscode.Disposable {
     );
   }
 
+  protected async readText(): Promise<string> {
+    const text = await this.clipboard.readText();
+    if (text.length > this.maxClipboardSize) {
+      return "";
+    }
+    return text;
+  }
+
   protected async onDidChangeWindowState(state: vscode.WindowState) {
     // Prevent detect change from external copy
     if (this.onlyWindowFocused && state.focused) {
-      this._previousText = await this.clipboard.readText();
+      this._previousText = await this.readText();
     }
 
     this._windowFocused = state.focused;
@@ -89,7 +99,7 @@ export class Monitor implements vscode.Disposable {
       return;
     }
 
-    const newText = await this.clipboard.readText();
+    const newText = await this.readText();
     if (newText === this._previousText) {
       return;
     }

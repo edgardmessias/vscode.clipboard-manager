@@ -43,6 +43,9 @@ This extension contributes the following settings (default values):
   // Time in milliseconds to check changes in clipboard. Set zero to disable.
   "clipboard-manager.checkInterval": 500,
 
+  // Maximum clipboard size in bytes.
+  "clipboard-manager.maxClipboardSize": 1000000,
+
   // Maximum number of clips to save in clipboard
   "clipboard-manager.maxClips": 100,
 
