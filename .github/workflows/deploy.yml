@@ -11,6 +11,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Fetching tags
+        run: git fetch --tags
 
       - name: Install Dependencies
         run: npm install
@@ -19,11 +24,10 @@ jobs:
         id: generate_changelog
         run: |
           changelog=$(npm run changelog:last --silent)
-          changelog="${changelog//'%'/'%25'}"
           changelog="${changelog//$'\n'/'%0A'}"
           changelog="${changelog//$'\r'/'%0D'}" 
-          echo set-output name=changelog::${changelog-<empty>}
-          echo ::set-output name=changelog::${changelog}
+          echo -e "set-output name=changelog::${changelog-<empty>}\n"
+          echo -e "::set-output name=changelog::${changelog}\n"
 
       - name: Package extension
         uses: lannonbr/vsce-action@master
