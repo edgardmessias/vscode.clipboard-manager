@@ -3,7 +3,7 @@
     "name": "clipboard-manager",
     "displayName": "Clipboard Manager",
     "description": "Clipboard Manager",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "icon": "media/clipboard.png",
     "extensionKind": "ui",
     "engines": {

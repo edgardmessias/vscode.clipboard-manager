@@ -1,3 +1,12 @@
+## [1.4.1](https://github.com/edgardmessias/vscode.clipboard-manager/compare/v1.4.0...v1.4.1) (2020-02-11)
+
+
+### Bug Fixes
+
+* Allow only to run on local OS (close [#40](https://github.com/edgardmessias/vscode.clipboard-manager/issues/40)) ([e6d9e9a](https://github.com/edgardmessias/vscode.clipboard-manager/commit/e6d9e9add9168e51bc12293fb0888631c94c299c))
+
+
+
 # [1.4.0](https://github.com/edgardmessias/vscode.clipboard-manager/compare/v1.3.0...v1.4.0) (2020-02-10)
 
 
