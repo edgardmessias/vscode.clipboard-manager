@@ -15,7 +15,7 @@ jobs:
           fetch-depth: 0
 
       - name: Fetching tags
-        run: git fetch --tags
+        run: git fetch --tags -f || true
 
       - name: Install Dependencies
         run: npm install
