@@ -25,7 +25,7 @@ declare let global: {
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const tty = require("tty");
 if (!tty.getWindowSize) {
-  tty.getWindowSize = function(): number[] {
+  tty.getWindowSize = function (): number[] {
     return [80, 75];
   };
 }
@@ -77,13 +77,13 @@ export function run(testsRoot: string, clb: Function): any {
   }
 
   // Glob test files
-  glob("**/**.test.js", { cwd: testsRoot }, function(error, files): any {
+  glob("**/**.test.js", { cwd: testsRoot }, function (error, files): any {
     if (error) {
       return clb(error);
     }
     try {
       // Fill into Mocha
-      files.forEach(function(f): Mocha {
+      files.forEach(function (f): Mocha {
         return mocha.addFile(paths.join(testsRoot, f));
       });
       // Run the tests
@@ -91,10 +91,10 @@ export function run(testsRoot: string, clb: Function): any {
 
       mocha
         .run()
-        .on("fail", function(_test, _err): void {
+        .on("fail", function (_test, _err): void {
           failureCount++;
         })
-        .on("end", function(): void {
+        .on("end", function (): void {
           if (coverageRunner) {
             coverageRunner.reportCoverage();
           }
@@ -169,7 +169,7 @@ class CoverageRunner {
       decache(fullPath);
     });
 
-    self.matchFn = function(file: string): boolean {
+    self.matchFn = function (file: string): boolean {
       return fileMap[file];
     };
     self.matchFn.files = Object.keys(fileMap);
@@ -247,7 +247,9 @@ class CoverageRunner {
       self.options.reports instanceof Array ? self.options.reports : ["lcov"];
 
     reportTypes.forEach(reporter =>
-      (istanbulReports.create(reporter as any, {}) as any).execute(context)
+      (istanbulReports.create(reporter as any, {
+        projectRoot: paths.resolve(paths.join(__dirname, "..", ".."))
+      }) as any).execute(context)
     );
   }
 }
