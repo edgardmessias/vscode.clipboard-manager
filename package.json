@@ -5,6 +5,7 @@
     "description": "Clipboard Manager",
     "version": "1.4.0",
     "icon": "media/clipboard.png",
+    "extensionKind": "ui",
     "engines": {
         "vscode": "^1.26.0"
     },
