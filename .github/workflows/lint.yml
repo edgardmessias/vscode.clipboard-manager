@@ -1,0 +1,33 @@
+name: lint
+
+on:
+  push:
+    branches:
+      - "*"
+  pull_request:
+    branches:
+      - "*"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: npm install
+
+      - uses: haya14busa/action-cond@v1
+        id: cond_report
+        with:
+          cond: ${{ github.event_name == 'push' }}
+          if_true: "github-check"
+          if_false: "github-pr-review"
+
+      - name: Lint source
+        uses: reviewdog/action-eslint@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          reporter: "${{ steps.cond_report.outputs.value }}"
+          eslint_flags: "src --ext .ts"

@@ -5,6 +5,7 @@
 [![Ratings](https://vsmarketplacebadge.apphb.com/rating-short/EdgardMessias.clipboard-manager.svg)](https://marketplace.visualstudio.com/items?itemName=EdgardMessias.clipboard-manager)
 
 [![Build Status](https://img.shields.io/github/workflow/status/edgardmessias/vscode.clipboard-manager/test.svg)](https://github.com/edgardmessias/vscode.clipboard-manager/actions)
+[![Lint Status](https://img.shields.io/github/workflow/status/edgardmessias/vscode.clipboard-manager/lint.svg?label=lint)](https://github.com/edgardmessias/vscode.clipboard-manager/actions)
 [![release-it](https://img.shields.io/badge/%F0%9F%93%A6%F0%9F%9A%80-release--it-e10079.svg)](https://github.com/release-it/release-it)
 
 [![Dependencies Status](https://david-dm.org/edgardmessias/vscode.clipboard-manager/status.svg)](https://david-dm.org/edgardmessias/vscode.clipboard-manager)

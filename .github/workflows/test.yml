@@ -64,18 +64,6 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
           CODECOV_NAME: ${{ matrix.os }} ${{ matrix.version }}
 
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Lint source
-        run: npm run lint
-
   artifact:
     runs-on: ubuntu-latest
     steps:
