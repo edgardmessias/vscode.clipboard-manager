@@ -51,6 +51,7 @@ jobs:
           run: npm test
         env:
           CODE_VERSION: ${{ matrix.version }}
+        continue-on-error: ${{ matrix.version == 'insiders' }}
 
       - name: Upload coverage
         run: |
