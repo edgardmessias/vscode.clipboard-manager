@@ -64,6 +64,10 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
           CODECOV_NAME: ${{ matrix.os }} ${{ matrix.version }}
 
+      - name: Remove old versions of VSCode
+        run: ls -1 -d .vscode-test/vscode-* | head -n -1 | xargs -I {} rm -rf {} || true
+        shell: bash
+
   artifact:
     runs-on: ubuntu-latest
     steps:
