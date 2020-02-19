@@ -249,7 +249,7 @@
         "original-fs": "^1.1.0",
         "release-it": "^12.4.3",
         "rimraf": "^3.0.2",
-        "sinon": "~7.5.0",
+        "sinon": "~9.0.0",
         "source-map-support": "^0.5.16",
         "typescript": "^3.7.5",
         "vscode-test": "^1.3.0"
