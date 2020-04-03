@@ -15,13 +15,7 @@ const mochaOpts: Mocha.MochaOptions = {
   retries: 1,
   reporter: "mocha-multi-reporters",
   reporterOptions: {
-    reporterEnabled: "spec, mocha-junit-reporter",
-    mochaJunitReporterReporterOptions: {
-      jenkinsMode: true,
-      rootSuiteTitle: "Extension Tests",
-      testsuitesTitle: "Extension Tests",
-      mochaFile: __dirname + "/../../test-reports/extension_tests.xml"
-    }
+    reporterEnabled: "spec, mocha-github-actions-reporter"
   }
 };
 
