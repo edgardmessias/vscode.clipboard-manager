@@ -217,7 +217,6 @@
         "watch": "tsc -watch -p ./"
     },
     "devDependencies": {
-        "@release-it/conventional-changelog": "^1.1.0",
         "@types/clipboardy": "^2.0.1",
         "@types/glob": "^7.1.1",
         "@types/istanbul-lib-coverage": "^2.0.1",

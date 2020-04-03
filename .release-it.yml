@@ -8,12 +8,6 @@ hooks:
     - "npm run changelog:update"
     - "npm run organize"
 
-plugins:
-  "@release-it/conventional-changelog":
-    preset: "angular"
-    outputUnreleased: true
-    releaseCount: 1
-
 npm:
   publish: false
   private: true
