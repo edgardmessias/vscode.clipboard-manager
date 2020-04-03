@@ -1,5 +1,4 @@
 import * as clipboardy from "clipboardy";
-import { ExecaReturns } from "execa";
 import * as vscode from "vscode";
 
 /**
@@ -57,7 +56,7 @@ export class ClipboardyClipboard extends BaseClipboard {
      * Example: After power up or after a print screen
      */
     if (process.platform === "win32") {
-      promise = promise.then(null, (reason: ExecaReturns) => {
+      promise = promise.then(null, (reason: any) => {
         const ignoreMessage =
           "thread 'main' panicked at 'Error: Could not paste from clipboard: Error { repr: Os { code: 0, message:";
 
