@@ -77,7 +77,11 @@
             {
                 "command": "clipboard-manager.history.remove",
                 "title": "Remove",
-                "category": "Clipboard Manager"
+                "category": "Clipboard Manager",
+                "icon": {
+                    "dark": "resources/dark/remove.svg",
+                    "light": "resources/light/remove.svg"
+                }
             }
         ],
         "menus": {
@@ -108,6 +112,11 @@
                     "command": "clipboard-manager.history.remove",
                     "when": "viewItem =~ /^clipHistoryItem:/",
                     "group": "1_modification"
+                },
+                {
+                    "command": "clipboard-manager.history.remove",
+                    "when": "viewItem =~ /^clipHistoryItem:/",
+                    "group": "inline"
                 }
             ],
             "view/title": [
