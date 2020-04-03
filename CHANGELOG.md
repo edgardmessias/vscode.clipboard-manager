@@ -1,3 +1,13 @@
+## [1.4.2](https://github.com/edgardmessias/vscode.clipboard-manager/compare/v1.4.1...v1.4.2) (2020-04-03)
+
+
+### Bug Fixes
+
+* Added inline button to remove item (close [#48](https://github.com/edgardmessias/vscode.clipboard-manager/issues/48)) ([9062ea0](https://github.com/edgardmessias/vscode.clipboard-manager/commit/9062ea0eadec8aedab4ddfdecf72ee651848a615))
+* Added prompt before clear all history ([d3aab06](https://github.com/edgardmessias/vscode.clipboard-manager/commit/d3aab06fb3e8ff62c5ef55209a8473c86698fa6c))
+
+
+
 ## [1.4.1](https://github.com/edgardmessias/vscode.clipboard-manager/compare/v1.4.0...v1.4.1) (2020-02-11)
 
 
@@ -44,10 +54,10 @@
 
 ### Bug Fixes
 
-* Fix travis/appveyor error on downloading VS Code ([8afa9bc](https://github.com/edgardmessias/vscode.clipboard-manager/commit/8afa9bc79caf4cccbda26107c3519cbec1a45084))
-* **package:** update clipboardy to version 2.0.0 ([0f80945](https://github.com/edgardmessias/vscode.clipboard-manager/commit/0f809450424f53be80a6e2cc55eba7dcacd4f561))
 * Fixed pick and paste for multi cursor selection (close [#23](https://github.com/edgardmessias/vscode.clipboard-manager/issues/23)) ([5205112](https://github.com/edgardmessias/vscode.clipboard-manager/commit/5205112d642396ff973e0861fc3ec7599b42ae68))
 * Show command to clear clipboard history ([9fc3fe2](https://github.com/edgardmessias/vscode.clipboard-manager/commit/9fc3fe289e233301315bf34fa066e1c869cf159b))
+* **package:** update clipboardy to version 2.0.0 ([0f80945](https://github.com/edgardmessias/vscode.clipboard-manager/commit/0f809450424f53be80a6e2cc55eba7dcacd4f561))
+* Fix travis/appveyor error on downloading VS Code ([8afa9bc](https://github.com/edgardmessias/vscode.clipboard-manager/commit/8afa9bc79caf4cccbda26107c3519cbec1a45084))
 
 
 ### Features
