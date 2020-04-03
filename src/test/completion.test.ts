@@ -54,7 +54,7 @@ suite("Completion Tests", function() {
   });
 
   test("Completion List", async function() {
-    const completion = common.getClipboardCompletion();
+    const completion = common.getExtension()?.exports.completion;
 
     if (!completion) {
       return this.skip();

@@ -109,6 +109,10 @@ export async function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(...disposable);
+
+  return {
+    completion
+  };
 }
 
 // this method is called when your extension is deactivated

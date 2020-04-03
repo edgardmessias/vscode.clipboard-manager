@@ -1,46 +1,27 @@
-import * as sinon from "sinon";
 import * as vscode from "vscode";
 import { ClipboardCompletion } from "../completion";
 
-const vscodeSpys: {
-  registerCompletionItemProviderSpy?: sinon.SinonSpy<
-    [vscode.DocumentSelector, vscode.CompletionItemProvider, ...string[]]
-  >;
-  [key: string]: sinon.SinonSpy<any> | undefined;
-} = {};
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const pkg = require("../../package.json");
 
-function registerSpys() {
-  vscodeSpys.registerCompletionItemProviderSpy = sinon.spy(
-    vscode.languages,
-    "registerCompletionItemProvider"
-  );
+const EXTENSION_ID = `${pkg.publisher}.${pkg.name}`;
+
+interface ExtensionAPI {
+  completion: ClipboardCompletion;
 }
 
-export function getClipboardCompletion() {
-  if (!vscodeSpys.registerCompletionItemProviderSpy) {
-    return;
-  }
-  const calls = vscodeSpys.registerCompletionItemProviderSpy.getCalls();
-
-  const call = calls
-    .find(call => call.args[1] && call.args[1].constructor.name === ClipboardCompletion.name);
-
-  if (!call) {
-    return;
-  }
-
-  return call.args[1];
+export function getExtension() {
+  return vscode.extensions.getExtension<ExtensionAPI>(EXTENSION_ID);
 }
 
 export async function activateExtension() {
-  const ext = vscode.extensions.getExtension("EdgardMessias.clipboard-manager");
+  const ext = getExtension();
 
   if (!ext) {
     return false;
   }
 
   if (!ext.isActive) {
-    registerSpys();
     await ext.activate();
   }
 
