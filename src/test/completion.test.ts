@@ -43,7 +43,7 @@ suite("Completion Tests", function() {
     common.showSidebar();
 
     // Clear clipboard history
-    await vscode.commands.executeCommand(commandList.clearClipboardHistory);
+    common.getExtension()?.exports.manager.clearAll();
     await sleep(500);
   });
 

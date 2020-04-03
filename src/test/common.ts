@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { ClipboardCompletion } from "../completion";
+import { ClipboardManager } from "../manager";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pkg = require("../../package.json");
@@ -8,6 +9,7 @@ const EXTENSION_ID = `${pkg.publisher}.${pkg.name}`;
 
 interface ExtensionAPI {
   completion: ClipboardCompletion;
+  manager: ClipboardManager;
 }
 
 export function getExtension() {
