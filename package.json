@@ -254,7 +254,7 @@
         "mocha-github-actions-reporter": "^0.1.1",
         "mocha-multi-reporters": "^1.1.7",
         "original-fs": "^1.1.0",
-        "release-it": "^13.5.1",
+        "release-it": "^13.5.2",
         "rimraf": "^3.0.2",
         "sinon": "^9.0.1",
         "source-map-support": "^0.5.16",
