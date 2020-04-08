@@ -8,14 +8,14 @@ import * as assert from "assert";
 import * as vscode from "vscode";
 import { activateExtension } from "./common";
 
-suiteSetup(async function() {
+suiteSetup(async function () {
   if (!(await activateExtension())) {
     this.skip();
   }
 });
 
-suite("Extension Tests", function() {
-  test("Active Extension", async function() {
+suite("Extension Tests", function () {
+  test("Active Extension", async function () {
     const ext = vscode.extensions.getExtension(
       "EdgardMessias.clipboard-manager"
     ) as vscode.Extension<any>;

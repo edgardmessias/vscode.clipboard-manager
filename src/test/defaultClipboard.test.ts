@@ -3,19 +3,19 @@ import * as sinon from "sinon";
 import { BaseClipboard, getNewDefaultInstance } from "../clipboard";
 import { activateExtension } from "./common";
 
-suiteSetup(async function() {
+suiteSetup(async function () {
   if (!(await activateExtension())) {
     this.skip();
   }
 });
 
 // Defines a Mocha test suite to group tests of similar kind together
-suite("Clipboard Tests", function() {
+suite("Clipboard Tests", function () {
   let sandbox: sinon.SinonSandbox;
 
   let clipboard: BaseClipboard;
 
-  setup(async function() {
+  setup(async function () {
     sandbox = sinon.createSandbox();
 
     clipboard = getNewDefaultInstance();
@@ -23,19 +23,19 @@ suite("Clipboard Tests", function() {
     await clipboard.writeText("Initial Value");
   });
 
-  teardown(function() {
+  teardown(function () {
     clipboard.dispose();
 
     sandbox.restore();
   });
 
-  test("Read clipboard", async function() {
+  test("Read clipboard", async function () {
     const clip = await clipboard.readText();
 
     assert.ok(clip === "Initial Value");
   });
 
-  test("Read/Write Clipboard", async function() {
+  test("Read/Write Clipboard", async function () {
     await clipboard.writeText("test");
 
     const actual = await clipboard.readText();

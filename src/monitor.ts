@@ -106,7 +106,7 @@ export class Monitor implements vscode.Disposable {
 
     const change: IClipboardTextChange = {
       value: newText,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     };
 
     const editor = vscode.window.activeTextEditor;
@@ -120,7 +120,7 @@ export class Monitor implements vscode.Disposable {
         const selection = editor.selection;
         change.location = {
           range: new vscode.Range(selection.start, selection.end),
-          uri: editor.document.uri
+          uri: editor.document.uri,
         };
       }
     }

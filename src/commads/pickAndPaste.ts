@@ -52,7 +52,7 @@ export class PickAndPasteCommand implements vscode.Disposable {
     let needUndo = false;
 
     const options: vscode.QuickPickOptions = {
-      placeHolder: "Select one clip to paste. ESC to cancel."
+      placeHolder: "Select one clip to paste. ESC to cancel.",
     };
 
     /**
@@ -73,7 +73,7 @@ export class PickAndPasteCommand implements vscode.Disposable {
             },
             {
               undoStopAfter: false,
-              undoStopBefore: false
+              undoStopBefore: false,
             }
           );
         }
@@ -98,12 +98,13 @@ export class PickAndPasteCommand implements vscode.Disposable {
       // Fix editor selection
       const editor = vscode.window.activeTextEditor;
       if (editor) {
-        const selecions = editor.selections.map(s => new vscode.Selection(s.end, s.end));
+        const selecions = editor.selections.map(
+          s => new vscode.Selection(s.end, s.end)
+        );
         editor.selections = selecions;
       } else {
         return await vscode.commands.executeCommand("cancelSelection");
       }
-
     } else {
       return await vscode.commands.executeCommand(
         "editor.action.clipboardPasteAction"

@@ -4,27 +4,27 @@ import * as vscode from "vscode";
 import {
   BaseClipboard,
   defaultClipboard,
-  getNewDefaultInstance
+  getNewDefaultInstance,
 } from "../clipboard";
 import { commandList } from "../commads/common";
 import { Monitor } from "../monitor";
 import { sleep } from "../util";
 import * as common from "./common";
 
-suiteSetup(async function() {
+suiteSetup(async function () {
   if (!(await common.activateExtension())) {
     this.skip();
   }
 });
 
 // Defines a Mocha test suite to group tests of similar kind together
-suite("Completion Tests", function() {
+suite("Completion Tests", function () {
   let sandbox: sinon.SinonSandbox;
 
   let externalClipboard: BaseClipboard;
   let monitor: Monitor;
 
-  setup(async function() {
+  setup(async function () {
     sandbox = sinon.createSandbox();
 
     externalClipboard = getNewDefaultInstance();
@@ -47,13 +47,13 @@ suite("Completion Tests", function() {
     await sleep(500);
   });
 
-  teardown(function() {
+  teardown(function () {
     externalClipboard.dispose();
 
     sandbox.restore();
   });
 
-  test("Completion List", async function() {
+  test("Completion List", async function () {
     const completion = common.getExtension()?.exports.completion;
 
     if (!completion) {
@@ -76,7 +76,7 @@ suite("Completion Tests", function() {
 
     const document = await vscode.workspace.openTextDocument({
       content:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\nclip"
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\nclip",
     });
 
     const editor = await vscode.window.showTextDocument(document);

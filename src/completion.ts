@@ -42,7 +42,7 @@ export class ClipboardCompletion implements vscode.CompletionItemProvider {
         detail: `Clipboard ${indexNumber}`,
         insertText: clip.value,
         kind: vscode.CompletionItemKind.Text,
-        filterText: `${prefix}${indexNumber} ${clip.value}`
+        filterText: `${prefix}${indexNumber} ${clip.value}`,
       };
 
       // Highlight the syntax of clip
@@ -58,7 +58,7 @@ export class ClipboardCompletion implements vscode.CompletionItemProvider {
         command: commandList.setClipboardValue,
         title: "Paste",
         tooltip: "Paste",
-        arguments: [clip.value]
+        arguments: [clip.value],
       };
 
       return c;

@@ -15,15 +15,15 @@ const mochaOpts: Mocha.MochaOptions = {
   retries: 1,
   reporter: "mocha-multi-reporters",
   reporterOptions: {
-    reporterEnabled: "spec, mocha-github-actions-reporter"
-  }
+    reporterEnabled: "spec, mocha-github-actions-reporter",
+  },
 };
 
 testRunner.configure(
   mochaOpts,
   // Coverage configuration options
   {
-    coverConfig: "../../coverconfig.json"
+    coverConfig: "../../coverconfig.json",
   }
 );
 

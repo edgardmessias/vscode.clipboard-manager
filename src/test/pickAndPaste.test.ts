@@ -4,29 +4,29 @@ import * as vscode from "vscode";
 import {
   BaseClipboard,
   defaultClipboard,
-  getNewDefaultInstance
+  getNewDefaultInstance,
 } from "../clipboard";
 import { commandList } from "../commads/common";
 import { Monitor } from "../monitor";
 import { sleep } from "../util";
 import * as common from "./common";
 
-suiteSetup(async function() {
+suiteSetup(async function () {
   if (!(await common.activateExtension())) {
     this.skip();
   }
 });
 
 // Defines a Mocha test suite to group tests of similar kind together
-suite("Pick and Paste Tests", function() {
+suite("Pick and Paste Tests", function () {
   let sandbox: sinon.SinonSandbox;
-  let showQuickPickStub: sinon.SinonStub<any[]|any>;
+  let showQuickPickStub: sinon.SinonStub<any[] | any>;
 
   let externalClipboard: BaseClipboard;
   let monitor: Monitor;
   let editor: vscode.TextEditor;
 
-  setup(async function() {
+  setup(async function () {
     sandbox = sinon.createSandbox();
 
     showQuickPickStub = sandbox.stub(vscode.window, "showQuickPick");
@@ -59,7 +59,7 @@ suite("Pick and Paste Tests", function() {
 
     const document = await vscode.workspace.openTextDocument({
       content:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\nclip"
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\nclip",
     });
 
     editor = await vscode.window.showTextDocument(document);
@@ -67,7 +67,7 @@ suite("Pick and Paste Tests", function() {
     editor.selections = [new vscode.Selection(1, 0, 1, 4)];
   });
 
-  teardown(async function() {
+  teardown(async function () {
     externalClipboard.dispose();
 
     await vscode.commands.executeCommand("workbench.action.closeActiveEditor");
@@ -75,7 +75,7 @@ suite("Pick and Paste Tests", function() {
     sandbox.restore();
   });
 
-  test("Select with preview", async function() {
+  test("Select with preview", async function () {
     this.timeout(60000);
 
     showQuickPickStub.callsFake(
@@ -109,7 +109,7 @@ suite("Pick and Paste Tests", function() {
     assert.ok(editor.document.getText().includes("gamma"));
   });
 
-  test("Select without preview", async function() {
+  test("Select without preview", async function () {
     this.timeout(60000);
 
     showQuickPickStub.callsFake(
@@ -133,7 +133,7 @@ suite("Pick and Paste Tests", function() {
     assert.ok(editor.document.getText().includes("gamma"));
   });
 
-  test("Cancel with preview", async function() {
+  test("Cancel with preview", async function () {
     this.timeout(60000);
 
     showQuickPickStub.callsFake(
@@ -169,7 +169,7 @@ suite("Pick and Paste Tests", function() {
     assert.ok(!editor.document.getText().includes("gamma"));
   });
 
-  test("Cancel without preview", async function() {
+  test("Cancel without preview", async function () {
     this.timeout(60000);
 
     showQuickPickStub.callsFake(

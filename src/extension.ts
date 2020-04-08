@@ -68,7 +68,7 @@ export async function activate(context: vscode.ExtensionContext) {
   disposable.push(
     vscode.languages.registerCompletionItemProvider(
       {
-        scheme: "file"
+        scheme: "file",
       },
       completion
     )
@@ -78,7 +78,7 @@ export async function activate(context: vscode.ExtensionContext) {
   disposable.push(
     vscode.languages.registerCompletionItemProvider(
       {
-        scheme: "untitled"
+        scheme: "untitled",
       },
       completion
     )
@@ -112,7 +112,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   return {
     completion,
-    manager
+    manager,
   };
 }
 

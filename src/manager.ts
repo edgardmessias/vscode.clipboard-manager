@@ -35,11 +35,7 @@ export class ClipboardManager implements vscode.Disposable {
     protected context: vscode.ExtensionContext,
     protected _monitor: Monitor
   ) {
-    this._monitor.onDidChangeText(
-      this.updateClipList,
-      this,
-      this._disposable
-    );
+    this._monitor.onDidChangeText(this.updateClipList, this, this._disposable);
 
     this.loadClips();
 
@@ -71,7 +67,7 @@ export class ClipboardManager implements vscode.Disposable {
       copyCount: 1,
       useCount: 0,
       language: change.language,
-      createdLocation: change.location
+      createdLocation: change.location,
     };
 
     if (avoidDuplicates) {
@@ -176,9 +172,9 @@ export class ClipboardManager implements vscode.Disposable {
       value = {
         range: {
           start: value.range.start,
-          end: value.range.end
+          end: value.range.end,
         },
-        uri: value.uri.toString()
+        uri: value.uri.toString(),
       };
     } else if (value instanceof vscode.Uri) {
       value = value.toString();
@@ -198,7 +194,7 @@ export class ClipboardManager implements vscode.Disposable {
       json = JSON.stringify(
         {
           version: 2,
-          clips: this._clips
+          clips: this._clips,
         },
         this.jsonReplacer,
         2
@@ -214,10 +210,14 @@ export class ClipboardManager implements vscode.Disposable {
     } catch (error) {
       switch (error.code) {
         case "EPERM":
-          vscode.window.showErrorMessage(`Not permitted to save clipboards on "${file}"`);
+          vscode.window.showErrorMessage(
+            `Not permitted to save clipboards on "${file}"`
+          );
           break;
         case "EISDIR":
-          vscode.window.showErrorMessage(`Failed to save clipboards on "${file}", because the path is a directory`);
+          vscode.window.showErrorMessage(
+            `Failed to save clipboards on "${file}", because the path is a directory`
+          );
           break;
         default:
           console.error(error);
@@ -300,7 +300,7 @@ export class ClipboardManager implements vscode.Disposable {
         createdAt: c.createdAt,
         copyCount: c.copyCount,
         useCount: c.copyCount,
-        language: c.language
+        language: c.language,
       };
 
       if (c.createdLocation) {

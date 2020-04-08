@@ -6,5 +6,5 @@ export enum commandList {
   pickAndPaste = "clipboard-manager.editor.pickAndPaste",
   removeClipboardHistory = "clipboard-manager.history.remove",
   setClipboardValue = "clipboard-manager.setClipboardValue",
-  showClipboardInFile = "clipboard-manager.editor.showClipboardInFile"
+  showClipboardInFile = "clipboard-manager.editor.showClipboardInFile",
 }

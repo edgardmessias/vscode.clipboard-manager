@@ -17,9 +17,13 @@ export class ClearClipboardHistory implements vscode.Disposable {
 
   protected async execute() {
     const yes = "Yes";
-    const response = await vscode.window.showWarningMessage("Do you really want to clear the history list?", {
-      modal: true
-    }, yes);
+    const response = await vscode.window.showWarningMessage(
+      "Do you really want to clear the history list?",
+      {
+        modal: true,
+      },
+      yes
+    );
 
     if (response === yes) {
       this._manager.clearAll();

@@ -32,7 +32,7 @@ if (!tty.getWindowSize) {
 
 let mocha = new Mocha({
   ui: "tdd",
-  useColors: true
+  useColors: true,
 });
 
 let testOptions: any;
@@ -53,7 +53,7 @@ function _readCoverOptions(testsRoot: string): ITestRunnerOptions | undefined {
   let coverConfig: ITestRunnerOptions | undefined;
   if (fs.existsSync(coverConfigPath)) {
     const configContent = fs.readFileSync(coverConfigPath, {
-      encoding: "utf8"
+      encoding: "utf8",
     });
     coverConfig = JSON.parse(configContent);
   }
@@ -139,7 +139,7 @@ class CoverageRunner {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
     self.instrumenter = istanbulInstrument.createInstrumenter({
-      coverageVariable: self.coverageVar
+      coverageVariable: self.coverageVar,
     });
     const sourceRoot = paths.join(
       self.testsRoot,
@@ -149,7 +149,7 @@ class CoverageRunner {
     // Glob source files
     const srcFiles = glob.sync("**/**.js", {
       ignore: self.options.ignorePatterns,
-      cwd: sourceRoot
+      cwd: sourceRoot,
     });
 
     // Create a match function - taken from the run-with-cover.js in istanbul.
@@ -177,9 +177,14 @@ class CoverageRunner {
     // Hook up to the Require function so that when this is called, if any of our source files
     // are required, the instrumented version is pulled in instead. These instrumented versions
     // write to a global coverage variable with hit counts whenever they are accessed
-    self.transformer = (code, options) => self.instrumenter!.instrumentSync(code, options.filename);
+    self.transformer = (code, options) =>
+      self.instrumenter!.instrumentSync(code, options.filename);
     const hookOpts = { verbose: false, extensions: [".js"] };
-    self.unhookRequire = istanbulHook.hookRequire(self.matchFn, self.transformer, hookOpts);
+    self.unhookRequire = istanbulHook.hookRequire(
+      self.matchFn,
+      self.transformer,
+      hookOpts
+    );
 
     // initialize the global variable to stop mocha from complaining about leaks
     global[self.coverageVar] = {};
@@ -233,22 +238,30 @@ class CoverageRunner {
     );
     const includePid = self.options.includePid;
     const pidExt = includePid ? "-" + process.pid : "";
-    const coverageFile = paths.resolve(reportingDir, "coverage" + pidExt + ".json");
+    const coverageFile = paths.resolve(
+      reportingDir,
+      "coverage" + pidExt + ".json"
+    );
 
     _mkDirIfExists(reportingDir); // yes, do this again since some test runners could clean the dir initially created
 
     fs.writeFileSync(coverageFile, JSON.stringify(cov), "utf8");
 
-    const tsMap = await mapStore.transformCoverage(map) as any as istanbulCoverage.CoverageMap;
+    const tsMap = ((await mapStore.transformCoverage(
+      map
+    )) as any) as istanbulCoverage.CoverageMap;
 
-    const context = istanbulReport.createContext({ coverageMap: tsMap, dir: reportingDir });
+    const context = istanbulReport.createContext({
+      coverageMap: tsMap,
+      dir: reportingDir,
+    });
 
     const reportTypes =
       self.options.reports instanceof Array ? self.options.reports : ["lcov"];
 
     reportTypes.forEach(reporter =>
       (istanbulReports.create(reporter as any, {
-        projectRoot: paths.resolve(paths.join(__dirname, "..", ".."))
+        projectRoot: paths.resolve(paths.join(__dirname, "..", "..")),
       }) as any).execute(context)
     );
   }

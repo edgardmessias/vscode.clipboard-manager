@@ -36,5 +36,5 @@ export async function showSidebar() {
       "workbench.view.extension.clipboard-manager"
     );
     // tslint:disable-next-line:no-empty
-  } catch (error) { }
+  } catch (error) {}
 }

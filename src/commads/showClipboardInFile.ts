@@ -28,7 +28,7 @@ export class ShowClipboardInFile implements vscode.Disposable {
     const document = await vscode.workspace.openTextDocument(uri);
 
     const opts: vscode.TextDocumentShowOptions = {
-      viewColumn: vscode.ViewColumn.Active
+      viewColumn: vscode.ViewColumn.Active,
     };
 
     if (document.getText(clip.createdLocation.range) === clip.value) {

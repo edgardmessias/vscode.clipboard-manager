@@ -6,16 +6,16 @@ import { IClipboardTextChange, Monitor } from "../monitor";
 import { sleep } from "../util";
 import { activateExtension } from "./common";
 
-suiteSetup(async function() {
+suiteSetup(async function () {
   if (!(await activateExtension())) {
     this.skip();
   }
 });
 
 // Defines a Mocha test suite to group tests of similar kind together
-suite("Monitor Tests", function() {
+suite("Monitor Tests", function () {
   let sandbox: sinon.SinonSandbox;
-  let onDidChangeWindowState: sinon.SinonStub<any[]|any, any>;
+  let onDidChangeWindowState: sinon.SinonStub<any[] | any, any>;
 
   let disposables: vscode.Disposable[] = [];
   let externalClipboard: BaseClipboard;
@@ -31,7 +31,7 @@ suite("Monitor Tests", function() {
     }
   }
 
-  setup(async function() {
+  setup(async function () {
     sandbox = sinon.createSandbox();
 
     // Stubs
@@ -59,13 +59,13 @@ suite("Monitor Tests", function() {
     await setWindowsFocus(true);
   });
 
-  teardown(function() {
+  teardown(function () {
     disposables.forEach(d => d.dispose());
 
     sandbox.restore();
   });
 
-  test("Check changes interval", async function() {
+  test("Check changes interval", async function () {
     const readTextSpy = sandbox.spy(monitor.clipboard, "readText");
 
     monitor.checkInterval = 1000;
@@ -81,7 +81,7 @@ suite("Monitor Tests", function() {
     assert.equal(readTextSpy.callCount, initialCount + 2);
   });
 
-  test("Check changes content", async function() {
+  test("Check changes content", async function () {
     const onDidChangeTextSpy = sandbox.spy();
 
     disposables.push(monitor.onDidChangeText(onDidChangeTextSpy));
@@ -93,7 +93,7 @@ suite("Monitor Tests", function() {
     assert.equal(onDidChangeTextSpy.callCount, 1);
   });
 
-  test("Check changes external", async function() {
+  test("Check changes external", async function () {
     const onDidChangeTextSpy = sandbox.spy();
 
     disposables.push(monitor.onDidChangeText(onDidChangeTextSpy));
@@ -119,13 +119,13 @@ suite("Monitor Tests", function() {
     assert.equal(onDidChangeTextSpy.callCount, 2);
   });
 
-  test("Editor Position", async function() {
+  test("Editor Position", async function () {
     const onDidChangeTextSpy = sandbox.spy();
     disposables.push(monitor.onDidChangeText(onDidChangeTextSpy));
 
     const document = await vscode.workspace.openTextDocument({
       content:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     });
 
     const editor = await vscode.window.showTextDocument(document);

@@ -16,7 +16,7 @@ export class ClipHistoryItem extends vscode.TreeItem {
       command: commandList.historyTreeDoubleClick,
       title: "Paste",
       tooltip: "Paste",
-      arguments: [this.clip]
+      arguments: [this.clip],
     };
 
     if (this.clip.createdLocation) {
@@ -29,7 +29,7 @@ export class ClipHistoryItem extends vscode.TreeItem {
 
       this.iconPath = {
         light: path.join(basePath, "light", "string.svg"),
-        dark: path.join(basePath, "dark", "string.svg")
+        dark: path.join(basePath, "dark", "string.svg"),
       };
     }
   }
