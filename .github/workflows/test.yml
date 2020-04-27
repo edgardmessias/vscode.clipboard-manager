@@ -18,6 +18,7 @@ jobs:
         version: ["1.26.0", "stable", "insiders"]
     env:
       MOCHA_COLORS: 1
+      MOCHA_REPORTER: "mocha-github-actions-reporter"
     runs-on: ${{ matrix.os }}-latest
     name: ${{ matrix.os }} (VSCode v${{ matrix.version }})
     steps:

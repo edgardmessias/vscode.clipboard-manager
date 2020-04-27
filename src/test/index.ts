@@ -8,6 +8,8 @@ import * as IstanbulTestRunner from "./istanbultestrunner";
 
 const testRunner = IstanbulTestRunner;
 
+const reporter = process.env.MOCHA_REPORTER || "spec";
+
 const mochaOpts: Mocha.MochaOptions = {
   ui: "tdd", // the TDD UI is being used in extension.test.ts (suite, test, etc.)
   useColors: true, // colored output from test results,
@@ -15,7 +17,7 @@ const mochaOpts: Mocha.MochaOptions = {
   retries: 1,
   reporter: "mocha-multi-reporters",
   reporterOptions: {
-    reporterEnabled: "spec, mocha-github-actions-reporter",
+    reporterEnabled: reporter,
   },
 };
 
