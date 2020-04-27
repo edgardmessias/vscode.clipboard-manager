@@ -238,7 +238,7 @@ class CoverageRunner {
     );
     const includePid = self.options.includePid;
     const pidExt = includePid ? "-" + process.pid : "";
-    const coverageFile = paths.resolve(
+    const coverageFile = paths.join(
       reportingDir,
       "coverage" + pidExt + ".json"
     );
@@ -261,7 +261,7 @@ class CoverageRunner {
 
     reportTypes.forEach(reporter =>
       (istanbulReports.create(reporter as any, {
-        projectRoot: paths.resolve(paths.join(__dirname, "..", "..")),
+        projectRoot: paths.join(__dirname, "..", ".."),
       }) as any).execute(context)
     );
   }
