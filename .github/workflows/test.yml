@@ -14,11 +14,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [ubuntu, macos, windows]
         version: ["1.26.0", "stable", "insiders"]
     env:
       MOCHA_COLORS: 1
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}-latest
+    name: ${{ matrix.os }} (VSCode v${{ matrix.version }})
     steps:
       - name: Checkout
         uses: actions/checkout@v2
