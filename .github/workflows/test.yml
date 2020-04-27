@@ -20,7 +20,7 @@ jobs:
       MOCHA_COLORS: 1
       MOCHA_REPORTER: "mocha-github-actions-reporter"
     runs-on: ${{ matrix.os }}-latest
-    name: ${{ matrix.os }} (VSCode v${{ matrix.version }})
+    name: ${{ matrix.os }} (VSCode ${{ matrix.version }})
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -31,7 +31,7 @@ jobs:
           node-version: 10.x
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
 
       - name: Enable full coverage
         run: sed -i.bak 's/"\*"//g' package.json
