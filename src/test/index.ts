@@ -12,7 +12,7 @@ const reporter = process.env.MOCHA_REPORTER || "spec";
 
 const mochaOpts: Mocha.MochaOptions = {
   ui: "tdd", // the TDD UI is being used in extension.test.ts (suite, test, etc.)
-  useColors: true, // colored output from test results,
+  color: true, // colored output from test results,
   timeout: 10000, // default timeout: 10 seconds
   retries: 1,
   reporter: "mocha-multi-reporters",

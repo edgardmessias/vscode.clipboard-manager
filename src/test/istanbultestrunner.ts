@@ -32,7 +32,7 @@ if (!tty.getWindowSize) {
 
 let mocha = new Mocha({
   ui: "tdd",
-  useColors: true,
+  color: true,
 });
 
 let testOptions: any;
