@@ -234,7 +234,7 @@
         "@types/istanbul-lib-report": "^3.0.0",
         "@types/istanbul-lib-source-maps": "^4.0.1",
         "@types/istanbul-reports": "^3.0.0",
-        "@types/mocha": "^8.0.2",
+        "@types/mocha": "^8.0.3",
         "@types/node": "~8.10.59",
         "@types/sinon": "^9.0.4",
         "@types/vscode": "1.26.0",
