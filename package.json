@@ -256,7 +256,7 @@
         "mocha-github-actions-reporter": "^0.2.1",
         "mocha-multi-reporters": "^1.1.7",
         "original-fs": "^1.1.0",
-        "prettier": "^2.0.5",
+        "prettier": "^2.1.0",
         "release-it": "^13.6.9",
         "rimraf": "^3.0.2",
         "sinon": "^9.0.3",
