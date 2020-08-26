@@ -252,7 +252,7 @@
         "istanbul-lib-report": "^3.0.0",
         "istanbul-lib-source-maps": "^4.0.0",
         "istanbul-reports": "^3.0.2",
-        "mocha": "^8.1.1",
+        "mocha": "^8.1.2",
         "mocha-github-actions-reporter": "^0.2.1",
         "mocha-multi-reporters": "^1.1.7",
         "original-fs": "^1.1.0",
