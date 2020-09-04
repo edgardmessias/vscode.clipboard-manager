@@ -257,7 +257,7 @@
         "mocha-multi-reporters": "^1.1.7",
         "original-fs": "^1.1.0",
         "prettier": "^2.1.1",
-        "release-it": "^13.7.0",
+        "release-it": "^14.0.1",
         "rimraf": "^3.0.2",
         "sinon": "^9.0.3",
         "source-map-support": "^0.5.19",
