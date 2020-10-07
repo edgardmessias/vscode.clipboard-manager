@@ -258,7 +258,7 @@
         "prettier": "^2.1.2",
         "release-it": "^14.0.4",
         "rimraf": "^3.0.2",
-        "sinon": "^9.1.0",
+        "sinon": "^9.2.0",
         "source-map-support": "^0.5.19",
         "typescript": "^4.0.3",
         "vscode-test": "^1.4.0"
