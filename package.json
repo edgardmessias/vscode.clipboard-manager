@@ -243,7 +243,7 @@
         "conventional-changelog-cli": "^2.1.0",
         "decache": "^4.6.0",
         "eslint": "^6.8.0",
-        "eslint-config-prettier": "^6.12.0",
+        "eslint-config-prettier": "^6.13.0",
         "eslint-plugin-prettier": "^3.1.4",
         "glob": "^7.1.6",
         "istanbul-lib-coverage": "^3.0.0",
