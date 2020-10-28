@@ -261,7 +261,7 @@
         "sinon": "^9.2.0",
         "source-map-support": "^0.5.19",
         "typescript": "^4.0.5",
-        "vscode-test": "^1.4.0"
+        "vscode-test": "^1.4.1"
     },
     "dependencies": {
         "clipboardy": "^2.3.0"
