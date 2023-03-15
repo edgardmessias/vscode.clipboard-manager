@@ -15,8 +15,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Install Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18.x
+
       - name: Install Dependencies
-        run: npm install
+        run: npm ci || npm install
 
       - uses: haya14busa/action-cond@v1
         id: cond_report

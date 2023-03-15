@@ -17,8 +17,13 @@ jobs:
       - name: Fetching tags
         run: git fetch --tags -f || true
 
+      - name: Install Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18.x
+
       - name: Install Dependencies
-        run: npm install
+        run: npm ci || npm install
 
       - name: Generate Changelog
         id: generate_changelog
