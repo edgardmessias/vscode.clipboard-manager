@@ -45,7 +45,7 @@ export class ClipboardTreeDataProvider
 
   constructor(protected _manager: ClipboardManager) {
     this._manager.onDidChangeClipList(() => {
-      this._onDidChangeTreeData.fire();
+      this._onDidChangeTreeData.fire(null);
     });
   }
 
