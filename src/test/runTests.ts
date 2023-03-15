@@ -1,5 +1,5 @@
 import * as path from "path";
-import { downloadAndUnzipVSCode, runTests } from "vscode-test";
+import { downloadAndUnzipVSCode, runTests } from "@vscode/test-electron";
 
 async function go() {
   if (process.argv.includes("--download-only")) {

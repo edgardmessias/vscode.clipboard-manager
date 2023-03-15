@@ -207,7 +207,7 @@ export class ClipboardManager implements vscode.Disposable {
     try {
       fs.writeFileSync(file, json);
       this.lastUpdate = fs.statSync(file).mtimeMs;
-    } catch (error) {
+    } catch (error: any) {
       switch (error.code) {
         case "EPERM":
           vscode.window.showErrorMessage(

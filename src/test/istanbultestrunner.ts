@@ -3,14 +3,14 @@
  *--------------------------------------------------------*/
 
 "use strict";
-import * as glob from "glob";
+import glob from "glob";
 import * as istanbulCoverage from "istanbul-lib-coverage";
 import * as istanbulHook from "istanbul-lib-hook";
 import * as istanbulInstrument from "istanbul-lib-instrument";
 import * as istanbulReport from "istanbul-lib-report";
 import * as istanbulSourceMaps from "istanbul-lib-source-maps";
 import * as istanbulReports from "istanbul-reports";
-import * as Mocha from "mocha";
+import Mocha from "mocha";
 import * as fs from "original-fs";
 import * as paths from "path";
 
@@ -77,33 +77,32 @@ export function run(testsRoot: string, clb: Function): any {
   }
 
   // Glob test files
-  glob("**/**.test.js", { cwd: testsRoot }, function (error, files): any {
-    if (error) {
-      return clb(error);
-    }
-    try {
-      // Fill into Mocha
-      files.forEach(function (f): Mocha {
-        return mocha.addFile(paths.join(testsRoot, f));
-      });
-      // Run the tests
-      let failureCount = 0;
-
-      mocha
-        .run()
-        .on("fail", function (_test, _err): void {
-          failureCount++;
-        })
-        .on("end", function (): void {
-          if (coverageRunner) {
-            coverageRunner.reportCoverage();
-          }
-          clb(undefined, failureCount);
+  glob("**/**.test.js", { cwd: testsRoot })
+    .then(files => {
+      try {
+        // Fill into Mocha
+        files.forEach(function (f): Mocha {
+          return mocha.addFile(paths.join(testsRoot, f));
         });
-    } catch (error) {
-      return clb(error);
-    }
-  });
+        // Run the tests
+        let failureCount = 0;
+
+        mocha
+          .run()
+          .on("fail", function (_test, _err): void {
+            failureCount++;
+          })
+          .on("end", function (): void {
+            if (coverageRunner) {
+              coverageRunner.reportCoverage();
+            }
+            clb(undefined, failureCount);
+          });
+      } catch (error) {
+        return clb(error);
+      }
+    })
+    .catch(err => clb(err));
 }
 interface ITestRunnerOptions {
   enabled?: boolean;

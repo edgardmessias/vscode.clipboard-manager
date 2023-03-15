@@ -23,7 +23,7 @@ export async function activate(context: vscode.ExtensionContext) {
   // Check the clipboard is working
   try {
     await defaultClipboard.readText(); // Read test
-  } catch (error) {
+  } catch (error: any) {
     console.log(error);
     // Small delay to force show error
     setTimeout(() => {
