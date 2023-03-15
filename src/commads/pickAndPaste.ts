@@ -64,18 +64,51 @@ export class PickAndPasteCommand implements vscode.Disposable {
       options.onDidSelectItem = async (selected: ClipPickItem) => {
         const editor = vscode.window.activeTextEditor;
         if (editor) {
-          editor.edit(
-            edit => {
-              for (const selection of editor.selections) {
-                edit.replace(selection, selected.clip.value);
+          const replace = () =>
+            editor.edit(
+              edit => {
+                for (const selection of editor.selections) {
+                  edit.replace(selection, selected.clip.value);
+                }
+                needUndo = true;
+              },
+              {
+                undoStopAfter: false,
+                undoStopBefore: false,
               }
-              needUndo = true;
-            },
-            {
-              undoStopAfter: false,
-              undoStopBefore: false,
-            }
-          );
+            );
+
+          const selections: vscode.Selection[] = [];
+          if (editor.selections.every(s => s.isEmpty)) {
+            editor
+              .edit(
+                edit => {
+                  for (const selection of editor.selections) {
+                    edit.insert(selection.start, " ");
+                    selections.push(
+                      new vscode.Selection(
+                        selection.start.line,
+                        selection.start.character,
+                        selection.start.line,
+                        selection.start.character + 1
+                      )
+                    );
+                  }
+                },
+                {
+                  undoStopAfter: false,
+                  undoStopBefore: false,
+                }
+              )
+              .then(() => {
+                if (selections.length > 0) {
+                  editor.selections = selections;
+                }
+              })
+              .then(replace);
+          } else {
+            replace();
+          }
         }
       };
     }
