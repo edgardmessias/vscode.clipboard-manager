@@ -36,12 +36,14 @@ export class ClipHistoryItem extends vscode.TreeItem {
 }
 
 export class ClipboardTreeDataProvider
-  implements vscode.TreeDataProvider<ClipHistoryItem>, vscode.Disposable {
+  implements vscode.TreeDataProvider<ClipHistoryItem>, vscode.Disposable
+{
   private _disposables: vscode.Disposable[] = [];
 
-  private _onDidChangeTreeData: vscode.EventEmitter<ClipHistoryItem | null> = new vscode.EventEmitter<ClipHistoryItem | null>();
-  public readonly onDidChangeTreeData: vscode.Event<ClipHistoryItem | null> = this
-    ._onDidChangeTreeData.event;
+  private _onDidChangeTreeData: vscode.EventEmitter<ClipHistoryItem | null> =
+    new vscode.EventEmitter<ClipHistoryItem | null>();
+  public readonly onDidChangeTreeData: vscode.Event<ClipHistoryItem | null> =
+    this._onDidChangeTreeData.event;
 
   constructor(protected _manager: ClipboardManager) {
     this._manager.onDidChangeClipList(() => {

@@ -14,11 +14,11 @@ import Mocha from "mocha";
 import * as fs from "original-fs";
 import * as paths from "path";
 
-// tslint:disable-next-line:no-var-requires
-
 declare let global: {
   [key: string]: any; // missing index defintion
 };
+
+type Func = (...args: any[]) => any;
 
 // Linux: prevent a weird NPE when mocha on Linux requires the window size from the TTY
 // Since we are not running in a tty environment, we just implementt he method statically
@@ -60,14 +60,13 @@ function _readCoverOptions(testsRoot: string): ITestRunnerOptions | undefined {
   return coverConfig;
 }
 
-export function run(testsRoot: string, clb: Function): any {
+export function run(testsRoot: string, clb: Func): any {
   // Enable source map support
   require("source-map-support").install();
 
   // Read configuration for the coverage file
-  const coverOptions: ITestRunnerOptions | undefined = _readCoverOptions(
-    testsRoot
-  );
+  const coverOptions: ITestRunnerOptions | undefined =
+    _readCoverOptions(testsRoot);
   let coverageRunner: CoverageRunner;
   if (coverOptions && coverOptions.enabled) {
     // Setup coverage pre-test, including post-test hook to report
@@ -119,12 +118,12 @@ class CoverageRunner {
   private transformer!: istanbulHook.Transformer;
   private matchFn: any = undefined;
   private instrumenter!: istanbulInstrument.Instrumenter;
-  private unhookRequire!: Function;
+  private unhookRequire!: Func;
 
   constructor(
     private options: ITestRunnerOptions,
     private testsRoot: string,
-    private endRunCallback: Function
+    private endRunCallback: Func
   ) {
     if (!options.relativeSourcePath) {
       return this.endRunCallback(
@@ -246,9 +245,9 @@ class CoverageRunner {
 
     fs.writeFileSync(coverageFile, JSON.stringify(cov), "utf8");
 
-    const tsMap = ((await mapStore.transformCoverage(
+    const tsMap = (await mapStore.transformCoverage(
       map
-    )) as any) as istanbulCoverage.CoverageMap;
+    )) as any as istanbulCoverage.CoverageMap;
 
     const context = istanbulReport.createContext({
       coverageMap: tsMap,
@@ -259,9 +258,11 @@ class CoverageRunner {
       self.options.reports instanceof Array ? self.options.reports : ["lcov"];
 
     reportTypes.forEach(reporter =>
-      (istanbulReports.create(reporter as any, {
-        projectRoot: paths.join(__dirname, "..", ".."),
-      }) as any).execute(context)
+      (
+        istanbulReports.create(reporter as any, {
+          projectRoot: paths.join(__dirname, "..", ".."),
+        }) as any
+      ).execute(context)
     );
   }
 }
