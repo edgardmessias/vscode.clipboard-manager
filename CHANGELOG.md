@@ -1,3 +1,13 @@
+# [1.5.0](https://github.com/edgardmessias/vscode.clipboard-manager/compare/v1.4.2...v1.5.0) (2023-03-17)
+
+
+### Bug Fixes
+
+* Fixed paste preview issue ([#256](https://github.com/edgardmessias/vscode.clipboard-manager/issues/256), fix [#255](https://github.com/edgardmessias/vscode.clipboard-manager/issues/255)) ([401265f](https://github.com/edgardmessias/vscode.clipboard-manager/commit/401265f5149cbba7758382c47785dd8a8f9a694c))
+* Updated the minimal VSCode to 1.65.0 ([b923a1b](https://github.com/edgardmessias/vscode.clipboard-manager/commit/b923a1b5e33efc95e000a74e84a2ffc3fd67c74f))
+
+
+
 ## [1.4.2](https://github.com/edgardmessias/vscode.clipboard-manager/compare/v1.4.1...v1.4.2) (2020-04-03)
 
 
@@ -54,10 +64,10 @@
 
 ### Bug Fixes
 
-* Fixed pick and paste for multi cursor selection (close [#23](https://github.com/edgardmessias/vscode.clipboard-manager/issues/23)) ([5205112](https://github.com/edgardmessias/vscode.clipboard-manager/commit/5205112d642396ff973e0861fc3ec7599b42ae68))
-* Show command to clear clipboard history ([9fc3fe2](https://github.com/edgardmessias/vscode.clipboard-manager/commit/9fc3fe289e233301315bf34fa066e1c869cf159b))
-* **package:** update clipboardy to version 2.0.0 ([0f80945](https://github.com/edgardmessias/vscode.clipboard-manager/commit/0f809450424f53be80a6e2cc55eba7dcacd4f561))
 * Fix travis/appveyor error on downloading VS Code ([8afa9bc](https://github.com/edgardmessias/vscode.clipboard-manager/commit/8afa9bc79caf4cccbda26107c3519cbec1a45084))
+* Fixed pick and paste for multi cursor selection (close [#23](https://github.com/edgardmessias/vscode.clipboard-manager/issues/23)) ([5205112](https://github.com/edgardmessias/vscode.clipboard-manager/commit/5205112d642396ff973e0861fc3ec7599b42ae68))
+* **package:** update clipboardy to version 2.0.0 ([0f80945](https://github.com/edgardmessias/vscode.clipboard-manager/commit/0f809450424f53be80a6e2cc55eba7dcacd4f561))
+* Show command to clear clipboard history ([9fc3fe2](https://github.com/edgardmessias/vscode.clipboard-manager/commit/9fc3fe289e233301315bf34fa066e1c869cf159b))
 
 
 ### Features
