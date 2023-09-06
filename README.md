@@ -1,8 +1,8 @@
 # Clipboard Manager
 
-[![Version](https://vsmarketplacebadge.apphb.com/version-short/EdgardMessias.clipboard-manager.svg)](https://marketplace.visualstudio.com/items?itemName=EdgardMessias.clipboard-manager)
-[![Installs](https://vsmarketplacebadge.apphb.com/installs-short/EdgardMessias.clipboard-manager.svg)](https://marketplace.visualstudio.com/items?itemName=EdgardMessias.clipboard-manager)
-[![Ratings](https://vsmarketplacebadge.apphb.com/rating-short/EdgardMessias.clipboard-manager.svg)](https://marketplace.visualstudio.com/items?itemName=EdgardMessias.clipboard-manager)
+[![Version](https://vsmarketplacebadges.dev/version-short/EdgardMessias.clipboard-manager.svg)](https://marketplace.visualstudio.com/items?itemName=EdgardMessias.clipboard-manager)
+[![Installs](https://vsmarketplacebadges.dev/installs-short/EdgardMessias.clipboard-manager.svg)](https://marketplace.visualstudio.com/items?itemName=EdgardMessias.clipboard-manager)
+[![Ratings](https://vsmarketplacebadges.dev/rating-short/EdgardMessias.clipboard-manager.svg)](https://marketplace.visualstudio.com/items?itemName=EdgardMessias.clipboard-manager)
 
 [![Build Status](https://img.shields.io/github/workflow/status/edgardmessias/vscode.clipboard-manager/test.svg)](https://github.com/edgardmessias/vscode.clipboard-manager/actions)
 [![Lint Status](https://img.shields.io/github/workflow/status/edgardmessias/vscode.clipboard-manager/lint.svg?label=lint)](https://github.com/edgardmessias/vscode.clipboard-manager/actions)
