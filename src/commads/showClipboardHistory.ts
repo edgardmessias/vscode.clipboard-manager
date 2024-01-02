@@ -22,8 +22,6 @@ export class ClipboardHistoryProvider implements vscode.TextDocumentContentProvi
   }
 
   public provideTextDocumentContent(uri: vscode.Uri): string {
-    // You would normally fetch the clip data associated with this specific uri
-    // but since we're demonstrating, let's just return a static string.
     return this.createClipsString(this._manager.clips);
   }
 }
@@ -43,8 +41,8 @@ export class ShowClipboardHistory implements vscode.Disposable {
   }
 
   protected async execute(item: ClipHistoryItem) {
-    // const clipsString = this.createClipsString(this._manager.clips);
-    const uri = vscode.Uri.parse('clipboard-history://history/clipboard-buffer.txt');
+    const timestamp = Date.now();
+    const uri = vscode.Uri.parse(`clipboard-history://history/clipboard-buffer.txt?${timestamp}`);
 
     const document = await vscode.workspace.openTextDocument(uri);
 
