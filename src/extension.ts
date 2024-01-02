@@ -13,6 +13,7 @@ import { ClipboardManager } from "./manager";
 import { Monitor } from "./monitor";
 import { ClipboardTreeDataProvider } from "./tree/history";
 import { CopyToHistoryCommand } from "./commads/copyToHistory";
+import { ShowClipboardHistory, ClipboardHistoryProvider } from "./commads/showClipboardHistory";
 
 let manager: ClipboardManager;
 
@@ -60,6 +61,8 @@ export async function activate(context: vscode.ExtensionContext) {
   disposable.push(new ShowClipboardInFile(manager));
   disposable.push(new ClearClipboardHistory(manager));
   disposable.push(new CopyToHistoryCommand(monitor));
+  disposable.push(new ShowClipboardHistory(manager));
+
 
   const completion = new ClipboardCompletion(manager);
   // disposable.push(completion);
@@ -86,6 +89,15 @@ export async function activate(context: vscode.ExtensionContext) {
 
   const clipboardTreeDataProvider = new ClipboardTreeDataProvider(manager);
   disposable.push(clipboardTreeDataProvider);
+
+
+
+
+  const clipboardHistoryProvider = new ClipboardHistoryProvider(manager);
+  disposable.push(vscode.workspace.registerTextDocumentContentProvider(
+    'clipboard-history',
+    clipboardHistoryProvider
+  ));
 
   disposable.push(
     vscode.window.registerTreeDataProvider(
