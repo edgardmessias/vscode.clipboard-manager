@@ -84,6 +84,11 @@
                     "dark": "resources/dark/remove.svg",
                     "light": "resources/light/remove.svg"
                 }
+            },
+            {
+                "command": "clipboard-manager.history.show-buffer",
+                "title": "Show History in Buffer",
+                "category": "Clipboard Manager"
             }
         ],
         "menus": {
