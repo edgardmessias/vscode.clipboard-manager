@@ -1,16 +1,15 @@
 import * as vscode from "vscode";
 import { ClipboardManager, IClipboardItem } from "../manager";
-import { ClipHistoryItem } from "../tree/history";
 import { commandList } from "./common";
-
-
-export class ClipboardHistoryProvider implements vscode.TextDocumentContentProvider {
+export class ClipboardHistoryProvider
+  implements vscode.TextDocumentContentProvider
+{
   constructor(protected _manager: ClipboardManager) {
   }
 
   protected createClipsString(clips: IClipboardItem[]): string  {
     return clips
-      .map((clip) => {
+      .map(clip => {
         const createdAt = new Date(clip.createdAt).toLocaleString();
         const language = clip.language ? `${clip.language}` : '';
         const statusLine = `${createdAt} - ${language} - ${clip.createdLocation?.uri.toString()}`;
@@ -21,7 +20,7 @@ export class ClipboardHistoryProvider implements vscode.TextDocumentContentProvi
       .join('\n\n');
   }
 
-  public provideTextDocumentContent(uri: vscode.Uri): string {
+  public provideTextDocumentContent(_uri: vscode.Uri): string {
     return this.createClipsString(this._manager.clips);
   }
 }
@@ -40,9 +39,10 @@ export class ShowClipboardHistory implements vscode.Disposable {
     );
   }
 
-  protected async execute(item: ClipHistoryItem) {
+  protected async execute() {
     const timestamp = Date.now();
-    const uri = vscode.Uri.parse(`clipboard-history://history/clipboard-buffer.txt?${timestamp}`);
+    const uri = vscode.Uri.parse(
+      `clipboard-history://history/clipboard-buffer.txt?${timestamp}`);
 
     const document = await vscode.workspace.openTextDocument(uri);
 
