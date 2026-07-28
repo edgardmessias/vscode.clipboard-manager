@@ -14,7 +14,7 @@ class ClipPickItem implements vscode.QuickPickItem {
   }
 
   constructor(readonly clip: IClipboardItem) {
-    this.label = this.clip.value.replace(/\s+/g, " ").trim();
+    this.label = this.clip.title;
   }
 }
 

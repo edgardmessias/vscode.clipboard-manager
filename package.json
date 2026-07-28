@@ -243,8 +243,8 @@
         "@types/vscode": "^1.105.0",
         "@typescript-eslint/eslint-plugin": "^8.0.0",
         "@typescript-eslint/parser": "^8.0.0",
-        "@vscode/test-electron": "^3.0.0",
         "@vitest/coverage-v8": "^4.0.0",
+        "@vscode/test-electron": "^3.0.0",
         "conventional-changelog-cli": "^2.2.2",
         "decache": "^4.6.2",
         "esbuild": "^0.24.0",
@@ -267,5 +267,8 @@
         "tsdown": "^0.22.14",
         "typescript": "^5.7.0",
         "vitest": "^4.0.0"
+    },
+    "dependencies": {
+        "msgpackr": "^2.0.4"
     }
 }

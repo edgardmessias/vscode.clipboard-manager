@@ -6,10 +6,10 @@ import { leftPad } from "../util";
 
 export class ClipHistoryItem extends vscode.TreeItem {
   constructor(readonly clip: IClipboardItem) {
-    super(clip.value);
+    super(clip.title);
 
     this.contextValue = "clipHistoryItem:";
-    this.label = this.clip.value.replace(/\s+/g, " ").trim();
+    this.label = this.clip.title;
     this.tooltip = this.clip.value;
 
     this.command = {
