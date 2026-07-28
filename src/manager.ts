@@ -256,7 +256,7 @@ export class ClipboardManager implements vscode.Disposable {
       try {
         json = fs.readFileSync(file);
         this.lastUpdate = fs.statSync(file).mtimeMs;
-      } catch (error) {
+      } catch {
         // ignore
       }
     } else {

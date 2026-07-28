@@ -1,3 +1,3 @@
 declare module "original-fs" {
-    export * from "fs";
-  }
+  export * from "fs";
+}

@@ -1,6 +1,6 @@
 import * as path from "path";
 import * as vscode from "vscode";
-import { commandList } from "../commads/common";
+import { commandList } from "../commands/common";
 import { ClipboardManager, IClipboardItem } from "../manager";
 import { leftPad } from "../util";
 
@@ -26,11 +26,13 @@ export class ClipHistoryItem extends vscode.TreeItem {
       this.tooltip = `File: ${this.resourceUri.fsPath}\nValue: ${this.tooltip}\n`;
     } else {
       const basePath = path.join(__filename, "..", "..", "..", "resources");
-
-      this.iconPath = {
-        light: path.join(basePath, "light", "string.svg"),
-        dark: path.join(basePath, "dark", "string.svg"),
-      };
+      const lightIcon = vscode.Uri.file(
+        path.join(basePath, "light", "string.svg")
+      );
+      const darkIcon = vscode.Uri.file(
+        path.join(basePath, "dark", "string.svg")
+      );
+      this.iconPath = { light: lightIcon, dark: darkIcon };
     }
   }
 }

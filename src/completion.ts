@@ -1,10 +1,24 @@
 import * as vscode from "vscode";
-import { commandList } from "./commads/common";
+import { commandList } from "./commands/common";
 import { ClipboardManager } from "./manager";
 import { leftPad } from "./util";
 
-export class ClipboardCompletion implements vscode.CompletionItemProvider {
-  constructor(protected manager: ClipboardManager) {}
+export class ClipboardCompletion
+  implements vscode.CompletionItemProvider, vscode.Disposable
+{
+  private _disposable: vscode.Disposable[] = [];
+
+  constructor(protected manager: ClipboardManager) {
+    this._disposable.push(
+      vscode.workspace.onDidChangeConfiguration(
+        e => e.affectsConfiguration("clipboard-manager.snippet") && manager
+      )
+    );
+  }
+
+  public dispose() {
+    this._disposable.forEach(d => d.dispose());
+  }
 
   public provideCompletionItems(
     document: vscode.TextDocument,

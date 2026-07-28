@@ -1,10 +1,12 @@
 .*
 .**
-.**/**
+.*/**
 *.vsix
 bin/**
 coverage/**
 coverconfig.json
+dist/**
+eslint.config.mjs
 out/**/*.map
 out/test/**
 out/tools/**
@@ -13,3 +15,4 @@ screenshots/**
 src/**
 test-reports/**
 tsconfig.json
+tsdown.config.mts

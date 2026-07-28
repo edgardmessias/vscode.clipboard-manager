@@ -15,7 +15,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu, macos, windows]
-        version: ["1.65.0", "stable", "insiders"]
+        version: ["latest", "stable", "insiders"]
     env:
       MOCHA_COLORS: 1
       MOCHA_REPORTER: "mocha-github-actions-reporter"
@@ -23,12 +23,12 @@ jobs:
     name: ${{ matrix.os }} (VSCode ${{ matrix.version }})
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Install Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
-          node-version: 18.x
+          node-version: 20.x
 
       - name: Install Dependencies
         run: npm ci || npm install
@@ -36,22 +36,20 @@ jobs:
       - name: Setup Mocha Report
         run: npm install mocha-github-actions-reporter --no-save
 
-      - name: Enable full coverage
-        run: sed -i.bak 's/"\*"//g' package.json
-        shell: bash
+      - name: Compile Extension
+        run: npm run compile
 
       - name: Cache VSCode binary
         id: cache-vscode
-        uses: actions/cache@v1
+        uses: actions/cache@v4
         with:
           path: .vscode-test
           key: vscode-${{ runner.os }}-${{ matrix.version }}-${{ github.run_id }}
           restore-keys: |
             vscode-${{ runner.os }}-${{ matrix.version }}-
-            vscode-${{ runner.os }}-
 
       - name: Run tests
-        uses: GabrielBB/xvfb-action@v1.0
+        uses: GabrielBB/xvfb-action@v1
         with:
           run: npm test
         env:
@@ -59,18 +57,18 @@ jobs:
         continue-on-error: ${{ matrix.version == 'insiders' }}
 
       - name: Upload coverage
-        run: |
-          cover() {
-            curl -s https://codecov.io/bash -o codecov.sh
-            bash codecov.sh -X gcov -f ./coverage/coverage-final.json -f ./coverage/lcov.info
-          }
-          for i in {1..5}; do cover && break || sleep 5; done
-        shell: bash
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-          CODECOV_NAME: ${{ matrix.os }} ${{ matrix.version }}
+        run: |
+          for i in 1 2 3 4 5; do
+            curl -s https://codecov.io/bash -o codecov.sh
+            bash codecov.sh -X gcov -f ./coverage/coverage-final.json -f ./coverage/lcov.info && break
+            sleep 5
+          done
+        shell: bash
 
       - name: Remove old versions of VSCode
+        if: always()
         run: ls -1 -d .vscode-test/vscode-* | sed -e '$ d' | xargs -I {} rm -rf {} || true
         shell: bash
 
@@ -78,21 +76,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci || npm install
 
       - name: Update changelog with unreleased changes
         run: npm run changelog:update -- -u
 
       - name: Package extension
-        uses: lannonbr/vsce-action@master
-        with:
-          args: "package -o clipboard-manager.vsix"
+        id: package
+        run: npm run package
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: "clipboard-manager-${{ github.sha }}.vsix"
-          path: "clipboard-manager.vsix"
+          path: clipboard-manager.vsix

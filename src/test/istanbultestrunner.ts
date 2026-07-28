@@ -14,15 +14,12 @@ import Mocha from "mocha";
 import * as fs from "original-fs";
 import * as paths from "path";
 
-declare let global: {
-  [key: string]: any; // missing index defintion
-};
+declare const global: Record<string, any>;
 
 type Func = (...args: any[]) => any;
 
 // Linux: prevent a weird NPE when mocha on Linux requires the window size from the TTY
 // Since we are not running in a tty environment, we just implementt he method statically
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const tty = require("tty");
 if (!tty.getWindowSize) {
   tty.getWindowSize = function (): number[] {
@@ -70,17 +67,17 @@ export function run(testsRoot: string, clb: Func): any {
   let coverageRunner: CoverageRunner;
   if (coverOptions && coverOptions.enabled) {
     // Setup coverage pre-test, including post-test hook to report
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     coverageRunner = new CoverageRunner(coverOptions, testsRoot, clb);
     coverageRunner.setupCoverage();
   }
 
   // Glob test files
-  glob("**/**.test.js", { cwd: testsRoot })
-    .then(files => {
+  glob
+    .glob("**/**.test.js", { cwd: testsRoot })
+    .then((files: string[]) => {
       try {
         // Fill into Mocha
-        files.forEach(function (f): Mocha {
+        files.forEach(function (f: string): Mocha {
           return mocha.addFile(paths.join(testsRoot, f));
         });
         // Run the tests
@@ -88,7 +85,7 @@ export function run(testsRoot: string, clb: Func): any {
 
         mocha
           .run()
-          .on("fail", function (_test, _err): void {
+          .on("fail", function (_test: any, _err: any): void {
             failureCount++;
           })
           .on("end", function (): void {
@@ -101,7 +98,7 @@ export function run(testsRoot: string, clb: Func): any {
         return clb(error);
       }
     })
-    .catch(err => clb(err));
+    .catch((err: any) => clb(err));
 }
 interface ITestRunnerOptions {
   enabled?: boolean;
@@ -151,7 +148,6 @@ class CoverageRunner {
     });
 
     // Create a match function - taken from the run-with-cover.js in istanbul.
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const decache = require("decache");
     const fileMap: { [key: string]: any } = {};
     srcFiles.forEach(file => {

@@ -1,18 +1,18 @@
 "use strict";
 import * as vscode from "vscode";
 import { defaultClipboard } from "./clipboard";
-import { ApiGetMonitor } from "./commads/apiGetMonitor";
-import { ClearClipboardHistory } from "./commads/clearClipboardHistory";
-import { HistoryTreeDoubleClickCommand } from "./commads/historyTreeDoubleClick";
-import { PickAndPasteCommand } from "./commads/pickAndPaste";
-import { RemoveClipboardHistory } from "./commads/removeClipboardHistory";
-import { SetClipboardValueCommand } from "./commads/setClipboardValue";
-import { ShowClipboardInFile } from "./commads/showClipboardInFile";
+import { ApiGetMonitor } from "./commands/apiGetMonitor";
+import { ClearClipboardHistory } from "./commands/clearClipboardHistory";
+import { HistoryTreeDoubleClickCommand } from "./commands/historyTreeDoubleClick";
+import { PickAndPasteCommand } from "./commands/pickAndPaste";
+import { RemoveClipboardHistory } from "./commands/removeClipboardHistory";
+import { SetClipboardValueCommand } from "./commands/setClipboardValue";
+import { ShowClipboardInFile } from "./commands/showClipboardInFile";
 import { ClipboardCompletion } from "./completion";
 import { ClipboardManager } from "./manager";
 import { Monitor } from "./monitor";
 import { ClipboardTreeDataProvider } from "./tree/history";
-import { CopyToHistoryCommand } from "./commads/copyToHistory";
+import { CopyToHistoryCommand } from "./commands/copyToHistory";
 
 let manager: ClipboardManager;
 
@@ -62,7 +62,7 @@ export async function activate(context: vscode.ExtensionContext) {
   disposable.push(new CopyToHistoryCommand(monitor));
 
   const completion = new ClipboardCompletion(manager);
-  // disposable.push(completion);
+  disposable.push(completion);
 
   // All files types
   disposable.push(

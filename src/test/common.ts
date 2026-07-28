@@ -2,7 +2,6 @@ import * as vscode from "vscode";
 import { ClipboardCompletion } from "../completion";
 import { ClipboardManager } from "../manager";
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const pkg = require("../../package.json");
 
 const EXTENSION_ID = `${pkg.publisher}.${pkg.name}`;
@@ -36,5 +35,5 @@ export async function showSidebar() {
       "workbench.view.extension.clipboard-manager"
     );
     // tslint:disable-next-line:no-empty
-  } catch (error) {}
+  } catch {}
 }

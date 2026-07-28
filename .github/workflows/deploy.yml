@@ -6,11 +6,11 @@ on:
       - "v*"
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -18,9 +18,9 @@ jobs:
         run: git fetch --tags -f || true
 
       - name: Install Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
-          node-version: 18.x
+          node-version: 20.x
 
       - name: Install Dependencies
         run: npm ci || npm install
@@ -35,9 +35,7 @@ jobs:
           echo -e "::set-output name=changelog::${changelog}\n"
 
       - name: Package extension
-        uses: lannonbr/vsce-action@master
-        with:
-          args: "package -o clipboard-manager.vsix"
+        run: npm run package
 
       - name: Create Release
         id: create_release

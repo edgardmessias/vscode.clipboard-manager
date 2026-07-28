@@ -3,10 +3,10 @@ import * as sinon from "sinon";
 import * as vscode from "vscode";
 import {
   BaseClipboard,
-  defaultClipboard,
   getNewDefaultInstance,
+  defaultClipboard,
 } from "../clipboard";
-import { commandList } from "../commads/common";
+import { commandList } from "../commands/common";
 import { Monitor } from "../monitor";
 import { sleep } from "../util";
 import * as common from "./common";
