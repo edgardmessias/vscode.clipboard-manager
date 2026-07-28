@@ -21,7 +21,7 @@ export class Monitor implements vscode.Disposable {
   private _onDidChangeText = new vscode.EventEmitter<IClipboardTextChange>();
   public readonly onDidChangeText = this._onDidChangeText.event;
 
-  protected _timer: NodeJS.Timer | undefined;
+  protected _timer: ReturnType<typeof setInterval> | undefined;
 
   public maxClipboardSize: number = 1000000;
 

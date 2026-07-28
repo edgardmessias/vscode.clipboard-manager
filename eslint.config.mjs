@@ -31,6 +31,6 @@ export default [
         },
     },
     {
-        ignores: ["out/**", "dist/**", "node_modules/**", "coverage/**", "test-reports/**"],
+        ignores: ["out/**", "dist/**", "node_modules/**", "coverage/**", "test-reports/**", "vitest.config.mts"],
     },
 ];

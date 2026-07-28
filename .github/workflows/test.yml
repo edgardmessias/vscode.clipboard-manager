@@ -9,18 +9,8 @@ on:
       - "*"
 
 jobs:
-  test:
-    if: "!contains(github.event.head_commit.message, 'skip ci')"
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu, macos, windows]
-        version: ["latest", "stable", "insiders"]
-    env:
-      MOCHA_COLORS: 1
-      MOCHA_REPORTER: "mocha-github-actions-reporter"
-    runs-on: ${{ matrix.os }}-latest
-    name: ${{ matrix.os }} (VSCode ${{ matrix.version }})
+  unit:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,16 +18,47 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20.x
+          node-version: 22.x
 
       - name: Install Dependencies
         run: npm ci || npm install
 
-      - name: Setup Mocha Report
-        run: npm install mocha-github-actions-reporter --no-save
+      - name: Run unit tests
+        run: npm test
 
-      - name: Compile Extension
-        run: npm run compile
+      - name: Upload coverage
+        if: always()
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        run: |
+          npm run coverage
+          for i in 1 2 3 4 5; do
+            curl -s https://codecov.io/bash -o codecov.sh
+            bash codecov.sh -f ./coverage/lcov.info && break
+            sleep 5
+          done
+        shell: bash
+
+  e2e:
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu, macos, windows]
+        version: ["stable", "insiders"]
+    runs-on: ${{ matrix.os }}-latest
+    name: e2e ${{ matrix.os }} (VSCode ${{ matrix.version }})
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+
+      - name: Install Dependencies
+        run: npm ci || npm install
 
       - name: Cache VSCode binary
         id: cache-vscode
@@ -48,27 +69,16 @@ jobs:
           restore-keys: |
             vscode-${{ runner.os }}-${{ matrix.version }}-
 
-      - name: Run tests
+      - name: Run e2e tests
         uses: GabrielBB/xvfb-action@v1
         with:
-          run: npm test
+          run: npm run test:e2e
         env:
           CODE_VERSION: ${{ matrix.version }}
         continue-on-error: ${{ matrix.version == 'insiders' }}
 
-      - name: Upload coverage
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        run: |
-          for i in 1 2 3 4 5; do
-            curl -s https://codecov.io/bash -o codecov.sh
-            bash codecov.sh -X gcov -f ./coverage/coverage-final.json -f ./coverage/lcov.info && break
-            sleep 5
-          done
-        shell: bash
-
       - name: Remove old versions of VSCode
-        if: always()
+        if: always() && runner.os != 'Windows'
         run: ls -1 -d .vscode-test/vscode-* | sed -e '$ d' | xargs -I {} rm -rf {} || true
         shell: bash
 
@@ -81,7 +91,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20.x
+          node-version: 22.x
 
       - name: Install Dependencies
         run: npm ci || npm install

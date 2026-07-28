@@ -1,22 +1,10 @@
 import * as path from "path";
-import { downloadAndUnzipVSCode, runTests } from "@vscode/test-electron";
+import { runTests } from "@vscode/test-electron";
 
-async function go() {
-  if (process.argv.includes("--download-only")) {
-    await downloadAndUnzipVSCode(process.env.CODE_VERSION);
-    return;
-  }
-
+async function main() {
   const extensionDevelopmentPath = path.resolve(__dirname, "../../");
-  let extensionTestsPath = path.resolve(__dirname, "../../out/test");
+  const extensionTestsPath = path.resolve(__dirname, ".");
 
-  if (process.env.CODE_TESTS_PATH) {
-    extensionTestsPath = process.env.CODE_TESTS_PATH;
-  }
-
-  /**
-   * Basic usage
-   */
   try {
     await runTests({
       version: process.env.CODE_VERSION,
@@ -24,11 +12,11 @@ async function go() {
       extensionTestsPath,
       launchArgs: ["--disable-extensions"],
     });
-  } catch (err) {
+  } catch (error) {
     console.error("Failed to run tests");
-    console.error(err);
+    console.error(error);
     process.exit(1);
   }
 }
 
-go();
+main();

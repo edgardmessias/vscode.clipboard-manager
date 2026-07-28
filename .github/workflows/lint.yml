@@ -18,21 +18,13 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20.x
+          node-version: 22.x
 
       - name: Install Dependencies
         run: npm ci || npm install
 
-      - uses: haya14busa/action-cond@v1
-        id: cond_report
-        with:
-          cond: ${{ github.event_name == 'push' }}
-          if_true: "github-check"
-          if_false: "github-pr-review"
-
       - name: Lint source
-        uses: reviewdog/action-eslint@v1
-        with:
-          github_token: ${{ secrets.github_token }}
-          reporter: "${{ steps.cond_report.outputs.value }}"
-          eslint_flags: "src --ext .ts"
+        run: npm run lint
+
+      - name: Check formatting
+        run: npm run format:check

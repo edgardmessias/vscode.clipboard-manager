@@ -1,32 +1,35 @@
-//
-// PLEASE DO NOT MODIFY / DELETE UNLESS YOU KNOW WHAT YOU ARE DOING
-//
-// This file is providing the test runner to use when running extension tests.
-// By default the test runner in use is Mocha based.
+import * as path from "path";
+import { glob } from "glob";
+import Mocha from "mocha";
 
-import * as IstanbulTestRunner from "./istanbultestrunner";
+type TestCallback = (error?: Error, failures?: number) => void;
 
-const testRunner = IstanbulTestRunner;
+const mocha = new Mocha({
+  ui: "tdd",
+  color: true,
+  timeout: 60000,
+});
 
-const reporter = process.env.MOCHA_REPORTER || "spec";
+export function run(testsRoot: string, callback: TestCallback): void {
+  glob
+    .glob("**/*.test.js", { cwd: testsRoot, ignore: ["unit/**"] })
+    .then(files => {
+      files.forEach(file => mocha.addFile(path.join(testsRoot, file)));
 
-const mochaOpts: Mocha.MochaOptions = {
-  ui: "tdd", // the TDD UI is being used in extension.test.ts (suite, test, etc.)
-  color: true, // colored output from test results,
-  timeout: 10000, // default timeout: 10 seconds
-  retries: 1,
-  reporter: "mocha-multi-reporters",
-  reporterOptions: {
-    reporterEnabled: reporter,
-  },
-};
+      let failureCount = 0;
 
-testRunner.configure(
-  mochaOpts,
-  // Coverage configuration options
-  {
-    coverConfig: "../../coverconfig.json",
-  }
-);
+      mocha
+        .run()
+        .on("fail", () => {
+          failureCount++;
+        })
+        .on("end", () => {
+          callback(undefined, failureCount);
+        });
+    })
+    .catch(error => {
+      callback(error);
+    });
+}
 
-module.exports = testRunner;
+module.exports = { run };
