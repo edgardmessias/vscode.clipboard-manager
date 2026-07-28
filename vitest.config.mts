@@ -16,7 +16,7 @@ export default defineConfig({
     fileParallelism: false,
     coverage: {
       provider: 'v8',
-      reporter: ['json', 'html', 'lcov', 'text-summary'],
+      reporter: ['lcov', 'json-summary', 'text-summary'],
       include: ['src/**/*.ts'],
       exclude: [
         'src/test/**',
@@ -24,7 +24,7 @@ export default defineConfig({
         '**/node_modules/**',
         'src/extension.ts',
       ],
-      reportsDirectory: 'coverage',
+      reportsDirectory: 'coverage/unit',
     },
   },
   resolve: {

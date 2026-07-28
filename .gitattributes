@@ -1,3 +1,4 @@
-# Set default behavior to automatically normalize line endings.
 * text=auto
 
+# Keep JSON configs UTF-8 / LF (Istanbul reads coverconfig.json via JSON.parse)
+*.json text eol=lf

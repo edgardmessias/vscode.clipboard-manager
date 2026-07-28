@@ -26,19 +26,6 @@ jobs:
       - name: Run unit tests
         run: npm test
 
-      - name: Upload coverage
-        if: always()
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        run: |
-          npm run coverage
-          for i in 1 2 3 4 5; do
-            curl -s https://codecov.io/bash -o codecov.sh
-            bash codecov.sh -f ./coverage/lcov.info && break
-            sleep 5
-          done
-        shell: bash
-
   e2e:
     if: "!contains(github.event.head_commit.message, 'skip ci')"
     strategy:
@@ -69,13 +56,30 @@ jobs:
           restore-keys: |
             vscode-${{ runner.os }}-${{ matrix.version }}-
 
-      - name: Run e2e tests
-        uses: GabrielBB/xvfb-action@v1
+      - name: Run e2e tests (Linux)
+        if: runner.os == 'Linux'
+        uses: coactions/setup-xvfb@b6b4fcfb9f5a895edadc3bc76318fae0ac17c8b3 # v1.0.1
         with:
           run: npm run test:e2e
         env:
           CODE_VERSION: ${{ matrix.version }}
         continue-on-error: ${{ matrix.version == 'insiders' }}
+
+      - name: Run e2e tests
+        if: runner.os != 'Linux'
+        run: npm run test:e2e
+        env:
+          CODE_VERSION: ${{ matrix.version }}
+        continue-on-error: ${{ matrix.version == 'insiders' }}
+
+      - name: Upload coverage to Codecov
+        if: matrix.os == 'ubuntu' && matrix.version == 'stable'
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage/lcov.info
+          flags: e2e
+          fail_ci_if_error: false
 
       - name: Remove old versions of VSCode
         if: always() && runner.os != 'Windows'
