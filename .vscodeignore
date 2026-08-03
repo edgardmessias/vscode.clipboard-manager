@@ -15,4 +15,3 @@ screenshots/**
 src/**
 test-reports/**
 tsconfig.json
-tsdown.config.mts

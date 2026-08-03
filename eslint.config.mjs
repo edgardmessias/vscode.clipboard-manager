@@ -1,24 +1,23 @@
-import tsParser from "@typescript-eslint/parser";
-import tsPlugin from "@typescript-eslint/eslint-plugin";
-import prettierPlugin from "eslint-plugin-prettier";
+import eslint from "@eslint/js";
+import { defineConfig } from "eslint/config";
+import eslintConfigPrettier from "eslint-config-prettier";
+import tseslint from "typescript-eslint";
 
-export default [
+export default defineConfig(
+    {
+        ignores: ["out/**", "dist/**", "node_modules/**", "test-reports/**", "vitest.config.mts"],
+    },
+    eslint.configs.recommended,
+    ...tseslint.configs.recommended,
     {
         files: ["src/**/*.ts"],
         languageOptions: {
-            parser: tsParser,
             parserOptions: {
-                project: "./tsconfig.json",
+                projectService: true,
+                tsconfigRootDir: import.meta.dirname,
             },
-            ecmaVersion: 2022,
-            sourceType: "module",
-        },
-        plugins: {
-            "@typescript-eslint": tsPlugin,
-            prettier: prettierPlugin,
         },
         rules: {
-            ...tsPlugin.configs["recommended"].rules,
             "@typescript-eslint/explicit-function-return-type": "off",
             "@typescript-eslint/no-explicit-any": "off",
             "@typescript-eslint/no-non-null-assertion": "off",
@@ -27,10 +26,7 @@ export default [
             "@typescript-eslint/no-var-requires": "off",
             "@typescript-eslint/no-require-imports": "off",
             "no-empty": ["error", { allowEmptyCatch: true }],
-            "prettier/prettier": "error",
         },
     },
-    {
-        ignores: ["out/**", "dist/**", "node_modules/**", "test-reports/**", "vitest.config.mts"],
-    },
-];
+    eslintConfigPrettier,
+);

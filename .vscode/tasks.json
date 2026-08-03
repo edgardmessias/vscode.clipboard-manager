@@ -4,31 +4,7 @@
         {
             "type": "npm",
             "script": "watch",
-            "problemMatcher": {
-                "owner": "tsdown",
-                "source": "tsdown",
-                "severity": "error",
-                "applyTo": "closedDocuments",
-                "fileLocation": "relative",
-                "pattern": [
-                    {
-                        "regexp": "^.*\\[([A-Z0-9_]+)\\]\\s*Error:\\s*(?:\\x1b\\[[0-9;]*m)*\\s*(.+)$",
-                        "code": 1,
-                        "message": 2
-                    },
-                    {
-                        "regexp": "^.*\\s((?:[a-zA-Z]:\\\\)?[a-zA-Z0-9_@./\\\\-]+\\.(?:tsx?|jsx?|m?[jt]s)):(\\d+):(\\d+)\\s",
-                        "file": 1,
-                        "line": 2,
-                        "column": 3
-                    }
-                ],
-                "background": {
-                    "activeOnStart": true,
-                    "beginsPattern": "Build start",
-                    "endsPattern": "Rebuilt in|Build complete in|at async runCLI"
-                }
-            },
+            "problemMatcher": "$tsc-watch",
             "isBackground": true,
             "presentation": {
                 "reveal": "never"
