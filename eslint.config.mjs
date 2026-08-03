@@ -31,6 +31,6 @@ export default [
         },
     },
     {
-        ignores: ["out/**", "dist/**", "node_modules/**", "coverage/**", "test-reports/**", "vitest.config.mts", "src/test/istanbultestrunner.ts"],
+        ignores: ["out/**", "dist/**", "node_modules/**", "test-reports/**", "vitest.config.mts"],
     },
 ];

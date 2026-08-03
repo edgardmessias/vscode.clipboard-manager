@@ -72,15 +72,6 @@ jobs:
           CODE_VERSION: ${{ matrix.version }}
         continue-on-error: ${{ matrix.version == 'insiders' }}
 
-      - name: Upload coverage to Codecov
-        if: matrix.os == 'ubuntu' && matrix.version == 'stable'
-        uses: codecov/codecov-action@v5
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: coverage/lcov.info
-          flags: e2e
-          fail_ci_if_error: false
-
       - name: Remove old versions of VSCode
         if: always() && runner.os != 'Windows'
         run: ls -1 -d .vscode-test/vscode-* | sed -e '$ d' | xargs -I {} rm -rf {} || true

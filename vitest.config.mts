@@ -14,18 +14,6 @@ export default defineConfig({
     exclude: ['node_modules', 'out'],
     setupFiles: ['src/test/unit/vitestSetup.ts'],
     fileParallelism: false,
-    coverage: {
-      provider: 'v8',
-      reporter: ['lcov', 'json-summary', 'text-summary'],
-      include: ['src/**/*.ts'],
-      exclude: [
-        'src/test/**',
-        'src/tools/**',
-        '**/node_modules/**',
-        'src/extension.ts',
-      ],
-      reportsDirectory: 'coverage/unit',
-    },
   },
   resolve: {
     alias: {

@@ -12,7 +12,6 @@
 [![DevDependencies Status](https://david-dm.org/edgardmessias/vscode.clipboard-manager/dev-status.svg)](https://david-dm.org/edgardmessias/vscode.clipboard-manager?type=dev)
 [![Dependabot badge](https://badgen.net/dependabot/edgardmessias/vscode.clipboard-manager/?icon=dependabot)](https://dependabot.com/)
 
-[![Coverage Status](https://codecov.io/gh/edgardmessias/vscode.clipboard-manager/branch/master/graph/badge.svg)](https://codecov.io/gh/edgardmessias/vscode.clipboard-manager)
 [![Known Vulnerabilities](https://snyk.io/test/github/edgardmessias/vscode.clipboard-manager/badge.svg)](https://snyk.io/test/github/edgardmessias/vscode.clipboard-manager)
 
 [![Average time to resolve an issue](https://isitmaintained.com/badge/resolution/edgardmessias/vscode.clipboard-manager.svg)](https://isitmaintained.com/project/edgardmessias/vscode.clipboard-manager "Average time to resolve an issue")
