@@ -8,6 +8,8 @@
 
 Keep a searchable history of everything you copy and cut in the editor, then paste any item again **without replacing** the default `Ctrl+C` / `Ctrl+V` shortcuts.
 
+![Clipboard Manager overview](screenshots/clipboard-manager.gif)
+
 ## Table of contents
 
 - [Features](#features)
@@ -22,6 +24,7 @@ Keep a searchable history of everything you copy and cut in the editor, then pas
 
 - **Clipboard history** — automatically tracks copied and cut text from the editor
 - **Sidebar panel** — browse, filter, expand, and manage clips in a dedicated webview
+- **In-panel settings** — change extension settings from the webview (user or workspace scope)
 - **Pick and Paste** — quick picker with live preview in the editor (`Ctrl+Shift+V` / `Cmd+Shift+V`)
 - **Hover preview** — preview a clip in the editor before confirming paste from the sidebar
 - **Snippet completion** — insert recent clips with prefixes like `clip1`, `clip2`, …
@@ -56,6 +59,7 @@ Keep a searchable history of everything you copy and cut in the editor, then pas
 | Expand content | Click the chevron or use the context menu |
 | Copy / open source / remove | Right-click a clip |
 | Clear history | Toolbar clear button |
+| Open settings | **Settings** tab in the sidebar panel |
 
 ### Commands
 
@@ -68,6 +72,8 @@ All commands are available from the Command Palette under **Clipboard Manager**:
 - **Remove** (selected clip)
 
 ## Configuration
+
+You can edit settings from the **Settings** tab in the Clipboard History panel (user or workspace scope), or from VS Code Settings (`clipboard-manager.*`).
 
 Default settings contributed by this extension:
 
@@ -112,13 +118,25 @@ Default settings contributed by this extension:
 
 ## Examples
 
-**Copy to history**
+### Clipboard History
 
-![Copy text into clipboard history](screenshots/copy.gif)
+Browse, filter, expand, and paste clips from the sidebar panel.
 
-**Pick and paste with preview**
+![Clipboard History panel](screenshots/clipboard-history.png)
 
-![Pick a clip from history and paste](screenshots/pick-and-paste.gif)
+### Snippets
+
+Insert recent clips with completion prefixes like `clip1`, `clip2`, …
+
+![Snippet completion](screenshots/snippets.png)
+
+### Settings
+
+Configure the extension from the webview without leaving the panel.
+
+![Settings — user scope](screenshots/settings-1.png)
+
+![Settings — workspace scope](screenshots/settings-2.png)
 
 ## Development
 
@@ -144,14 +162,16 @@ If this extension saves you time, consider supporting ongoing development:
   <tr>
     <td align="center">
       <strong>PayPal</strong><br>
-      <img src="https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=https://www.paypal.com/donate?hosted_button_id=5KHYY5ZDTNDSY" alt="PayPal QR code"><br>
-      <a href="https://www.paypal.com/donate?hosted_button_id=5KHYY5ZDTNDSY">
+      <img src="https://quickchart.io/qr?chs=250x250&cht=qr&text=https://www.paypal.com/donate?hosted_button_id=5KHYY5ZDTNDSY" alt="PayPal QR code"><br>
+      <a href="https://www.paypal.com/donate/?hosted_button_id=VM8EPZ6EW6UWS">
         <img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" alt="Donate with PayPal">
       </a>
+      <br />
+      <code>edgardmessias@gmail.com</code>
     </td>
     <td align="center">
       <strong>Pix (Brazil)</strong><br>
-      <img src="https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=00020126680014BR.GOV.BCB.PIX013628571c52-8b9b-416c-a18f-8e52460608810206Doa%C3%A7%C3%A3o5204000053039865802BR5923Edgard%20Lorraine%20Messias6009SAO%20PAULO61080540900062160512NU50UnEaVM0H63042A45" alt="Pix QR code"><br>
+      <img src="https://quickchart.io/qr?chs=250x250&cht=qr&text=28571c52-8b9b-416c-a18f-8e5246060881" alt="Pix QR code"><br>
       <code>28571c52-8b9b-416c-a18f-8e5246060881</code>
     </td>
   </tr>
