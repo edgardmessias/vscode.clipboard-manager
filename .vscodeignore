@@ -8,10 +8,9 @@ coverconfig.json
 dist/**
 eslint.config.mjs
 out/**/*.map
-out/test/**
-out/tools/**
 package-lock.json
 screenshots/**
 src/**
 test-reports/**
 tsconfig.json
+webview-ui/**

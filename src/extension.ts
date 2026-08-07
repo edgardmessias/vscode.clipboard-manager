@@ -3,7 +3,6 @@ import * as vscode from "vscode";
 import { defaultClipboard } from "./clipboard";
 import { ApiGetMonitor } from "./commands/apiGetMonitor";
 import { ClearClipboardHistory } from "./commands/clearClipboardHistory";
-import { HistoryTreeDoubleClickCommand } from "./commands/historyTreeDoubleClick";
 import { PickAndPasteCommand } from "./commands/pickAndPaste";
 import { RemoveClipboardHistory } from "./commands/removeClipboardHistory";
 import { SetClipboardValueCommand } from "./commands/setClipboardValue";
@@ -11,21 +10,21 @@ import { ShowClipboardInFile } from "./commands/showClipboardInFile";
 import { ClipboardCompletion } from "./completion";
 import { ClipboardManager } from "./manager";
 import { Monitor } from "./monitor";
-import { ClipboardTreeDataProvider } from "./tree/history";
 import { CopyToHistoryCommand } from "./commands/copyToHistory";
+import {
+  ClipboardHistoryWebviewProvider,
+  CLIPBOARD_HISTORY_VIEW_ID,
+} from "./webview/clipboardHistoryProvider";
 
 let manager: ClipboardManager;
 
-// this method is called when your extension is activated
 export async function activate(context: vscode.ExtensionContext) {
   const disposable: vscode.Disposable[] = [];
 
-  // Check the clipboard is working
   try {
-    await defaultClipboard.readText(); // Read test
+    await defaultClipboard.readText();
   } catch (error: any) {
     console.log(error);
-    // Small delay to force show error
     setTimeout(() => {
       if (error.message) {
         vscode.window.showErrorMessage(error.message);
@@ -35,12 +34,10 @@ export async function activate(context: vscode.ExtensionContext) {
         );
       }
     }, 2000);
-    // Disable clipboard listening
     defaultClipboard.dispose();
     return;
   }
 
-  // Add to disposable list the default clipboard
   disposable.push(defaultClipboard);
 
   const monitor = new Monitor(defaultClipboard);
@@ -49,12 +46,8 @@ export async function activate(context: vscode.ExtensionContext) {
   manager = new ClipboardManager(context, monitor);
   disposable.push(manager);
 
-  // API Commands
   disposable.push(new ApiGetMonitor(monitor));
-
-  // Commands
   disposable.push(new PickAndPasteCommand(manager));
-  disposable.push(new HistoryTreeDoubleClickCommand(manager));
   disposable.push(new SetClipboardValueCommand(manager));
   disposable.push(new RemoveClipboardHistory(manager));
   disposable.push(new ShowClipboardInFile(manager));
@@ -64,33 +57,31 @@ export async function activate(context: vscode.ExtensionContext) {
   const completion = new ClipboardCompletion(manager);
   disposable.push(completion);
 
-  // All files types
   disposable.push(
     vscode.languages.registerCompletionItemProvider(
-      {
-        scheme: "file",
-      },
+      { scheme: "file" },
       completion
     )
   );
 
-  // All files types (New file)
   disposable.push(
     vscode.languages.registerCompletionItemProvider(
-      {
-        scheme: "untitled",
-      },
+      { scheme: "untitled" },
       completion
     )
   );
 
-  const clipboardTreeDataProvider = new ClipboardTreeDataProvider(manager);
-  disposable.push(clipboardTreeDataProvider);
+  const historyProvider = new ClipboardHistoryWebviewProvider(
+    context.extensionUri,
+    manager
+  );
+  disposable.push(historyProvider);
 
   disposable.push(
-    vscode.window.registerTreeDataProvider(
-      "clipboardHistory",
-      clipboardTreeDataProvider
+    vscode.window.registerWebviewViewProvider(
+      CLIPBOARD_HISTORY_VIEW_ID,
+      historyProvider,
+      { webviewOptions: { retainContextWhenHidden: true } }
     )
   );
 
@@ -116,7 +107,6 @@ export async function activate(context: vscode.ExtensionContext) {
   };
 }
 
-// this method is called when your extension is deactivated
 export async function deactivate() {
   if (manager) {
     await manager.shutdown();

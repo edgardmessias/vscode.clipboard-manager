@@ -14,5 +14,5 @@
         "skipLibCheck": true,
         "types": ["node", "vitest/globals"]
     },
-    "exclude": ["node_modules", ".vscode-test", "out", "dist", "vitest.config.mts"]
+    "exclude": ["node_modules", ".vscode-test", "out", "dist", "vitest.config.mts", "webview-ui"]
 }

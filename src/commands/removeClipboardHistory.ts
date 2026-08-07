@@ -1,6 +1,5 @@
 import * as vscode from "vscode";
-import { ClipboardManager } from "../manager";
-import { ClipHistoryItem } from "../tree/history";
+import { ClipboardManager, IClipboardItem } from "../manager";
 import { commandList } from "./common";
 
 export class RemoveClipboardHistory implements vscode.Disposable {
@@ -16,13 +15,9 @@ export class RemoveClipboardHistory implements vscode.Disposable {
     );
   }
 
-  protected async execute(value: string | ClipHistoryItem) {
-    if (value instanceof ClipHistoryItem) {
-      value = value.clip.value;
-    }
-
-    // Update current clip in clipboard
-    await this._manager.removeClipboardValue(value);
+  protected async execute(value: string | IClipboardItem) {
+    const clipValue = typeof value === "string" ? value : value.value;
+    await this._manager.removeClipboardValue(clipValue);
   }
 
   public dispose() {
