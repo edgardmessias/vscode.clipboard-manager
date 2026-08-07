@@ -57,6 +57,30 @@ class Location {
   ) {}
 }
 
+let _workspaceFolders: Array<{ uri: { fsPath: string } }> | undefined;
+
+const workspace = {
+  get workspaceFolders() {
+    return _workspaceFolders;
+  },
+  set workspaceFolders(value: Array<{ uri: { fsPath: string } }> | undefined) {
+    _workspaceFolders = value;
+  },
+  getConfiguration: vi.fn().mockReturnValue({
+    get: vi.fn(),
+    inspect: vi.fn(),
+    update: vi.fn().mockResolvedValue(undefined),
+  }),
+  openTextDocument: vi.fn(),
+  onDidChangeConfiguration: vi.fn(),
+};
+
+const ConfigurationTarget = {
+  Global: 1,
+  Workspace: 2,
+  WorkspaceFolder: 3,
+};
+
 const window = {
   createOutputChannel: vi.fn(),
   showInformationMessage: vi.fn(),
@@ -64,16 +88,8 @@ const window = {
   showErrorMessage: vi.fn(),
   showQuickPick: vi.fn(),
   showTextDocument: vi.fn(),
+  showOpenDialog: vi.fn(),
   onDidChangeWindowState: vi.fn(),
-};
-
-const workspace = {
-  getConfiguration: vi.fn().mockReturnValue({
-    get: vi.fn(),
-    update: vi.fn().mockResolvedValue(undefined),
-  }),
-  openTextDocument: vi.fn(),
-  onDidChangeConfiguration: vi.fn(),
 };
 
 const extensions = {
@@ -94,6 +110,7 @@ const env = {
 
 export {
   commands,
+  ConfigurationTarget,
   Disposable,
   env,
   EventEmitter,

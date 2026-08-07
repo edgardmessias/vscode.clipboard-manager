@@ -15,6 +15,20 @@ export interface ClipDetail {
   value: string;
 }
 
+export type ConfigTarget = "global" | "workspace";
+
+export type EffectiveTarget = "default" | "global" | "workspace";
+
+export interface SettingSnapshot {
+  key: string;
+  value: unknown;
+  defaultValue: unknown;
+  globalValue?: unknown;
+  workspaceValue?: unknown;
+  effectiveTarget: EffectiveTarget;
+  canSetWorkspace: boolean;
+}
+
 export type WebviewToHostMessage =
   | { type: "ready" }
   | { type: "clips/filter"; query: string }
@@ -25,10 +39,19 @@ export type WebviewToHostMessage =
   | { type: "clip/remove"; id: string }
   | { type: "clip/showInFile"; id: string }
   | { type: "clip/requestDetail"; id: string }
-  | { type: "history/clear" };
+  | { type: "history/clear" }
+  | { type: "config/request" }
+  | { type: "config/set"; key: string; value: unknown; target: ConfigTarget }
+  | { type: "config/reset"; key: string; target: ConfigTarget }
+  | { type: "config/browseSavePath" };
 
 export type HostToWebviewMessage =
   | { type: "clips/update"; clips: ClipSummary[] }
   | { type: "clips/filterResult"; query: string; ids: string[] }
   | { type: "clip/detail"; clip: ClipDetail }
-  | { type: "config/update"; preview: boolean };
+  | { type: "config/update"; preview: boolean }
+  | {
+      type: "config/settings";
+      hasWorkspace: boolean;
+      settings: SettingSnapshot[];
+    };

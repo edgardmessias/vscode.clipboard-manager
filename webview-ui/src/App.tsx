@@ -3,6 +3,9 @@ import type { ClipDetail, ClipSummary } from "./messages";
 import { useClipPreviewHover } from "./useClipPreviewHover";
 import { onHostMessage, postToHost } from "./vscode";
 import { Icon, IconButton } from "./components/Icons";
+import { SettingsView } from "./components/SettingsView";
+
+type Screen = "history" | "settings";
 
 interface ContextMenuState {
   x: number;
@@ -170,6 +173,7 @@ function ContextMenu({
 }
 
 export function App() {
+  const [screen, setScreen] = useState<Screen>("history");
   const [clips, setClips] = useState<ClipSummary[]>([]);
   const [query, setQuery] = useState("");
   const [filteredIds, setFilteredIds] = useState<string[] | null>(null);
@@ -278,63 +282,96 @@ export function App() {
 
   return (
     <div className="panel">
-      <div className="toolbar">
-        <span className="search-wrap">
-          <Icon name="search" className="search-icon" />
-          <input
-            className="search-input"
-            type="search"
-            placeholder="Filter..."
-            value={query}
-            onChange={event => setQuery(event.target.value)}
-          />
-        </span>
-        <IconButton
-          icon="clear"
-          label="Clear history"
-          onClick={() => postToHost({ type: "history/clear" })}
-        />
-      </div>
+      <nav className="tab-bar" role="tablist" aria-label="Clipboard Manager">
+        <button
+          type="button"
+          role="tab"
+          className={`tab-btn${screen === "history" ? " is-active" : ""}`}
+          aria-selected={screen === "history"}
+          onClick={() => setScreen("history")}
+        >
+          <Icon name="history" />
+          History
+        </button>
+        <button
+          type="button"
+          role="tab"
+          className={`tab-btn${screen === "settings" ? " is-active" : ""}`}
+          aria-selected={screen === "settings"}
+          onClick={() => setScreen("settings")}
+        >
+          <Icon name="settings" />
+          Settings
+        </button>
+      </nav>
 
-      {isEmpty ? (
-        <div className="empty-state">
-          <p className="empty-title">No clips yet</p>
-          <p className="empty-desc">Copy text in the editor to fill the list.</p>
-        </div>
-      ) : hasNoMatches ? (
-        <div className="empty-state">
-          <p className="empty-title">No matches</p>
-          <p className="empty-desc">Try a different search term.</p>
-        </div>
+      {screen === "settings" ? (
+        <SettingsView />
       ) : (
-        <div className="clip-list" onMouseLeave={clearPreview}>
-          {filteredClips.map((clip, index) => (
-            <ClipRow
-              key={clip.id}
-              clip={clip}
-              index={index}
-              expanded={expandedId === clip.id}
-              detail={
-                expandedId === clip.id ? expandedDetail ?? undefined : undefined
-              }
-              onToggleExpand={handleToggleExpand}
-              onContextMenu={handleContextMenu}
-              onPasteEnter={onPasteEnter}
-              onPasteLeave={onPasteLeave}
-              onPasteClick={onPasteClick}
+        <div className="panel-content">
+          <div className="toolbar">
+            <span className="search-wrap">
+              <Icon name="search" className="search-icon" />
+              <input
+                className="search-input"
+                type="search"
+                placeholder="Filter..."
+                value={query}
+                onChange={event => setQuery(event.target.value)}
+              />
+            </span>
+            <IconButton
+              icon="clear"
+              label="Clear history"
+              onClick={() => postToHost({ type: "history/clear" })}
             />
-          ))}
-        </div>
-      )}
+          </div>
 
-      {contextMenu && contextClip && (
-        <ContextMenu
-          state={contextMenu}
-          clip={contextClip}
-          expanded={expandedId === contextClip.id}
-          onClose={() => setContextMenu(null)}
-          onToggleExpand={handleToggleExpand}
-        />
+          {isEmpty ? (
+            <div className="empty-state">
+              <p className="empty-title">No clips yet</p>
+              <p className="empty-desc">
+                Copy text in the editor to fill the list.
+              </p>
+            </div>
+          ) : hasNoMatches ? (
+            <div className="empty-state">
+              <p className="empty-title">No matches</p>
+              <p className="empty-desc">Try a different search term.</p>
+            </div>
+          ) : (
+            <div className="clip-list" onMouseLeave={clearPreview}>
+              {filteredClips.map((clip, index) => (
+                <ClipRow
+                  key={clip.id}
+                  clip={clip}
+                  index={index}
+                  expanded={expandedId === clip.id}
+                  detail={
+                    expandedId === clip.id
+                      ? expandedDetail ?? undefined
+                      : undefined
+                  }
+                  onToggleExpand={handleToggleExpand}
+                  onContextMenu={handleContextMenu}
+                  onPasteEnter={onPasteEnter}
+                  onPasteLeave={onPasteLeave}
+                  onPasteClick={onPasteClick}
+                />
+              ))}
+            </div>
+          )}
+
+          {contextMenu && contextClip && (
+            <ContextMenu
+              state={contextMenu}
+              clip={contextClip}
+              expanded={expandedId === contextClip.id}
+              onClose={() => setContextMenu(null)}
+              onToggleExpand={handleToggleExpand}
+            />
+          )}
+        </div>
       )}
     </div>
   );

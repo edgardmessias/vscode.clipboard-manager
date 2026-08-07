@@ -9,6 +9,14 @@ import {
   HostToWebviewMessage,
   WebviewToHostMessage,
 } from "./messages";
+import {
+  browseSavePath,
+  getPreviewEnabled,
+  getSettingsSnapshot,
+  resetSetting,
+  setSetting,
+  SettingsValidationError,
+} from "./settingsService";
 
 function toClipSummary(clip: IClipboardItem): ClipSummary {
   return {
@@ -62,8 +70,9 @@ export class ClipboardHistoryWebviewProvider
 
     this._disposables.push(
       vscode.workspace.onDidChangeConfiguration(e => {
-        if (e.affectsConfiguration("clipboard-manager.preview")) {
+        if (e.affectsConfiguration("clipboard-manager")) {
           this.postConfigUpdate();
+          this.postSettingsUpdate();
         }
       })
     );
@@ -148,11 +157,19 @@ export class ClipboardHistoryWebviewProvider
   }
 
   private postConfigUpdate(): void {
-    const config = vscode.workspace.getConfiguration("clipboard-manager");
-    this._previewEnabled = config.get("preview", true);
+    this._previewEnabled = getPreviewEnabled();
     this.postMessage({
       type: "config/update",
       preview: this._previewEnabled,
+    });
+  }
+
+  private postSettingsUpdate(): void {
+    const snapshot = getSettingsSnapshot();
+    this.postMessage({
+      type: "config/settings",
+      hasWorkspace: snapshot.hasWorkspace,
+      settings: snapshot.settings,
     });
   }
 
@@ -247,6 +264,54 @@ export class ClipboardHistoryWebviewProvider
         if (response === yes) {
           await this._preview.clear();
           await this._manager.clearAll();
+        }
+        break;
+      }
+
+      case "config/request":
+        this.postSettingsUpdate();
+        break;
+
+      case "config/set":
+        try {
+          await setSetting(message.key, message.value, message.target);
+          this.postSettingsUpdate();
+        } catch (error) {
+          const text =
+            error instanceof SettingsValidationError
+              ? error.message
+              : "Failed to update setting";
+          void vscode.window.showErrorMessage(text);
+        }
+        break;
+
+      case "config/reset":
+        try {
+          await resetSetting(message.key, message.target);
+          this.postSettingsUpdate();
+        } catch (error) {
+          const text =
+            error instanceof SettingsValidationError
+              ? error.message
+              : "Failed to reset setting";
+          void vscode.window.showErrorMessage(text);
+        }
+        break;
+
+      case "config/browseSavePath": {
+        const path = await browseSavePath();
+        if (!path) {
+          break;
+        }
+        try {
+          await setSetting("saveTo", path, "global");
+          this.postSettingsUpdate();
+        } catch (error) {
+          const text =
+            error instanceof SettingsValidationError
+              ? error.message
+              : "Failed to update save location";
+          void vscode.window.showErrorMessage(text);
         }
         break;
       }
