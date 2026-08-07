@@ -28,19 +28,17 @@ function createConfigMock(store: ConfigStore) {
         ? store[`workspace:${key}`]
         : undefined,
     })),
-    update: vi.fn(
-      async (key: string, value: unknown, target: number) => {
-        const prefix =
-          target === ConfigurationTarget.Global ? "global" : "workspace";
-        const storeKey = `${prefix}:${key}`;
-        if (value === undefined) {
-          delete store[storeKey];
-          return;
-        }
-        store[storeKey] = value;
-        store[key] = value;
+    update: vi.fn(async (key: string, value: unknown, target: number) => {
+      const prefix =
+        target === ConfigurationTarget.Global ? "global" : "workspace";
+      const storeKey = `${prefix}:${key}`;
+      if (value === undefined) {
+        delete store[storeKey];
+        return;
       }
-    ),
+      store[storeKey] = value;
+      store[key] = value;
+    }),
   };
 }
 
@@ -100,9 +98,9 @@ describe("settingsService", () => {
     });
 
     it("should reject empty snippet prefix", async () => {
-      await expect(setSetting("snippet.prefix", "  ", "global")).rejects.toThrow(
-        SettingsValidationError
-      );
+      await expect(
+        setSetting("snippet.prefix", "  ", "global")
+      ).rejects.toThrow(SettingsValidationError);
     });
 
     it("should reject workspace updates when no folder is open", async () => {

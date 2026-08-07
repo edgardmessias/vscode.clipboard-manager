@@ -1,9 +1,5 @@
 import * as vscode from "vscode";
-import {
-  ConfigTarget,
-  EffectiveTarget,
-  SettingSnapshot,
-} from "./messages";
+import { ConfigTarget, EffectiveTarget, SettingSnapshot } from "./messages";
 import {
   getSettingDefinition,
   SETTING_DEFINITIONS,
@@ -61,10 +57,7 @@ function toSnapshot(definition: SettingDefinition): SettingSnapshot {
   };
 }
 
-function validateValue(
-  definition: SettingDefinition,
-  value: unknown
-): unknown {
+function validateValue(definition: SettingDefinition, value: unknown): unknown {
   switch (definition.type) {
     case "boolean":
       if (typeof value !== "boolean") {
@@ -122,7 +115,9 @@ function validateValue(
   }
 }
 
-function toConfigurationTarget(target: ConfigTarget): vscode.ConfigurationTarget {
+function toConfigurationTarget(
+  target: ConfigTarget
+): vscode.ConfigurationTarget {
   return target === "global"
     ? vscode.ConfigurationTarget.Global
     : vscode.ConfigurationTarget.Workspace;
@@ -158,11 +153,7 @@ export async function setSetting(
 
   const validated = validateValue(definition, value);
   const config = vscode.workspace.getConfiguration("clipboard-manager");
-  await config.update(
-    key,
-    validated,
-    toConfigurationTarget(target)
-  );
+  await config.update(key, validated, toConfigurationTarget(target));
 }
 
 export async function resetSetting(
