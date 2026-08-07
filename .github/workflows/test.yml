@@ -13,12 +13,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 22.x
+          node-version: 24.x
+          package-manager-cache: false
 
       - name: Install Dependencies
         run: npm ci || npm install
@@ -37,19 +38,20 @@ jobs:
     name: e2e ${{ matrix.os }} (VSCode ${{ matrix.version }})
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 22.x
+          node-version: 24.x
+          package-manager-cache: false
 
       - name: Install Dependencies
         run: npm ci || npm install
 
       - name: Cache VSCode binary
         id: cache-vscode
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: .vscode-test
           key: vscode-${{ runner.os }}-${{ matrix.version }}-${{ github.run_id }}
@@ -67,12 +69,17 @@ jobs:
 
       - name: Run e2e tests (macOS, with retry)
         if: runner.os == 'macOS'
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 30
-          max_attempts: 3
-          retry_on: error
-          command: npm run test:e2e
+        shell: bash
+        run: |
+          for attempt in 1 2 3; do
+            echo "e2e attempt ${attempt}/3"
+            npm run test:e2e && exit 0
+            if [ "${attempt}" -lt 3 ]; then
+              echo "Attempt ${attempt} failed, retrying in 5s..."
+              sleep 5
+            fi
+          done
+          exit 1
         env:
           CODE_VERSION: ${{ matrix.version }}
         continue-on-error: ${{ matrix.version == 'insiders' }}
@@ -93,12 +100,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 22.x
+          node-version: 24.x
+          package-manager-cache: false
 
       - name: Install Dependencies
         run: npm ci || npm install
@@ -111,7 +119,7 @@ jobs:
         run: npm run package
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: "clipboard-manager-${{ github.sha }}.vsix"
           path: clipboard-manager.vsix

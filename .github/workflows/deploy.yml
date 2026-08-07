@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -18,9 +18,10 @@ jobs:
         run: git fetch --tags -f || true
 
       - name: Install Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 22.x
+          node-version: 24.x
+          package-manager-cache: false
 
       - name: Install Dependencies
         run: npm ci || npm install
@@ -29,45 +30,31 @@ jobs:
         id: generate_changelog
         run: |
           changelog=$(npm run changelog:last --silent)
-          changelog="${changelog//$'\n'/'%0A'}"
-          changelog="${changelog//$'\r'/'%0D'}" 
-          echo -e "set-output name=changelog::${changelog-<empty>}\n"
-          echo -e "::set-output name=changelog::${changelog}\n"
+          {
+            echo "changelog<<EOF"
+            echo "${changelog}"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Package extension
         run: npm run package
 
       - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
           body: ${{ steps.generate_changelog.outputs.changelog }}
           draft: false
           prerelease: false
-
-      - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./clipboard-manager.vsix
-          asset_name: clipboard-manager.vsix
-          asset_content_type: application/zip
+          files: clipboard-manager.vsix
 
       - name: Publish in marketplace
-        uses: lannonbr/vsce-action@master
-        with:
-          args: "publish -p $VSCE_TOKEN"
+        run: npx @vscode/vsce publish -p "$VSCE_TOKEN"
         env:
           VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
 
       - name: Publish in Open VSX Registry
-        run: npx ovsx publish clipboard-manager.vsix -p $OVSX_TOKEN
+        run: npx ovsx publish clipboard-manager.vsix -p "$OVSX_TOKEN"
         env:
           OVSX_TOKEN: ${{ secrets.OVSX_TOKEN }}
