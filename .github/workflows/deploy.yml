@@ -5,6 +5,13 @@ on:
     tags:
       - "v*"
 
+permissions:
+  contents: write
+
+env:
+  PUBLISHER: EdgardMessias
+  VSIX_FILE: clipboard-manager.vsix
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -26,6 +33,36 @@ jobs:
       - name: Install Dependencies
         run: npm ci || npm install
 
+      - name: Determine release metadata
+        id: meta
+        run: |
+          set -euo pipefail
+
+          tag_name="${GITHUB_REF_NAME}"
+          version="${tag_name#v}"
+
+          if echo "$version" | grep -Eq -- '-(alpha|beta|rc|pre)[.-]?'; then
+            release_type="prerelease"
+            vsce_flags="--pre-release"
+            ovsx_flags="--pre-release"
+          else
+            release_type="stable"
+            vsce_flags=""
+            ovsx_flags=""
+          fi
+
+          {
+            echo "release_type=$release_type"
+            echo "version=$version"
+            echo "tag_name=$tag_name"
+            echo "vsce_flags=$vsce_flags"
+            echo "ovsx_flags=$ovsx_flags"
+          } >> "$GITHUB_OUTPUT"
+
+          echo "Release type: $release_type"
+          echo "Version: $version"
+          echo "Tag: $tag_name"
+
       - name: Generate Changelog
         id: generate_changelog
         run: |
@@ -36,25 +73,24 @@ jobs:
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 
-      - name: Package extension
-        run: npm run package
+      - name: Package VSIX
+        run: npx @vscode/vsce package --no-dependencies -o "$VSIX_FILE" ${{ steps.meta.outputs.vsce_flags }}
 
-      - name: Create Release
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref_name }}
-          name: ${{ github.ref_name }}
+          tag_name: ${{ steps.meta.outputs.tag_name }}
+          name: ${{ steps.meta.outputs.tag_name }}
           body: ${{ steps.generate_changelog.outputs.changelog }}
-          draft: false
-          prerelease: false
-          files: clipboard-manager.vsix
+          prerelease: ${{ steps.meta.outputs.release_type == 'prerelease' }}
+          files: ${{ env.VSIX_FILE }}
 
-      - name: Publish in marketplace
-        run: npx @vscode/vsce publish -p "$VSCE_TOKEN"
+      - name: Publish to Visual Studio Marketplace
+        run: npx @vscode/vsce publish -i "$VSIX_FILE" -p "$VSCE_TOKEN" ${{ steps.meta.outputs.vsce_flags }}
         env:
           VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
 
-      - name: Publish in Open VSX Registry
-        run: npx ovsx publish clipboard-manager.vsix -p "$OVSX_TOKEN"
+      - name: Publish to Open VSX Registry
+        run: npx ovsx publish "$VSIX_FILE" -p "$OVSX_TOKEN" ${{ steps.meta.outputs.ovsx_flags }}
         env:
           OVSX_TOKEN: ${{ secrets.OVSX_TOKEN }}

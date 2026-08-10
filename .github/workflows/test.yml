@@ -116,7 +116,7 @@ jobs:
 
       - name: Package extension
         id: package
-        run: npm run package
+        run: npm run vsix
 
       - name: Upload artifact
         uses: actions/upload-artifact@v5
