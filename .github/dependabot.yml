@@ -13,6 +13,8 @@ updates:
         versions: [">= 0"]
       - dependency-name: "@types/vscode"
         versions: [">= 0"]
+      - dependency-name: "typescript"
+        versions: [">= 7"]
     groups:
       react:
         patterns:
