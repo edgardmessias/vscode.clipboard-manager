@@ -1,0 +1,101 @@
+name: Validate Publish Tokens
+
+on:
+  schedule:
+    # Mondays at 09:00 UTC
+    - cron: "0 9 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  vsce:
+    name: VSCE (Visual Studio Marketplace)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24.x
+          package-manager-cache: false
+
+      - name: Verify VSCE token
+        env:
+          VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
+        run: |
+          if [ -z "$VSCE_TOKEN" ]; then
+            echo "::error::VSCE_TOKEN secret is not configured in repository settings."
+            exit 1
+          fi
+          npx @vscode/vsce verify-pat EdgardMessias -p "$VSCE_TOKEN"
+
+      - name: Warn about upcoming VSCE token expiration
+        env:
+          VSCE_TOKEN_EXPIRES: ${{ secrets.VSCE_TOKEN_EXPIRES }}
+          WARN_DAYS: "30"
+        run: |
+          if [ -z "$VSCE_TOKEN_EXPIRES" ]; then
+            echo "::notice::VSCE_TOKEN_EXPIRES secret not set. Add an ISO date (YYYY-MM-DD) to get expiration warnings."
+            exit 0
+          fi
+
+          expiry_epoch=$(date -d "$VSCE_TOKEN_EXPIRES" +%s)
+          today_epoch=$(date +%s)
+          days_left=$(( (expiry_epoch - today_epoch) / 86400 ))
+
+          if [ "$days_left" -lt 0 ]; then
+            echo "::error::VSCE_TOKEN appears to have expired on ${VSCE_TOKEN_EXPIRES}."
+            exit 1
+          fi
+
+          if [ "$days_left" -le "$WARN_DAYS" ]; then
+            echo "::warning::VSCE_TOKEN expires in ${days_left} day(s) (${VSCE_TOKEN_EXPIRES}). Renew it soon."
+          else
+            echo "VSCE_TOKEN expires in ${days_left} day(s) (${VSCE_TOKEN_EXPIRES})."
+          fi
+
+  ovsx:
+    name: OVSX (Open VSX Registry)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24.x
+          package-manager-cache: false
+
+      - name: Verify OVSX token
+        env:
+          OVSX_TOKEN: ${{ secrets.OVSX_TOKEN }}
+        run: |
+          if [ -z "$OVSX_TOKEN" ]; then
+            echo "::error::OVSX_TOKEN secret is not configured in repository settings."
+            exit 1
+          fi
+          npx ovsx verify-pat EdgardMessias -p "$OVSX_TOKEN"
+
+      - name: Warn about upcoming OVSX token expiration
+        env:
+          OVSX_TOKEN_EXPIRES: ${{ secrets.OVSX_TOKEN_EXPIRES }}
+          WARN_DAYS: "30"
+        run: |
+          if [ -z "$OVSX_TOKEN_EXPIRES" ]; then
+            echo "::notice::OVSX_TOKEN_EXPIRES secret not set. Add an ISO date (YYYY-MM-DD) to get expiration warnings."
+            exit 0
+          fi
+
+          expiry_epoch=$(date -d "$OVSX_TOKEN_EXPIRES" +%s)
+          today_epoch=$(date +%s)
+          days_left=$(( (expiry_epoch - today_epoch) / 86400 ))
+
+          if [ "$days_left" -lt 0 ]; then
+            echo "::error::OVSX_TOKEN appears to have expired on ${OVSX_TOKEN_EXPIRES}."
+            exit 1
+          fi
+
+          if [ "$days_left" -le "$WARN_DAYS" ]; then
+            echo "::warning::OVSX_TOKEN expires in ${days_left} day(s) (${OVSX_TOKEN_EXPIRES}). Renew it soon."
+          else
+            echo "OVSX_TOKEN expires in ${days_left} day(s) (${OVSX_TOKEN_EXPIRES})."
+          fi
