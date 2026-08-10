@@ -3,7 +3,7 @@
     "name": "clipboard-manager",
     "displayName": "Clipboard Manager",
     "description": "Clipboard Manager",
-    "version": "1.5.0",
+    "version": "1.6.0-rc.1",
     "icon": "media/clipboard.png",
     "extensionKind": [
         "ui"
@@ -196,26 +196,26 @@
         ]
     },
     "scripts": {
+        "build:webview": "vite build --config webview-ui/vite.config.ts",
         "changelog:last": "conventional-changelog -p angular -r 2",
         "changelog:preview": "conventional-changelog -p angular -u",
         "changelog:update": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
         "check-types": "tsc --noEmit",
         "clean": "rimraf ./out ./test-reports ./media/clipboard-history",
         "compile": "tsc -p ./ && npm run build:webview",
-        "build:webview": "vite build --config webview-ui/vite.config.ts",
         "format": "prettier --write \"src/**/*.ts\"",
         "format:check": "prettier --check \"src/**/*.ts\"",
         "lint": "eslint src",
         "organize": "node ./out/tools/organize.js",
+        "package": "tsc -p ./ && npm run build:webview",
         "release": "release-it",
         "test": "vitest run",
         "test:e2e": "npm run compile && node ./out/test/runTests.js",
         "vscode:prepublish": "npm run package",
-        "package": "tsc -p ./ && npm run build:webview",
         "vsix": "vsce package --no-dependencies -o clipboard-manager.vsix",
+        "watch": "concurrently \"npm:watch:ext\" \"npm:watch:webview\"",
         "watch:ext": "tsc -watch -p ./",
-        "watch:webview": "vite build --watch --config webview-ui/vite.config.ts",
-        "watch": "concurrently \"npm:watch:ext\" \"npm:watch:webview\""
+        "watch:webview": "vite build --watch --config webview-ui/vite.config.ts"
     },
     "devDependencies": {
         "@eslint/js": "^10.0.1",
