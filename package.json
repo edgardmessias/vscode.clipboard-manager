@@ -197,9 +197,9 @@
     },
     "scripts": {
         "build:webview": "vite build --config webview-ui/vite.config.ts",
-        "changelog:last": "conventional-changelog -p angular -r 2",
-        "changelog:preview": "conventional-changelog -p angular -u",
-        "changelog:update": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
+        "changelog:last": "conventional-changelog -p angular -r 2 --skip-unstable",
+        "changelog:preview": "conventional-changelog -p angular -u --skip-unstable",
+        "changelog:update": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 --skip-unstable",
         "check-types": "tsc --noEmit",
         "clean": "rimraf ./out ./test-reports ./media/clipboard-history",
         "compile": "tsc -p ./ && npm run build:webview",
