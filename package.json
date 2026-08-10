@@ -225,7 +225,7 @@
         "@types/react-dom": "^19.2.3",
         "@types/sinon": "^22.0.0",
         "@types/vscode": "^1.97.0",
-        "@vitejs/plugin-react": "^5.1.2",
+        "@vitejs/plugin-react": "^6.0.5",
         "@vscode/test-electron": "^3.1.0",
         "@vscode/vsce": "^3.9.2",
         "concurrently": "^9.2.1",
@@ -243,7 +243,7 @@
         "sinon": "^22.1.0",
         "typescript": "^6.0.3",
         "typescript-eslint": "^8.65.0",
-        "vite": "^7.3.0",
+        "vite": "^8.2.1",
         "vitest": "^4.1.10"
     },
     "dependencies": {
