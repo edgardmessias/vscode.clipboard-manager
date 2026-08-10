@@ -1,0 +1,63 @@
+version: 2
+
+updates:
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: daily
+      time: "08:00"
+      timezone: America/Sao_Paulo
+    open-pull-requests-limit: 10
+    ignore:
+      - dependency-name: "@types/node"
+        versions: [">= 0"]
+      - dependency-name: "@types/vscode"
+        versions: [">= 0"]
+    groups:
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+      vite:
+        patterns:
+          - "vite"
+          - "@vitejs/plugin-react"
+          - "vitest"
+      eslint:
+        patterns:
+          - "eslint"
+          - "@eslint/*"
+          - "typescript-eslint"
+          - "eslint-config-prettier"
+      typescript:
+        patterns:
+          - "typescript"
+      testing:
+        patterns:
+          - "mocha"
+          - "@types/mocha"
+          - "sinon"
+          - "@types/sinon"
+          - "@vscode/test-electron"
+      vscode-tools:
+        patterns:
+          - "@vscode/vsce"
+          - "ovsx"
+      release:
+        patterns:
+          - "release-it"
+          - "conventional-changelog-cli"
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "08:00"
+      timezone: America/Sao_Paulo
+    groups:
+      github-actions:
+        patterns:
+          - "*"
