@@ -227,6 +227,19 @@ export class ClipboardHistoryWebviewProvider
         break;
       }
 
+      case "clip/ban": {
+        const clip = this.findClip(message.id);
+        if (!clip) {
+          return;
+        }
+        await this._preview.clear();
+        await this._manager.banClipboardValue(clip.value);
+        void vscode.window.showInformationMessage(
+          "Clipboard Manager: clip banned (content hash stored securely)"
+        );
+        break;
+      }
+
       case "clip/showInFile": {
         const clip = this.findClip(message.id);
         if (!clip) {

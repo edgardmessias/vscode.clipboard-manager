@@ -85,7 +85,13 @@ const paths: Record<IconName, IconConfig> = {
         <path d="M6 11.5h5" />
         <circle cx="3.75" cy="4.5" r="0.75" fill="currentColor" stroke="none" />
         <circle cx="3.75" cy="8" r="0.75" fill="currentColor" stroke="none" />
-        <circle cx="3.75" cy="11.5" r="0.75" fill="currentColor" stroke="none" />
+        <circle
+          cx="3.75"
+          cy="11.5"
+          r="0.75"
+          fill="currentColor"
+          stroke="none"
+        />
       </>
     ),
   },

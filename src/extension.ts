@@ -2,17 +2,19 @@
 import * as vscode from "vscode";
 import { defaultClipboard } from "./clipboard";
 import { ApiGetMonitor } from "./commands/apiGetMonitor";
+import { ClearBannedClipsCommand } from "./commands/clearBannedClips";
 import { ClearClipboardHistory } from "./commands/clearClipboardHistory";
+import { CopyToHistoryCommand } from "./commands/copyToHistory";
 import { PickAndPasteCommand } from "./commands/pickAndPaste";
 import { RemoveClipboardHistory } from "./commands/removeClipboardHistory";
 import { SetClipboardValueCommand } from "./commands/setClipboardValue";
 import { ShowClipboardInFile } from "./commands/showClipboardInFile";
+import { ToggleCaptureCommand } from "./commands/toggleCapture";
+import { UnbanLastClipCommand } from "./commands/unbanLastClip";
 import { ClipboardCompletion } from "./completion";
+import { normalizeExcludePatterns } from "./excludePatterns";
 import { ClipboardManager } from "./manager";
 import { Monitor } from "./monitor";
-import { CopyToHistoryCommand } from "./commands/copyToHistory";
-import { ToggleCaptureCommand } from "./commands/toggleCapture";
-import { normalizeExcludePatterns } from "./excludePatterns";
 import { ClipboardStatusBar } from "./statusBar";
 import {
   ClipboardHistoryWebviewProvider,
@@ -55,6 +57,8 @@ export async function activate(context: vscode.ExtensionContext) {
   disposable.push(new RemoveClipboardHistory(manager));
   disposable.push(new ShowClipboardInFile(manager));
   disposable.push(new ClearClipboardHistory(manager));
+  disposable.push(new ClearBannedClipsCommand(manager.banList));
+  disposable.push(new UnbanLastClipCommand(manager.banList));
   disposable.push(new CopyToHistoryCommand(monitor));
   disposable.push(new ToggleCaptureCommand(monitor));
 

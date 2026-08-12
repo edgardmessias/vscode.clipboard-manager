@@ -1,5 +1,6 @@
 import * as os from "os";
 import * as vscode from "vscode";
+import { BanList } from "./banList";
 import { IClipboardTextChange, Monitor } from "./monitor";
 import { AppendLogStorage } from "./storage/appendLogStorage";
 import {
@@ -21,6 +22,7 @@ export class ClipboardManager implements vscode.Disposable {
   protected _storage: AppendLogStorage;
   protected _checksumMap = new Map<string, IClipboardItem>();
   protected _loading = false;
+  protected _banList: BanList;
 
   private _onDidClipListChange = new vscode.EventEmitter<void>();
   public readonly onDidChangeClipList = this._onDidClipListChange.event;
@@ -29,6 +31,7 @@ export class ClipboardManager implements vscode.Disposable {
     protected context: vscode.ExtensionContext,
     protected _monitor: Monitor
   ) {
+    this._banList = new BanList(context.secrets);
     this._storage = new AppendLogStorage({
       context: this.context,
       getSaveTo: () =>
@@ -58,6 +61,10 @@ export class ClipboardManager implements vscode.Disposable {
     );
   }
 
+  get banList(): BanList {
+    return this._banList;
+  }
+
   protected getStorageRoot(): string {
     let folder = os.tmpdir();
 
@@ -84,11 +91,21 @@ export class ClipboardManager implements vscode.Disposable {
 
   protected async applyClipListUpdate(change: IClipboardTextChange) {
     await this.checkClipsUpdate();
+    await this._banList.ensureLoaded();
 
     const config = vscode.workspace.getConfiguration("clipboard-manager");
     const maxClips = config.get("maxClips", 100);
     const avoidDuplicates = config.get("avoidDuplicates", true);
     const checksum = computeChecksum(change.value);
+
+    if (this._banList.has(checksum)) {
+      if (config.get("ban.notifyOnBlock", false)) {
+        void vscode.window.showInformationMessage(
+          "Clipboard Manager: blocked a banned clip"
+        );
+      }
+      return;
+    }
 
     let item = createClipItem(change.value, {
       createdAt: change.timestamp,
@@ -165,6 +182,22 @@ export class ClipboardManager implements vscode.Disposable {
     return prevLength !== this._clips.length;
   }
 
+  /**
+   * Ban a clip by content: store checksum in SecretStorage, remove from history, prune.
+   */
+  public async banClipboardValue(value: string): Promise<boolean> {
+    await this.checkClipsUpdate();
+    await this._banList.ensureLoaded();
+
+    const checksum = computeChecksum(value);
+    await this._banList.ban(checksum);
+
+    const removed = await this.removeClipboardValue(value);
+    await this._storage.prune(true);
+
+    return removed;
+  }
+
   public async clearAll() {
     await this.checkClipsUpdate();
 
@@ -195,7 +228,8 @@ export class ClipboardManager implements vscode.Disposable {
         return;
       }
 
-      this._clips = clips;
+      await this._banList.ensureLoaded();
+      this._clips = clips.filter(clip => !this._banList.has(clip.checksum));
       this.rebuildChecksumMap();
       this._onDidClipListChange.fire();
     } catch (error) {
@@ -211,9 +245,18 @@ export class ClipboardManager implements vscode.Disposable {
     this._loading = true;
 
     try {
-      this._clips = await this._storage.load();
+      await this._banList.ensureLoaded();
+      const loaded = await this._storage.load();
+      const filtered = loaded.filter(clip => !this._banList.has(clip.checksum));
+
+      this._clips = filtered;
       this.rebuildChecksumMap();
       this._onDidClipListChange.fire();
+
+      if (filtered.length !== loaded.length) {
+        await this.saveClips(true);
+        await this._storage.prune(true);
+      }
     } catch (error) {
       console.error(error);
     } finally {

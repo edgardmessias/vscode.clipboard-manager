@@ -35,6 +35,7 @@ export type WebviewToHostMessage =
   | { type: "clip/preview/clear" }
   | { type: "clip/copy"; id: string }
   | { type: "clip/remove"; id: string }
+  | { type: "clip/ban"; id: string }
   | { type: "clip/showInFile"; id: string }
   | { type: "clip/requestDetail"; id: string }
   | { type: "history/clear" }

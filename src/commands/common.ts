@@ -8,4 +8,6 @@ export enum commandList {
   showClipboardInFile = "clipboard-manager.editor.showClipboardInFile",
   statusBarClick = "clipboard-manager.statusBar.click",
   toggleCapture = "clipboard-manager.capture.toggle",
+  clearBannedClips = "clipboard-manager.ban.clearAll",
+  unbanLastClip = "clipboard-manager.ban.unbanLast",
 }

@@ -83,6 +83,9 @@ Default settings contributed by this extension:
   // Avoid duplicate clips in the list
   "clipboard-manager.avoidDuplicates": true,
 
+  // Show a notification when a banned clip is blocked from being captured. Ban list is stored as content hashes in VS Code SecretStorage (machine-local).
+  "clipboard-manager.ban.notifyOnBlock": null,
+
   // When false, automatic clipboard capture is paused. Manual Copy to Clipboard History still works.
   "clipboard-manager.capture.enabled": true,
 

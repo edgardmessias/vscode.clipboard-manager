@@ -162,6 +162,13 @@ function ContextMenu({
       <button
         type="button"
         className="context-menu-item context-menu-danger"
+        onClick={() => run(() => postToHost({ type: "clip/ban", id: clip.id }))}
+      >
+        Ban clip
+      </button>
+      <button
+        type="button"
+        className="context-menu-item context-menu-danger"
         onClick={() =>
           run(() => postToHost({ type: "clip/remove", id: clip.id }))
         }
@@ -178,9 +185,7 @@ export function App() {
   const [query, setQuery] = useState("");
   const [filteredIds, setFilteredIds] = useState<string[] | null>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
-  const [expandedDetail, setExpandedDetail] = useState<ClipDetail | null>(
-    null
-  );
+  const [expandedDetail, setExpandedDetail] = useState<ClipDetail | null>(null);
   const [previewEnabled, setPreviewEnabled] = useState(true);
   const [contextMenu, setContextMenu] = useState<ContextMenuState | null>(null);
   const queryRef = useRef(query);
@@ -349,7 +354,7 @@ export function App() {
                   expanded={expandedId === clip.id}
                   detail={
                     expandedId === clip.id
-                      ? expandedDetail ?? undefined
+                      ? (expandedDetail ?? undefined)
                       : undefined
                   }
                   onToggleExpand={handleToggleExpand}

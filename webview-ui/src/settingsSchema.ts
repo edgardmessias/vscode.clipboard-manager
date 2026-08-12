@@ -38,6 +38,16 @@ export const SETTING_GROUPS: Record<
 
 export const SETTING_DEFINITIONS: SettingDefinition[] = [
   {
+    key: "ban.notifyOnBlock",
+    type: "boolean",
+    group: "monitor",
+    label: "Notify on ban block",
+    description:
+      "Show a notification when a banned clip is blocked. Ban hashes are stored in SecretStorage (machine-local).",
+    defaultValue: false,
+    canSetWorkspace: true,
+  },
+  {
     key: "capture.enabled",
     type: "boolean",
     group: "monitor",

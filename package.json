@@ -65,6 +65,16 @@
         },
         "commands": [
             {
+                "command": "clipboard-manager.ban.clearAll",
+                "title": "Clear Banned Clips",
+                "category": "Clipboard Manager"
+            },
+            {
+                "command": "clipboard-manager.ban.unbanLast",
+                "title": "Unban Last Banned Clip",
+                "category": "Clipboard Manager"
+            },
+            {
                 "command": "clipboard-manager.capture.toggle",
                 "title": "Toggle Capture",
                 "category": "Clipboard Manager"
@@ -160,6 +170,11 @@
                         "type": "boolean",
                         "default": true,
                         "description": "Avoid duplicate clips in the list"
+                    },
+                    "clipboard-manager.ban.notifyOnBlock": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Show a notification when a banned clip is blocked from being captured. Ban list is stored as content hashes in VS Code SecretStorage (machine-local)."
                     },
                     "clipboard-manager.capture.enabled": {
                         "type": "boolean",
