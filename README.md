@@ -24,9 +24,14 @@ Keep a searchable history of everything you copy and cut in the editor, then pas
 
 - **Clipboard history** — automatically tracks copied and cut text from the editor
 - **Sidebar panel** — browse, filter, expand, and manage clips in a dedicated webview
+- **Relative timestamps** — compact times like `2m` / `3h` in the list and Quick Pick (absolute time on tooltip)
 - **In-panel settings** — change extension settings from the webview (user or workspace scope)
 - **Pick and Paste** — quick picker with live preview in the editor (`Ctrl+Shift+V` / `Cmd+Shift+V`)
 - **Hover preview** — preview a clip in the editor before confirming paste from the sidebar
+- **Pause capture** — temporarily stop automatic capture; manual **Copy to Clipboard History** still works
+- **Status bar** — clip count and capture state (`paused` when capture is off); click for quick actions
+- **Exclude file patterns** — skip copies from files matching globs (e.g. `**/.env`, `*.pem`)
+- **Ban clips** — block specific content from being captured again (hashes stored in SecretStorage, machine-local)
 - **Snippet completion** — insert recent clips with prefixes like `clip1`, `clip2`, …
 - **Source location** — jump back to where a clip was copied from
 - **Durable storage** — append-log persistence with legacy JSON migration
@@ -57,9 +62,14 @@ Keep a searchable history of everything you copy and cut in the editor, then pas
 | Filter clips | Type in the search box (matches title and content) |
 | Paste | Click the paste button on a row (hover to preview when enabled) |
 | Expand content | Click the chevron or use the context menu |
-| Copy / open source / remove | Right-click a clip |
+| Relative time | Shown on each row when enabled; hover the row for the absolute timestamp |
+| Copy / open source / ban / remove | Right-click a clip |
 | Clear history | Toolbar clear button |
 | Open settings | **Settings** tab in the sidebar panel |
+
+### Status bar
+
+When enabled, the status bar shows the clip count (and `paused` when capture is off). Click it for quick actions such as toggling capture or opening history.
 
 ### Commands
 
@@ -67,9 +77,13 @@ All commands are available from the Command Palette under **Clipboard Manager**:
 
 - **Copy to Clipboard History**
 - **Pick and Paste**
+- **Toggle Capture** — pause or resume automatic clipboard capture
 - **Show in the file** (when a clip has a known source location)
 - **Clear History**
 - **Remove** (selected clip)
+- **Clear Banned Clips** — wipe the ban list
+- **Unban Last Banned Clip** — restore the most recently banned hash
+- **Status Bar Actions** — same menu as clicking the status bar item
 
 ## Configuration
 
@@ -84,7 +98,7 @@ Default settings contributed by this extension:
   "clipboard-manager.avoidDuplicates": true,
 
   // Show a notification when a banned clip is blocked from being captured. Ban list is stored as content hashes in VS Code SecretStorage (machine-local).
-  "clipboard-manager.ban.notifyOnBlock": null,
+  "clipboard-manager.ban.notifyOnBlock": false,
 
   // When false, automatic clipboard capture is paused. Manual Copy to Clipboard History still works.
   "clipboard-manager.capture.enabled": true,
@@ -123,10 +137,25 @@ Default settings contributed by this extension:
   "clipboard-manager.snippet.prefix": "clip",
 
   // Show Clipboard Manager status bar item (clip count and capture state)
-  "clipboard-manager.statusBar.enabled": true
+  "clipboard-manager.statusBar.enabled": true,
+
+  // Show compact relative timestamps in History and Quick Pick (absolute time remains in the tooltip)
+  "clipboard-manager.ui.relativeTime": true
 }
 ```
 <!--end-settings-->
+
+### Setting notes
+
+| Setting | Notes |
+| --- | --- |
+| `capture.enabled` | `false` pauses monitoring; **Copy to Clipboard History** still adds clips |
+| `exclude.filePatterns` | VS Code-style globs; empty by default so existing workflows stay unchanged |
+| `ban.notifyOnBlock` | Optional toast when a banned clip is blocked; ban hashes stay machine-local |
+| `statusBar.enabled` | Hides the status bar item when `false` |
+| `ui.relativeTime` | Compact relative labels in History / Quick Pick; absolute time stays on tooltip |
+| `saveTo` | Application-scoped path for the history file; `false` disables persistence |
+| `onlyWindowFocused` | When `true`, only captures from VS Code (not the whole system clipboard) |
 
 ## Examples
 
@@ -160,6 +189,7 @@ npm run compile   # TypeScript + webview bundle
 npm test          # unit tests (Vitest)
 npm run test:e2e  # extension tests (VS Code test host)
 npm run lint
+npm run organize  # sort package.json keys and sync README settings block
 ```
 
 Press `F5` in VS Code to launch an Extension Development Host with the sidebar panel loaded.

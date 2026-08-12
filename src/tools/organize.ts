@@ -78,7 +78,11 @@ for (const key of settingKeys) {
     desc += "  // " + s.description.replace(/\n/g, "\n  // ") + "\n";
   }
 
-  desc += "  " + JSON.stringify(key) + ": " + JSON.stringify(s.default || null);
+  desc +=
+    "  " +
+    JSON.stringify(key) +
+    ": " +
+    JSON.stringify("default" in s ? s.default : null);
 
   settings.push(desc);
 }
