@@ -212,7 +212,7 @@
         "test": "vitest run",
         "test:e2e": "npm run compile && node ./out/test/runTests.js",
         "vscode:prepublish": "npm run package",
-        "vsix": "vsce package --no-dependencies -o clipboard-manager.vsix",
+        "vsix": "vsce package -o clipboard-manager.vsix && node ./scripts/verify-vsix.cjs",
         "watch": "concurrently \"npm:watch:ext\" \"npm:watch:webview\"",
         "watch:ext": "tsc -watch -p ./",
         "watch:webview": "vite build --watch --config webview-ui/vite.config.ts"

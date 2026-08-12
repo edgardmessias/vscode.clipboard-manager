@@ -1,6 +1,11 @@
+# Hidden files/folders (.git, .github, .vscode, ...)
 .*
 .**
 .*/**
+
+# Do not ignore node_modules — vsce packs production deps (msgpackr).
+# Never package with --no-dependencies unless the extension is bundled.
+
 *.vsix
 bin/**
 coverage/**
@@ -8,9 +13,13 @@ coverconfig.json
 dist/**
 eslint.config.mjs
 out/**/*.map
+out/test/**
+out/tools/**
 package-lock.json
 screenshots/**
+scripts/**
 src/**
 test-reports/**
 tsconfig.json
+vitest.config.mts
 webview-ui/**

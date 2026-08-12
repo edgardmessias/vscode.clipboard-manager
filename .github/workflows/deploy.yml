@@ -74,7 +74,10 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Package VSIX
-        run: npx @vscode/vsce package --no-dependencies -o "$VSIX_FILE" ${{ steps.meta.outputs.vsce_flags }}
+        run: npx @vscode/vsce package -o "$VSIX_FILE" ${{ steps.meta.outputs.vsce_flags }}
+
+      - name: Verify VSIX contents
+        run: node ./scripts/verify-vsix.cjs
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v3
