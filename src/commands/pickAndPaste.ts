@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { ClipboardManager, IClipboardItem } from "../manager";
+import { formatRelativeTime } from "../relativeTime";
 import { leftPad } from "../util";
 import { commandList } from "./common";
 
@@ -7,13 +8,19 @@ class ClipPickItem implements vscode.QuickPickItem {
   public label: string;
 
   get description() {
-    if (this.clip.createdAt) {
-      const date = new Date(this.clip.createdAt);
-      return date.toLocaleString();
+    if (!this.clip.createdAt) {
+      return;
     }
+    if (this.relativeTime) {
+      return formatRelativeTime(this.clip.createdAt);
+    }
+    return new Date(this.clip.createdAt).toLocaleString();
   }
 
-  constructor(readonly clip: IClipboardItem) {
+  constructor(
+    readonly clip: IClipboardItem,
+    private readonly relativeTime: boolean
+  ) {
     this.label = this.clip.title;
   }
 }
@@ -34,13 +41,14 @@ export class PickAndPasteCommand implements vscode.Disposable {
   protected async execute() {
     const config = vscode.workspace.getConfiguration("clipboard-manager");
     const preview = config.get("preview", true);
+    const relativeTime = config.get("ui.relativeTime", true);
 
     const clips = this._manager.clips;
 
     const maxLength = `${clips.length}`.length;
 
     const picks = clips.map((c, index) => {
-      const item = new ClipPickItem(c);
+      const item = new ClipPickItem(c, relativeTime);
       const indexNumber = leftPad(index + 1, maxLength, "0");
 
       item.label = `${indexNumber}) ${item.label}`;

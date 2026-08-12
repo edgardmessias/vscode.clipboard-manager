@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { ClipDetail, ClipSummary } from "./messages";
+import { formatRelativeTime } from "./relativeTime";
 import { useClipPreviewHover } from "./useClipPreviewHover";
 import { onHostMessage, postToHost } from "./vscode";
 import { Icon, IconButton } from "./components/Icons";
@@ -18,6 +19,8 @@ interface ClipRowProps {
   index: number;
   expanded: boolean;
   detail?: ClipDetail;
+  relativeTime: boolean;
+  now: number;
   onToggleExpand: (id: string) => void;
   onContextMenu: (event: React.MouseEvent, clipId: string) => void;
   onPasteEnter: (id: string) => void;
@@ -25,7 +28,7 @@ interface ClipRowProps {
   onPasteClick: (id: string) => void;
 }
 
-function formatMeta(clip: ClipSummary): string {
+function formatAbsoluteMeta(clip: ClipSummary): string {
   const parts = [new Date(clip.createdAt).toLocaleString()];
   if (clip.language) {
     parts.push(clip.language);
@@ -41,13 +44,15 @@ function ClipRow({
   index,
   expanded,
   detail,
+  relativeTime,
+  now,
   onToggleExpand,
   onContextMenu,
   onPasteEnter,
   onPasteLeave,
   onPasteClick,
 }: ClipRowProps) {
-  const tooltip = formatMeta(clip);
+  const tooltip = formatAbsoluteMeta(clip);
 
   return (
     <article
@@ -57,25 +62,32 @@ function ClipRow({
       <div className="clip-row-main" title={tooltip}>
         <span className="clip-index">{String(index + 1).padStart(2, "0")}</span>
         <span className="clip-title">{clip.title}</span>
-        <div
-          className="clip-row-actions"
-          onClick={event => event.stopPropagation()}
-        >
-          <IconButton
-            icon="paste"
-            label="Paste"
-            className="clip-action-btn"
-            primary
-            onClick={() => onPasteClick(clip.id)}
-            onMouseEnter={() => onPasteEnter(clip.id)}
-            onMouseLeave={onPasteLeave}
-          />
-          <IconButton
-            icon="chevron"
-            label={expanded ? "Collapse" : "Expand content"}
-            className={`clip-action-btn icon-btn-chevron${expanded ? " is-open" : ""}`}
-            onClick={() => onToggleExpand(clip.id)}
-          />
+        <div className="clip-row-trailing">
+          {relativeTime && (
+            <span className="clip-time">
+              {formatRelativeTime(clip.createdAt, now)}
+            </span>
+          )}
+          <div
+            className="clip-row-actions"
+            onClick={event => event.stopPropagation()}
+          >
+            <IconButton
+              icon="paste"
+              label="Paste"
+              className="clip-action-btn"
+              primary
+              onClick={() => onPasteClick(clip.id)}
+              onMouseEnter={() => onPasteEnter(clip.id)}
+              onMouseLeave={onPasteLeave}
+            />
+            <IconButton
+              icon="chevron"
+              label={expanded ? "Collapse" : "Expand content"}
+              className={`clip-action-btn icon-btn-chevron${expanded ? " is-open" : ""}`}
+              onClick={() => onToggleExpand(clip.id)}
+            />
+          </div>
         </div>
       </div>
       {expanded && (
@@ -187,6 +199,8 @@ export function App() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [expandedDetail, setExpandedDetail] = useState<ClipDetail | null>(null);
   const [previewEnabled, setPreviewEnabled] = useState(true);
+  const [relativeTimeEnabled, setRelativeTimeEnabled] = useState(true);
+  const [now, setNow] = useState(() => Date.now());
   const [contextMenu, setContextMenu] = useState<ContextMenuState | null>(null);
   const queryRef = useRef(query);
   const expandedIdRef = useRef(expandedId);
@@ -227,6 +241,7 @@ export function App() {
           break;
         case "config/update":
           setPreviewEnabled(message.preview);
+          setRelativeTimeEnabled(message.relativeTime);
           break;
       }
     });
@@ -235,6 +250,14 @@ export function App() {
   useEffect(() => {
     postToHost({ type: "ready" });
   }, []);
+
+  useEffect(() => {
+    if (!relativeTimeEnabled) {
+      return;
+    }
+    const timer = window.setInterval(() => setNow(Date.now()), 30_000);
+    return () => window.clearInterval(timer);
+  }, [relativeTimeEnabled]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -357,6 +380,8 @@ export function App() {
                       ? (expandedDetail ?? undefined)
                       : undefined
                   }
+                  relativeTime={relativeTimeEnabled}
+                  now={now}
                   onToggleExpand={handleToggleExpand}
                   onContextMenu={handleContextMenu}
                   onPasteEnter={onPasteEnter}

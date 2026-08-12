@@ -48,7 +48,7 @@ export type HostToWebviewMessage =
   | { type: "clips/update"; clips: ClipSummary[] }
   | { type: "clips/filterResult"; query: string; ids: string[] }
   | { type: "clip/detail"; clip: ClipDetail }
-  | { type: "config/update"; preview: boolean }
+  | { type: "config/update"; preview: boolean; relativeTime: boolean }
   | {
       type: "config/settings";
       hasWorkspace: boolean;

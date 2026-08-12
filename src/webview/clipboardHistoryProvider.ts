@@ -12,6 +12,7 @@ import {
 import {
   browseSavePath,
   getPreviewEnabled,
+  getRelativeTimeEnabled,
   getSettingsSnapshot,
   resetSetting,
   setSetting,
@@ -161,6 +162,7 @@ export class ClipboardHistoryWebviewProvider
     this.postMessage({
       type: "config/update",
       preview: this._previewEnabled,
+      relativeTime: getRelativeTimeEnabled(),
     });
   }
 

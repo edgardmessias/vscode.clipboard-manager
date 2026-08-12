@@ -207,3 +207,8 @@ export function getPreviewEnabled(): boolean {
   const config = vscode.workspace.getConfiguration("clipboard-manager");
   return config.get<boolean>("preview", true);
 }
+
+export function getRelativeTimeEnabled(): boolean {
+  const config = vscode.workspace.getConfiguration("clipboard-manager");
+  return config.get<boolean>("ui.relativeTime", true);
+}

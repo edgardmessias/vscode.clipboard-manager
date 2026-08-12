@@ -251,6 +251,11 @@
                         "type": "boolean",
                         "default": true,
                         "description": "Show Clipboard Manager status bar item (clip count and capture state)"
+                    },
+                    "clipboard-manager.ui.relativeTime": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Show compact relative timestamps in History and Quick Pick (absolute time remains in the tooltip)"
                     }
                 }
             }

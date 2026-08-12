@@ -135,6 +135,16 @@ export const SETTING_DEFINITIONS: SettingDefinition[] = [
     canSetWorkspace: true,
   },
   {
+    key: "ui.relativeTime",
+    type: "boolean",
+    group: "history",
+    label: "Relative time",
+    description:
+      "Show compact relative timestamps in History and Quick Pick (absolute time remains in the tooltip)",
+    defaultValue: true,
+    canSetWorkspace: true,
+  },
+  {
     key: "saveTo",
     type: "saveTo",
     group: "persistence",
