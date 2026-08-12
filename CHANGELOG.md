@@ -1,3 +1,14 @@
+# [1.7.0](https://github.com/edgardmessias/vscode.clipboard-manager/compare/v1.6.1...v1.7.0) (2026-08-12)
+
+
+### Features
+
+* add status bar indicator ([3760a9c](https://github.com/edgardmessias/vscode.clipboard-manager/commit/3760a9c81b4b90b6bbf996ba450f217bcc9de2f3)), closes [#279](https://github.com/edgardmessias/vscode.clipboard-manager/issues/279)
+* ban clips by content hash with SecretStorage ([963a847](https://github.com/edgardmessias/vscode.clipboard-manager/commit/963a847ef61663fd2b9f90dc6323912fa6080caf)), closes [#269](https://github.com/edgardmessias/vscode.clipboard-manager/issues/269)
+* exclude captures by file glob patterns ([2297f6d](https://github.com/edgardmessias/vscode.clipboard-manager/commit/2297f6db921589b4ff29c83f27fb6e907aeb0dd3)), closes [#274](https://github.com/edgardmessias/vscode.clipboard-manager/issues/274)
+* pause and resume clipboard capture ([b38eaa6](https://github.com/edgardmessias/vscode.clipboard-manager/commit/b38eaa6a68cbb05d1d45e36c41052003e95f5282)), closes [#273](https://github.com/edgardmessias/vscode.clipboard-manager/issues/273)
+* show compact relative timestamps in history ([5e7a17a](https://github.com/edgardmessias/vscode.clipboard-manager/commit/5e7a17a9be5b059cc378e1ae9b47a8edcf5f1809)), closes [#277](https://github.com/edgardmessias/vscode.clipboard-manager/issues/277)
+
 ## [1.6.1](https://github.com/edgardmessias/vscode.clipboard-manager/compare/v1.6.0...v1.6.1) (2026-08-12)
 
 
