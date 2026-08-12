@@ -18,6 +18,9 @@ export class Monitor implements vscode.Disposable {
 
   public onlyWindowFocused: boolean = true;
 
+  /** When false, automatic clipboard polling does not add clips (manual force still can). */
+  public captureEnabled: boolean = true;
+
   private _onDidChangeText = new vscode.EventEmitter<IClipboardTextChange>();
   public readonly onDidChangeText = this._onDidChangeText.event;
 
@@ -93,14 +96,27 @@ export class Monitor implements vscode.Disposable {
     this._windowFocused = state.focused;
   }
 
-  public async checkChangeText() {
-    // Don't check the clipboard when windows is not focused
-    if (this.onlyWindowFocused && !this._windowFocused) {
+  public async checkChangeText(options?: { force?: boolean; value?: string }) {
+    const force = options?.force === true;
+
+    // Don't check the clipboard when windows is not focused (manual force still allowed)
+    if (!force && this.onlyWindowFocused && !this._windowFocused) {
       return;
     }
 
-    const newText = await this.readText();
-    if (newText === this._previousText) {
+    const newText = options?.value ?? (await this.readText());
+
+    if (!force) {
+      if (newText === this._previousText) {
+        return;
+      }
+
+      // Keep previous in sync while paused so resume does not flush skipped copies.
+      if (!this.captureEnabled) {
+        this._previousText = newText;
+        return;
+      }
+    } else if (!newText) {
       return;
     }
 

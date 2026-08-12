@@ -65,6 +65,11 @@
         },
         "commands": [
             {
+                "command": "clipboard-manager.capture.toggle",
+                "title": "Toggle Capture",
+                "category": "Clipboard Manager"
+            },
+            {
                 "command": "clipboard-manager.editor.copyToHistory",
                 "title": "Copy to Clipboard History",
                 "category": "Clipboard Manager"
@@ -146,6 +151,11 @@
                         "type": "boolean",
                         "default": true,
                         "description": "Avoid duplicate clips in the list"
+                    },
+                    "clipboard-manager.capture.enabled": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "When false, automatic clipboard capture is paused. Manual Copy to Clipboard History still works."
                     },
                     "clipboard-manager.checkInterval": {
                         "type": "integer",

@@ -83,6 +83,9 @@ Default settings contributed by this extension:
   // Avoid duplicate clips in the list
   "clipboard-manager.avoidDuplicates": true,
 
+  // When false, automatic clipboard capture is paused. Manual Copy to Clipboard History still works.
+  "clipboard-manager.capture.enabled": true,
+
   // Time in milliseconds to check changes in clipboard. Set zero to disable.
   "clipboard-manager.checkInterval": 500,
 

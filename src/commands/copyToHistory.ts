@@ -16,8 +16,20 @@ export class CopyToHistoryCommand implements vscode.Disposable {
   }
 
   protected async execute() {
+    const editor = vscode.window.activeTextEditor;
+    const selected =
+      editor && !editor.selection.isEmpty
+        ? editor.document.getText(editor.selection)
+        : undefined;
+
     await vscode.commands.executeCommand("editor.action.clipboardCopyAction");
-    await this.monitor.checkChangeText();
+
+    // Explicit capture must work while paused and when the clipboard text
+    // did not change (re-copying the same value after syncing during pause).
+    await this.monitor.checkChangeText({
+      force: true,
+      value: selected,
+    });
   }
 
   public dispose() {

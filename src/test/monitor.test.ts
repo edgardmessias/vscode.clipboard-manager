@@ -93,6 +93,59 @@ suite("Monitor Tests", function () {
     assert.equal(onDidChangeTextSpy.callCount, 1);
   });
 
+  test("Skip automatic capture when paused", async function () {
+    const onDidChangeTextSpy = sandbox.spy();
+
+    disposables.push(monitor.onDidChangeText(onDidChangeTextSpy));
+    monitor.checkInterval = 200;
+    monitor.captureEnabled = false;
+
+    await externalClipboard.writeText("paused value");
+    await sleep(monitor.checkInterval + 300);
+    assert.equal(onDidChangeTextSpy.callCount, 0);
+
+    // Manual/forced capture still works while paused, even for the same text
+    // already synced into _previousText during the pause.
+    await monitor.checkChangeText({ force: true, value: "paused value" });
+    assert.equal(onDidChangeTextSpy.callCount, 1);
+    assert.equal(
+      (onDidChangeTextSpy.firstCall.args[0] as IClipboardTextChange).value,
+      "paused value"
+    );
+
+    // Different value with force also works.
+    await externalClipboard.writeText("forced value");
+    await monitor.checkChangeText({ force: true });
+    assert.equal(onDidChangeTextSpy.callCount, 2);
+
+    // Resume: subsequent automatic changes are captured again.
+    monitor.captureEnabled = true;
+    await externalClipboard.writeText("resumed value");
+    await sleep(monitor.checkInterval + 300);
+    assert.equal(onDidChangeTextSpy.callCount, 3);
+  });
+
+  test("After resume, unchanged clipboard is not auto-flushed", async function () {
+    const onDidChangeTextSpy = sandbox.spy();
+
+    disposables.push(monitor.onDidChangeText(onDidChangeTextSpy));
+    monitor.checkInterval = 200;
+    monitor.captureEnabled = false;
+
+    await externalClipboard.writeText("secret while paused");
+    await sleep(monitor.checkInterval + 300);
+    assert.equal(onDidChangeTextSpy.callCount, 0);
+
+    monitor.captureEnabled = true;
+    await sleep(monitor.checkInterval + 300);
+    // Current clipboard must not be added just because capture resumed.
+    assert.equal(onDidChangeTextSpy.callCount, 0);
+
+    await externalClipboard.writeText("new after resume");
+    await sleep(monitor.checkInterval + 300);
+    assert.equal(onDidChangeTextSpy.callCount, 1);
+  });
+
   test("Check changes external", async function () {
     const onDidChangeTextSpy = sandbox.spy();
 

@@ -37,6 +37,16 @@ export const SETTING_GROUPS: Record<
 
 export const SETTING_DEFINITIONS: SettingDefinition[] = [
   {
+    key: "capture.enabled",
+    type: "boolean",
+    group: "monitor",
+    label: "Capture enabled",
+    description:
+      "When false, automatic clipboard capture is paused. Manual Copy to Clipboard History still works.",
+    defaultValue: true,
+    canSetWorkspace: true,
+  },
+  {
     key: "checkInterval",
     type: "integer",
     group: "monitor",
