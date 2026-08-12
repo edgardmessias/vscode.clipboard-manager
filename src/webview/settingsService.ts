@@ -110,6 +110,18 @@ function validateValue(definition: SettingDefinition, value: unknown): unknown {
         `${definition.label} must be a path, null, or false`
       );
 
+    case "stringList": {
+      if (!Array.isArray(value)) {
+        throw new SettingsValidationError(
+          `${definition.label} must be a list of strings`
+        );
+      }
+      return value
+        .filter((item): item is string => typeof item === "string")
+        .map(item => item.trim())
+        .filter(Boolean);
+    }
+
     default:
       return value;
   }

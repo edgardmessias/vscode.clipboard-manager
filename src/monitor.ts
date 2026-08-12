@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { BaseClipboard } from "./clipboard";
+import { compileExcludePatterns, isPathExcluded } from "./excludePatterns";
 import { toDisposable } from "./util";
 
 export interface IClipboardTextChange {
@@ -20,6 +21,8 @@ export class Monitor implements vscode.Disposable {
 
   /** When false, automatic clipboard polling does not add clips (manual force still can). */
   public captureEnabled: boolean = true;
+
+  private _excludePatterns: RegExp[] = [];
 
   private _onDidChangeText = new vscode.EventEmitter<IClipboardTextChange>();
   public readonly onDidChangeText = this._onDidChangeText.event;
@@ -42,6 +45,10 @@ export class Monitor implements vscode.Disposable {
     if (timeout >= 100) {
       this._timer = setInterval(() => this.checkChangeText(), timeout);
     }
+  }
+
+  public setExcludeFilePatterns(patterns: readonly string[]) {
+    this._excludePatterns = compileExcludePatterns(patterns);
   }
 
   constructor(readonly clipboard: BaseClipboard) {
@@ -96,6 +103,18 @@ export class Monitor implements vscode.Disposable {
     this._windowFocused = state.focused;
   }
 
+  protected isLocationExcluded(uri: vscode.Uri): boolean {
+    if (this._excludePatterns.length === 0) {
+      return false;
+    }
+
+    const relative = vscode.workspace.asRelativePath(uri, false);
+    const relativePath =
+      relative === uri.fsPath || relative === uri.path ? undefined : relative;
+
+    return isPathExcluded(uri.fsPath, this._excludePatterns, relativePath);
+  }
+
   public async checkChangeText(options?: { force?: boolean; value?: string }) {
     const force = options?.force === true;
 
@@ -139,6 +158,12 @@ export class Monitor implements vscode.Disposable {
           uri: editor.document.uri,
         };
       }
+    }
+
+    // Skip history for copies from excluded files (including manual force).
+    if (change.location && this.isLocationExcluded(change.location.uri)) {
+      this._previousText = newText;
+      return;
     }
 
     this._onDidChangeText.fire(change);

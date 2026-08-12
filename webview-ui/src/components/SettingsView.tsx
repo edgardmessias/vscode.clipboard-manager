@@ -137,6 +137,28 @@ function SettingRow({
           />
         );
 
+      case "stringList": {
+        const lines = Array.isArray(effectiveValue)
+          ? effectiveValue.map(item => String(item)).join("\n")
+          : "";
+        return (
+          <textarea
+            className="setting-input setting-textarea"
+            rows={4}
+            value={lines}
+            disabled={disabled}
+            placeholder={".env\n**/.env\n*.pem"}
+            onChange={event => {
+              const next = event.target.value
+                .split(/\r?\n/)
+                .map(line => line.trim())
+                .filter(Boolean);
+              setValue(next);
+            }}
+          />
+        );
+      }
+
       case "saveTo": {
         const mode = getSaveToMode(effectiveValue);
         const customPath =

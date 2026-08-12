@@ -12,6 +12,7 @@ import { ClipboardManager } from "./manager";
 import { Monitor } from "./monitor";
 import { CopyToHistoryCommand } from "./commands/copyToHistory";
 import { ToggleCaptureCommand } from "./commands/toggleCapture";
+import { normalizeExcludePatterns } from "./excludePatterns";
 import { ClipboardStatusBar } from "./statusBar";
 import {
   ClipboardHistoryWebviewProvider,
@@ -97,6 +98,9 @@ export async function activate(context: vscode.ExtensionContext) {
     monitor.onlyWindowFocused = config.get("onlyWindowFocused", true);
     monitor.maxClipboardSize = config.get("maxClipboardSize", 1000000);
     monitor.captureEnabled = config.get("capture.enabled", true);
+    monitor.setExcludeFilePatterns(
+      normalizeExcludePatterns(config.get("exclude.filePatterns"))
+    );
     statusBar.applyConfig();
   };
   updateConfig();

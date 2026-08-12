@@ -89,6 +89,9 @@ Default settings contributed by this extension:
   // Time in milliseconds to check changes in clipboard. Set zero to disable.
   "clipboard-manager.checkInterval": 500,
 
+  // Glob patterns; copies from matching files are not saved to history. Uses VS Code-style globs (e.g. **/.env, *.pem). Empty by default.
+  "clipboard-manager.exclude.filePatterns": [],
+
   // Maximum clipboard size in bytes.
   "clipboard-manager.maxClipboardSize": 1000000,
 

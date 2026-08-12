@@ -57,7 +57,7 @@ describe("settingsService", () => {
       const snapshot = getSettingsSnapshot();
 
       expect(snapshot.hasWorkspace).toBe(true);
-      expect(snapshot.settings).toHaveLength(13);
+      expect(snapshot.settings).toHaveLength(14);
       expect(snapshot.settings.some(s => s.key === "preview")).toBe(true);
       expect(snapshot.settings.some(s => s.key === "capture.enabled")).toBe(
         true
@@ -65,6 +65,9 @@ describe("settingsService", () => {
       expect(snapshot.settings.some(s => s.key === "statusBar.enabled")).toBe(
         true
       );
+      expect(
+        snapshot.settings.some(s => s.key === "exclude.filePatterns")
+      ).toBe(true);
     });
 
     it("should report no workspace when folders are absent", () => {

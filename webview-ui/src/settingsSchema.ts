@@ -1,4 +1,5 @@
-export type SettingType = "boolean" | "integer" | "text" | "saveTo";
+export type SettingType =
+  "boolean" | "integer" | "text" | "saveTo" | "stringList";
 
 export type SettingGroup = "monitor" | "history" | "persistence" | "snippets";
 
@@ -44,6 +45,16 @@ export const SETTING_DEFINITIONS: SettingDefinition[] = [
     description:
       "When false, automatic clipboard capture is paused. Manual Copy to Clipboard History still works.",
     defaultValue: true,
+    canSetWorkspace: true,
+  },
+  {
+    key: "exclude.filePatterns",
+    type: "stringList",
+    group: "monitor",
+    label: "Exclude file patterns",
+    description:
+      "One glob per line. Copies from matching files are not saved (e.g. .env, **/.env, *.pem). Empty by default.",
+    defaultValue: [],
     canSetWorkspace: true,
   },
   {

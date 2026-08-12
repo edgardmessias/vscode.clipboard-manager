@@ -524,6 +524,15 @@ body {
   max-width: 120px;
 }
 
+.setting-textarea {
+  height: auto;
+  min-height: 4.5rem;
+  padding: 6px 8px;
+  resize: vertical;
+  line-height: 1.4;
+  font-family: var(--vscode-editor-font-family, monospace);
+}
+
 .setting-toggle {
   position: relative;
   display: inline-flex;

@@ -171,6 +171,14 @@
                         "default": 500,
                         "description": "Time in milliseconds to check changes in clipboard. Set zero to disable."
                     },
+                    "clipboard-manager.exclude.filePatterns": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "default": [],
+                        "description": "Glob patterns; copies from matching files are not saved to history. Uses VS Code-style globs (e.g. **/.env, *.pem). Empty by default."
+                    },
                     "clipboard-manager.maxClipboardSize": {
                         "type": "integer",
                         "default": 1000000,
