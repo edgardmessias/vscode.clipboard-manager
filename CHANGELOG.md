@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/edgardmessias/vscode.clipboard-manager/compare/v1.6.0...v1.6.1) (2026-08-12)
+
+
+### Bug Fixes
+
+* include production dependencies in VSIX package ([b6ab66e](https://github.com/edgardmessias/vscode.clipboard-manager/commit/b6ab66ed720707b37242d9d93825e53b51bd6fd4)), closes [#268](https://github.com/edgardmessias/vscode.clipboard-manager/issues/268)
+
 # [1.6.0](https://github.com/edgardmessias/vscode.clipboard-manager/compare/v1.5.0...v1.6.0) (2026-08-10)
 
 # 1.6.0-rc.1 (2026-08-10)
