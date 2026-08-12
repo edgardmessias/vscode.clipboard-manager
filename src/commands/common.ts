@@ -6,5 +6,6 @@ export enum commandList {
   removeClipboardHistory = "clipboard-manager.history.remove",
   setClipboardValue = "clipboard-manager.setClipboardValue",
   showClipboardInFile = "clipboard-manager.editor.showClipboardInFile",
+  statusBarClick = "clipboard-manager.statusBar.click",
   toggleCapture = "clipboard-manager.capture.toggle",
 }

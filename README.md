@@ -114,7 +114,10 @@ Default settings contributed by this extension:
   "clipboard-manager.snippet.max": 10,
 
   // Default prefix for snippets completion (clip1, clip2, ...)
-  "clipboard-manager.snippet.prefix": "clip"
+  "clipboard-manager.snippet.prefix": "clip",
+
+  // Show Clipboard Manager status bar item (clip count and capture state)
+  "clipboard-manager.statusBar.enabled": true
 }
 ```
 <!--end-settings-->

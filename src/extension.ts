@@ -12,6 +12,7 @@ import { ClipboardManager } from "./manager";
 import { Monitor } from "./monitor";
 import { CopyToHistoryCommand } from "./commands/copyToHistory";
 import { ToggleCaptureCommand } from "./commands/toggleCapture";
+import { ClipboardStatusBar } from "./statusBar";
 import {
   ClipboardHistoryWebviewProvider,
   CLIPBOARD_HISTORY_VIEW_ID,
@@ -56,6 +57,9 @@ export async function activate(context: vscode.ExtensionContext) {
   disposable.push(new CopyToHistoryCommand(monitor));
   disposable.push(new ToggleCaptureCommand(monitor));
 
+  const statusBar = new ClipboardStatusBar(manager, monitor);
+  disposable.push(statusBar);
+
   const completion = new ClipboardCompletion(manager);
   disposable.push(completion);
 
@@ -93,6 +97,7 @@ export async function activate(context: vscode.ExtensionContext) {
     monitor.onlyWindowFocused = config.get("onlyWindowFocused", true);
     monitor.maxClipboardSize = config.get("maxClipboardSize", 1000000);
     monitor.captureEnabled = config.get("capture.enabled", true);
+    statusBar.applyConfig();
   };
   updateConfig();
 

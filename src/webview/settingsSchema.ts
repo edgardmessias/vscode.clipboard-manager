@@ -151,6 +151,16 @@ export const SETTING_DEFINITIONS: SettingDefinition[] = [
     defaultValue: "clip",
     canSetWorkspace: true,
   },
+  {
+    key: "statusBar.enabled",
+    type: "boolean",
+    group: "monitor",
+    label: "Status bar",
+    description:
+      "Show Clipboard Manager status bar item (clip count and capture state)",
+    defaultValue: true,
+    canSetWorkspace: true,
+  },
 ];
 
 export function getSettingDefinition(
