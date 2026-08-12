@@ -156,23 +156,14 @@ Press `F5` in VS Code to launch an Extension Development Host with the sidebar p
 
 Found a bug or have a feature request? [Open an issue](https://github.com/edgardmessias/vscode.clipboard-manager/issues).
 
-If this extension saves you time, consider supporting ongoing development:
+If this extension saves you time, consider supporting ongoing development. Use the **Sponsor** button on the repository page, or pick a platform below:
 
-<table>
-  <tr>
-    <td align="center">
-      <strong>PayPal</strong><br>
-      <img src="https://quickchart.io/qr?chs=250x250&cht=qr&text=https://www.paypal.com/donate?hosted_button_id=5KHYY5ZDTNDSY" alt="PayPal QR code"><br>
-      <a href="https://www.paypal.com/donate/?hosted_button_id=VM8EPZ6EW6UWS">
-        <img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" alt="Donate with PayPal">
-      </a>
-      <br />
-      <code>edgardmessias@gmail.com</code>
-    </td>
-    <td align="center">
-      <strong>Pix (Brazil)</strong><br>
-      <img src="https://quickchart.io/qr?chs=250x250&cht=qr&text=28571c52-8b9b-416c-a18f-8e5246060881" alt="Pix QR code"><br>
-      <code>28571c52-8b9b-416c-a18f-8e5246060881</code>
-    </td>
-  </tr>
-</table>
+| Platform | Link |
+| --- | --- |
+| GitHub Sponsors | [Sponsor on GitHub](https://github.com/sponsors/edgardmessias) |
+| Ko-fi | [Buy me a coffee](https://ko-fi.com/edgardmessias) |
+| Open Collective | [Contribute on Open Collective](https://opencollective.com/edgardmessias) |
+| PayPal | [Donate via PayPal](https://www.paypal.com/donate/?hosted_button_id=VM8EPZ6EW6UWS) |
+| Pix (Brazil) | [Pay with Pix on Nubank](https://nubank.com.br/pagar/3tql5/50UnEaVM0H) |
+
+Other options (IssueHunt, thanks.dev) are available from the repository **Sponsor** menu.

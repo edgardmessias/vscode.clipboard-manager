@@ -19,6 +19,20 @@
         "url": "https://github.com/edgardmessias/vscode.clipboard-manager.git"
     },
     "homepage": "https://github.com/edgardmessias/vscode.clipboard-manager",
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/edgardmessias"
+        },
+        {
+            "type": "other",
+            "url": "https://www.paypal.com/donate/?hosted_button_id=VM8EPZ6EW6UWS"
+        },
+        {
+            "type": "other",
+            "url": "https://ko-fi.com/edgardmessias"
+        }
+    ],
     "categories": [
         "Other"
     ],
