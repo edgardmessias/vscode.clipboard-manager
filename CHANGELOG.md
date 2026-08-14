@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/edgardmessias/vscode.clipboard-manager/compare/v1.7.0...v1.7.1) (2026-08-14)
+
+
+### Bug Fixes
+
+* allow newlines in exclude file patterns field ([9a399a8](https://github.com/edgardmessias/vscode.clipboard-manager/commit/9a399a883d089d19dc4eb9bcffd0c8ecd45bb23a)), closes [#282](https://github.com/edgardmessias/vscode.clipboard-manager/issues/282)
+
 # [1.7.0](https://github.com/edgardmessias/vscode.clipboard-manager/compare/v1.6.1...v1.7.0) (2026-08-12)
 
 
