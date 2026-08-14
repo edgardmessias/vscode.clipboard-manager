@@ -80,6 +80,11 @@
                 "category": "Clipboard Manager"
             },
             {
+                "command": "clipboard-manager.ui.togglePinnedToTop",
+                "title": "Toggle Pinned to Top",
+                "category": "Clipboard Manager"
+            },
+            {
                 "command": "clipboard-manager.editor.copyToHistory",
                 "title": "Copy to Clipboard History",
                 "category": "Clipboard Manager"
@@ -138,6 +143,9 @@
                 },
                 {
                     "command": "clipboard-manager.history.clearUnpinned"
+                },
+                {
+                    "command": "clipboard-manager.ui.togglePinnedToTop"
                 },
                 {
                     "command": "clipboard-manager.history.remove",

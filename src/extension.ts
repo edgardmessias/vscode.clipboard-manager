@@ -11,6 +11,7 @@ import { RemoveClipboardHistory } from "./commands/removeClipboardHistory";
 import { SetClipboardValueCommand } from "./commands/setClipboardValue";
 import { ShowClipboardInFile } from "./commands/showClipboardInFile";
 import { ToggleCaptureCommand } from "./commands/toggleCapture";
+import { TogglePinnedToTopCommand } from "./commands/togglePinnedToTop";
 import { UnbanLastClipCommand } from "./commands/unbanLastClip";
 import { ClipboardCompletion } from "./completion";
 import { normalizeExcludePatterns } from "./excludePatterns";
@@ -63,6 +64,7 @@ export async function activate(context: vscode.ExtensionContext) {
   disposable.push(new UnbanLastClipCommand(manager.banList));
   disposable.push(new CopyToHistoryCommand(monitor));
   disposable.push(new ToggleCaptureCommand(monitor));
+  disposable.push(new TogglePinnedToTopCommand());
 
   const statusBar = new ClipboardStatusBar(manager, monitor);
   disposable.push(statusBar);

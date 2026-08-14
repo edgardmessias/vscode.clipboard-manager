@@ -60,6 +60,9 @@ export class ClipboardStatusBar implements vscode.Disposable {
   }
 
   protected async onClick() {
+    const config = vscode.workspace.getConfiguration("clipboard-manager");
+    const pinnedToTop = config.get<boolean>("ui.pinnedToTop", true);
+
     const openHistory = {
       label: "$(list-flat) Open Clipboard History",
       action: "open" as const,
@@ -70,13 +73,19 @@ export class ClipboardStatusBar implements vscode.Disposable {
         : "$(play) Resume Capture",
       action: "toggle" as const,
     };
+    const togglePinnedToTop = {
+      label: pinnedToTop
+        ? "$(pin) Pinned in Normal Order"
+        : "$(pin) Pinned at Top",
+      action: "togglePinnedToTop" as const,
+    };
     const clearHistory = {
       label: "$(clear-all) Clear History…",
       action: "clear" as const,
     };
 
     const picked = await vscode.window.showQuickPick(
-      [openHistory, toggleCapture, clearHistory],
+      [openHistory, toggleCapture, togglePinnedToTop, clearHistory],
       { placeHolder: "Clipboard Manager" }
     );
 
@@ -93,6 +102,9 @@ export class ClipboardStatusBar implements vscode.Disposable {
       case "toggle":
         await vscode.commands.executeCommand(commandList.toggleCapture);
         this.refresh();
+        break;
+      case "togglePinnedToTop":
+        await vscode.commands.executeCommand(commandList.togglePinnedToTop);
         break;
       case "clear":
         await vscode.commands.executeCommand(commandList.clearClipboardHistory);

@@ -74,7 +74,7 @@ Keep a searchable history of everything you copy and cut in the editor, then pas
 
 ### Status bar
 
-When enabled, the status bar shows the clip count (and `paused` when capture is off). Click it for quick actions such as toggling capture or opening history.
+When enabled, the status bar shows the clip count (and `paused` when capture is off). Click it for quick actions such as opening history, toggling capture, toggling pinned-to-top, or clearing history.
 
 ### Commands
 
@@ -83,6 +83,7 @@ All commands are available from the Command Palette under **Clipboard Manager**:
 - **Copy to Clipboard History**
 - **Pick and Paste**
 - **Toggle Capture** — pause or resume automatic clipboard capture
+- **Toggle Pinned to Top** — switch pinned clips between a top section and normal list order
 - **Clear Unpinned History** — remove recent clips, keep pinned favorites
 - **Show in the file** (when a clip has a known source location)
 - **Clear History**
