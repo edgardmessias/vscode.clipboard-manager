@@ -8,6 +8,7 @@ export const LEGACY_JSON_FILENAME = "clipboard.history.json";
 export const LEGACY_JSON_MIGRATED_SUFFIX = ".migrated";
 export const STORAGE_DIRNAME = "clipboard-history";
 export const TITLE_MAX_LENGTH = 120;
+export const NOTE_MAX_LENGTH = 120;
 export const PRUNE_IDLE_MS = 5 * 60 * 1000;
 export const PRUNE_GARBAGE_RATIO = 0.3;
 export const INDEX_SAVE_DEBOUNCE_MS = 250;
@@ -32,6 +33,8 @@ export interface IClipMetadata {
   useCount: number;
   language?: string;
   createdLocation?: ISerializedLocation;
+  pinned?: boolean;
+  note?: string;
 }
 
 export interface IStorageIndex {
@@ -53,6 +56,8 @@ export interface IClipboardItem {
   createdLocation?: vscode.Location;
   offset?: number;
   length?: number;
+  pinned?: boolean;
+  note?: string;
 }
 
 export interface ILegacyClip {
@@ -80,6 +85,18 @@ export function buildTitle(value: string): string {
   return value.replace(/\s+/g, " ").trim().slice(0, TITLE_MAX_LENGTH);
 }
 
+export function normalizeNote(note: string | undefined): string | undefined {
+  if (note === undefined) {
+    return undefined;
+  }
+  const trimmed = note.trim().slice(0, NOTE_MAX_LENGTH);
+  return trimmed || undefined;
+}
+
+export function getClipDisplayLabel(clip: IClipboardItem): string {
+  return clip.title;
+}
+
 export function createClipItem(
   value: string,
   partial: Partial<IClipboardItem> = {}
@@ -97,6 +114,8 @@ export function createClipItem(
     createdLocation: partial.createdLocation,
     offset: partial.offset,
     length: partial.length,
+    pinned: partial.pinned,
+    note: normalizeNote(partial.note),
   };
 }
 
@@ -157,6 +176,8 @@ export function metadataToClip(
     createdLocation: deserializeLocation(metadata.createdLocation),
     offset: metadata.offset,
     length: metadata.length,
+    pinned: metadata.pinned,
+    note: metadata.note,
   };
 }
 
@@ -173,5 +194,7 @@ export function clipToMetadata(clip: IClipboardItem): IClipMetadata {
     useCount: clip.useCount,
     language: clip.language,
     createdLocation: serializeLocation(clip.createdLocation),
+    pinned: clip.pinned,
+    note: clip.note,
   };
 }

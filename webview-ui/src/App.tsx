@@ -30,6 +30,9 @@ interface ClipRowProps {
 
 function formatAbsoluteMeta(clip: ClipSummary): string {
   const parts = [new Date(clip.createdAt).toLocaleString()];
+  if (clip.note) {
+    parts.push(clip.note);
+  }
   if (clip.language) {
     parts.push(clip.language);
   }
@@ -59,9 +62,24 @@ function ClipRow({
       className={`clip-row${expanded ? " is-expanded" : ""}`}
       onContextMenu={event => onContextMenu(event, clip.id)}
     >
-      <div className="clip-row-main" title={tooltip}>
+      <div
+        className={`clip-row-main${clip.note ? " has-note" : ""}${clip.pinned ? " has-pin" : ""}`}
+        title={tooltip}
+      >
         <span className="clip-index">{String(index + 1).padStart(2, "0")}</span>
-        <span className="clip-title">{clip.title}</span>
+        {clip.pinned && (
+          <span className="clip-pin-slot" aria-hidden="true">
+            <Icon name="pin" className="clip-pin" />
+          </span>
+        )}
+        <span className="clip-text-block">
+          <span className="clip-title">{clip.title}</span>
+          {clip.note && (
+            <span className="clip-note" title={clip.note}>
+              {clip.note}
+            </span>
+          )}
+        </span>
         <div className="clip-row-trailing">
           {relativeTime && (
             <span className="clip-time">
@@ -147,6 +165,40 @@ function ContextMenu({
         type="button"
         className="context-menu-item"
         onClick={() =>
+          run(() =>
+            postToHost({
+              type: "clip/setPinned",
+              id: clip.id,
+              pinned: !clip.pinned,
+            })
+          )
+        }
+      >
+        {clip.pinned ? "Unpin" : "Pin"}
+      </button>
+      <button
+        type="button"
+        className="context-menu-item"
+        onClick={() => run(() => postToHost({ type: "clip/editNote", id: clip.id }))}
+      >
+        Edit note…
+      </button>
+      {clip.note && (
+        <button
+          type="button"
+          className="context-menu-item"
+          onClick={() =>
+            run(() => postToHost({ type: "clip/clearNote", id: clip.id }))
+          }
+        >
+          Clear note
+        </button>
+      )}
+      <div className="context-menu-sep" />
+      <button
+        type="button"
+        className="context-menu-item"
+        onClick={() =>
           run(() => postToHost({ type: "clip/copy", id: clip.id }))
         }
       >
@@ -200,6 +252,7 @@ export function App() {
   const [expandedDetail, setExpandedDetail] = useState<ClipDetail | null>(null);
   const [previewEnabled, setPreviewEnabled] = useState(true);
   const [relativeTimeEnabled, setRelativeTimeEnabled] = useState(true);
+  const [pinnedToTopEnabled, setPinnedToTopEnabled] = useState(true);
   const [now, setNow] = useState(() => Date.now());
   const [contextMenu, setContextMenu] = useState<ContextMenuState | null>(null);
   const queryRef = useRef(query);
@@ -242,6 +295,7 @@ export function App() {
         case "config/update":
           setPreviewEnabled(message.preview);
           setRelativeTimeEnabled(message.relativeTime);
+          setPinnedToTopEnabled(message.pinnedToTop);
           break;
       }
     });
@@ -349,8 +403,13 @@ export function App() {
               />
             </span>
             <IconButton
+              icon="clearUnpinned"
+              label="Clear unpinned"
+              onClick={() => postToHost({ type: "history/clearUnpinned" })}
+            />
+            <IconButton
               icon="clear"
-              label="Clear history"
+              label="Clear all history"
               onClick={() => postToHost({ type: "history/clear" })}
             />
           </div>
@@ -369,26 +428,39 @@ export function App() {
             </div>
           ) : (
             <div className="clip-list" onMouseLeave={clearPreview}>
-              {filteredClips.map((clip, index) => (
-                <ClipRow
-                  key={clip.id}
-                  clip={clip}
-                  index={index}
-                  expanded={expandedId === clip.id}
-                  detail={
-                    expandedId === clip.id
-                      ? (expandedDetail ?? undefined)
-                      : undefined
-                  }
-                  relativeTime={relativeTimeEnabled}
-                  now={now}
-                  onToggleExpand={handleToggleExpand}
-                  onContextMenu={handleContextMenu}
-                  onPasteEnter={onPasteEnter}
-                  onPasteLeave={onPasteLeave}
-                  onPasteClick={onPasteClick}
-                />
-              ))}
+              {filteredClips.map((clip, index) => {
+                const previous = index > 0 ? filteredClips[index - 1] : undefined;
+                const showRecentDivider =
+                  pinnedToTopEnabled &&
+                  !isFiltering &&
+                  previous?.pinned === true &&
+                  clip.pinned !== true;
+
+                return (
+                  <div key={clip.id}>
+                    {showRecentDivider && (
+                      <div className="clip-section-label">Recent</div>
+                    )}
+                    <ClipRow
+                      clip={clip}
+                      index={index}
+                      expanded={expandedId === clip.id}
+                      detail={
+                        expandedId === clip.id
+                          ? (expandedDetail ?? undefined)
+                          : undefined
+                      }
+                      relativeTime={relativeTimeEnabled}
+                      now={now}
+                      onToggleExpand={handleToggleExpand}
+                      onContextMenu={handleContextMenu}
+                      onPasteEnter={onPasteEnter}
+                      onPasteLeave={onPasteLeave}
+                      onPasteClick={onPasteClick}
+                    />
+                  </div>
+                );
+              })}
             </div>
           )}
 

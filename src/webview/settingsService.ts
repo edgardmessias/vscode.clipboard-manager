@@ -212,3 +212,8 @@ export function getRelativeTimeEnabled(): boolean {
   const config = vscode.workspace.getConfiguration("clipboard-manager");
   return config.get<boolean>("ui.relativeTime", true);
 }
+
+export function getPinnedToTopEnabled(): boolean {
+  const config = vscode.workspace.getConfiguration("clipboard-manager");
+  return config.get<boolean>("ui.pinnedToTop", true);
+}

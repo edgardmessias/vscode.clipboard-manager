@@ -57,7 +57,7 @@ describe("settingsService", () => {
       const snapshot = getSettingsSnapshot();
 
       expect(snapshot.hasWorkspace).toBe(true);
-      expect(snapshot.settings).toHaveLength(16);
+      expect(snapshot.settings).toHaveLength(17);
       expect(snapshot.settings.some(s => s.key === "preview")).toBe(true);
       expect(snapshot.settings.some(s => s.key === "capture.enabled")).toBe(
         true
@@ -72,6 +72,9 @@ describe("settingsService", () => {
         true
       );
       expect(snapshot.settings.some(s => s.key === "ui.relativeTime")).toBe(
+        true
+      );
+      expect(snapshot.settings.some(s => s.key === "ui.pinnedToTop")).toBe(
         true
       );
     });

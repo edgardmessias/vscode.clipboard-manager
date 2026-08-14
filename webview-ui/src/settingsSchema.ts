@@ -145,6 +145,16 @@ export const SETTING_DEFINITIONS: SettingDefinition[] = [
     canSetWorkspace: true,
   },
   {
+    key: "ui.pinnedToTop",
+    type: "boolean",
+    group: "history",
+    label: "Pinned to top",
+    description:
+      "When enabled, pinned clips appear in a dedicated section at the top. When disabled, pinned clips stay in normal list order.",
+    defaultValue: true,
+    canSetWorkspace: true,
+  },
+  {
     key: "saveTo",
     type: "saveTo",
     group: "persistence",

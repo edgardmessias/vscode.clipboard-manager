@@ -8,20 +8,26 @@ class ClipPickItem implements vscode.QuickPickItem {
   public label: string;
 
   get description() {
-    if (!this.clip.createdAt) {
-      return;
+    const parts: string[] = [];
+    if (this.clip.note) {
+      parts.push(this.clip.note);
     }
-    if (this.relativeTime) {
-      return formatRelativeTime(this.clip.createdAt);
+    if (this.clip.createdAt) {
+      parts.push(
+        this.relativeTime
+          ? formatRelativeTime(this.clip.createdAt)
+          : new Date(this.clip.createdAt).toLocaleString()
+      );
     }
-    return new Date(this.clip.createdAt).toLocaleString();
+    return parts.length > 0 ? parts.join(" · ") : undefined;
   }
 
   constructor(
     readonly clip: IClipboardItem,
     private readonly relativeTime: boolean
   ) {
-    this.label = this.clip.title;
+    const label = clip.title;
+    this.label = clip.pinned ? `$(pin) ${label}` : label;
   }
 }
 

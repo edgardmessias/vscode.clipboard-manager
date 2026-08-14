@@ -104,6 +104,11 @@
                 }
             },
             {
+                "command": "clipboard-manager.history.clearUnpinned",
+                "title": "Clear Unpinned History",
+                "category": "Clipboard Manager"
+            },
+            {
                 "command": "clipboard-manager.history.remove",
                 "title": "Remove",
                 "category": "Clipboard Manager",
@@ -130,6 +135,9 @@
                 },
                 {
                     "command": "clipboard-manager.history.clear"
+                },
+                {
+                    "command": "clipboard-manager.history.clearUnpinned"
                 },
                 {
                     "command": "clipboard-manager.history.remove",
@@ -256,6 +264,11 @@
                         "type": "boolean",
                         "default": true,
                         "description": "Show compact relative timestamps in History and Quick Pick (absolute time remains in the tooltip)"
+                    },
+                    "clipboard-manager.ui.pinnedToTop": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "When enabled, pinned clips appear in a dedicated section at the top. When disabled, pinned clips stay in normal list order."
                     }
                 }
             }

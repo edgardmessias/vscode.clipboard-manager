@@ -32,6 +32,9 @@ Keep a searchable history of everything you copy and cut in the editor, then pas
 - **Status bar** — clip count and capture state (`paused` when capture is off); click for quick actions
 - **Exclude file patterns** — skip copies from files matching globs (e.g. `**/.env`, `*.pem`)
 - **Ban clips** — block specific content from being captured again (hashes stored in SecretStorage, machine-local)
+- **Pin clips** — favorite snippets stay at the top and survive `maxClips` limits
+- **Clip notes** — add short labels to clips for easier search and identification
+- **Clear unpinned** — wipe recent history while keeping pinned favorites
 - **Snippet completion** — insert recent clips with prefixes like `clip1`, `clip2`, …
 - **Source location** — jump back to where a clip was copied from
 - **Durable storage** — append-log persistence with legacy JSON migration
@@ -63,8 +66,10 @@ Keep a searchable history of everything you copy and cut in the editor, then pas
 | Paste | Click the paste button on a row (hover to preview when enabled) |
 | Expand content | Click the chevron or use the context menu |
 | Relative time | Shown on each row when enabled; hover the row for the absolute timestamp |
+| Pin / note | Right-click a clip to pin, unpin, edit note, or clear note |
 | Copy / open source / ban / remove | Right-click a clip |
-| Clear history | Toolbar clear button |
+| Clear unpinned / clear all | Toolbar buttons (unpinned keeps pinned clips) |
+| Clear history | Toolbar clear-all button |
 | Open settings | **Settings** tab in the sidebar panel |
 
 ### Status bar
@@ -78,6 +83,7 @@ All commands are available from the Command Palette under **Clipboard Manager**:
 - **Copy to Clipboard History**
 - **Pick and Paste**
 - **Toggle Capture** — pause or resume automatic clipboard capture
+- **Clear Unpinned History** — remove recent clips, keep pinned favorites
 - **Show in the file** (when a clip has a known source location)
 - **Clear History**
 - **Remove** (selected clip)
@@ -154,6 +160,8 @@ Default settings contributed by this extension:
 | `ban.notifyOnBlock` | Optional toast when a banned clip is blocked; ban hashes stay machine-local |
 | `statusBar.enabled` | Hides the status bar item when `false` |
 | `ui.relativeTime` | Compact relative labels in History / Quick Pick; absolute time stays on tooltip |
+| `ui.pinnedToTop` | When enabled, pinned clips appear in a top section; when disabled, they stay in normal list order |
+| Pin / notes | Context menu actions; pinned clips are never evicted by `maxClips` |
 | `saveTo` | Application-scoped path for the history file; `false` disables persistence |
 | `onlyWindowFocused` | When `true`, only captures from VS Code (not the whole system clipboard) |
 

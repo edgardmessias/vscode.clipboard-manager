@@ -2,6 +2,7 @@ import { ClipPreviewController } from "../clipPreview";
 import * as vscode from "vscode";
 import { openClipLocation } from "../commands/openClipLocation";
 import { ClipboardManager, IClipboardItem } from "../manager";
+import { NOTE_MAX_LENGTH } from "../storage/types";
 import {
   CLIPBOARD_HISTORY_VIEW_ID,
   ClipDetail,
@@ -12,6 +13,7 @@ import {
 import {
   browseSavePath,
   getPreviewEnabled,
+  getPinnedToTopEnabled,
   getRelativeTimeEnabled,
   getSettingsSnapshot,
   resetSetting,
@@ -23,6 +25,8 @@ function toClipSummary(clip: IClipboardItem): ClipSummary {
   return {
     id: clip.id ?? clip.checksum,
     title: clip.title,
+    note: clip.note,
+    pinned: clip.pinned === true,
     createdAt: clip.createdAt,
     language: clip.language,
     copyCount: clip.copyCount,
@@ -48,7 +52,8 @@ function filterClipIds(clips: IClipboardItem[], query: string): string[] {
     .filter(
       clip =>
         clip.title.toLowerCase().includes(normalized) ||
-        clip.value.toLowerCase().includes(normalized)
+        clip.value.toLowerCase().includes(normalized) ||
+        (clip.note?.toLowerCase().includes(normalized) ?? false)
     )
     .map(clip => clip.id ?? clip.checksum);
 }
@@ -163,6 +168,7 @@ export class ClipboardHistoryWebviewProvider
       type: "config/update",
       preview: this._previewEnabled,
       relativeTime: getRelativeTimeEnabled(),
+      pinnedToTop: getPinnedToTopEnabled(),
     });
   }
 
@@ -242,6 +248,40 @@ export class ClipboardHistoryWebviewProvider
         break;
       }
 
+      case "clip/setPinned": {
+        await this._manager.setPinned(message.id, message.pinned);
+        break;
+      }
+
+      case "clip/editNote": {
+        const clip = this.findClip(message.id);
+        if (!clip) {
+          return;
+        }
+        const note = await vscode.window.showInputBox({
+          title: "Edit clip note",
+          prompt: "Short label to identify this clip in the history list",
+          value: clip.note ?? "",
+          placeHolder: clip.title,
+          validateInput: value => {
+            if (value.trim().length > NOTE_MAX_LENGTH) {
+              return `Note must be at most ${NOTE_MAX_LENGTH} characters`;
+            }
+            return undefined;
+          },
+        });
+        if (note === undefined) {
+          return;
+        }
+        await this._manager.setNote(message.id, note);
+        break;
+      }
+
+      case "clip/clearNote": {
+        await this._manager.setNote(message.id, undefined);
+        break;
+      }
+
       case "clip/showInFile": {
         const clip = this.findClip(message.id);
         if (!clip) {
@@ -268,6 +308,20 @@ export class ClipboardHistoryWebviewProvider
           ids: filterClipIds(this._manager.clips, message.query),
         });
         break;
+
+      case "history/clearUnpinned": {
+        const yes = "Yes";
+        const response = await vscode.window.showWarningMessage(
+          "Remove all unpinned clips? Pinned clips will be kept.",
+          { modal: true },
+          yes
+        );
+        if (response === yes) {
+          await this._preview.clear();
+          await this._manager.clearUnpinned();
+        }
+        break;
+      }
 
       case "history/clear": {
         const yes = "Yes";

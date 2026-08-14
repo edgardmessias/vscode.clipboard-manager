@@ -1,6 +1,8 @@
 export interface ClipSummary {
   id: string;
   title: string;
+  note?: string;
+  pinned: boolean;
   createdAt: number;
   language?: string;
   copyCount: number;
@@ -36,9 +38,13 @@ export type WebviewToHostMessage =
   | { type: "clip/copy"; id: string }
   | { type: "clip/remove"; id: string }
   | { type: "clip/ban"; id: string }
+  | { type: "clip/setPinned"; id: string; pinned: boolean }
+  | { type: "clip/editNote"; id: string }
+  | { type: "clip/clearNote"; id: string }
   | { type: "clip/showInFile"; id: string }
   | { type: "clip/requestDetail"; id: string }
   | { type: "history/clear" }
+  | { type: "history/clearUnpinned" }
   | { type: "config/request" }
   | { type: "config/set"; key: string; value: unknown; target: ConfigTarget }
   | { type: "config/reset"; key: string; target: ConfigTarget }
@@ -48,7 +54,7 @@ export type HostToWebviewMessage =
   | { type: "clips/update"; clips: ClipSummary[] }
   | { type: "clips/filterResult"; query: string; ids: string[] }
   | { type: "clip/detail"; clip: ClipDetail }
-  | { type: "config/update"; preview: boolean; relativeTime: boolean }
+  | { type: "config/update"; preview: boolean; relativeTime: boolean; pinnedToTop: boolean }
   | {
       type: "config/settings";
       hasWorkspace: boolean;

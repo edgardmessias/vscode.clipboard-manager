@@ -4,6 +4,7 @@ import { defaultClipboard } from "./clipboard";
 import { ApiGetMonitor } from "./commands/apiGetMonitor";
 import { ClearBannedClipsCommand } from "./commands/clearBannedClips";
 import { ClearClipboardHistory } from "./commands/clearClipboardHistory";
+import { ClearUnpinnedHistory } from "./commands/clearUnpinnedHistory";
 import { CopyToHistoryCommand } from "./commands/copyToHistory";
 import { PickAndPasteCommand } from "./commands/pickAndPaste";
 import { RemoveClipboardHistory } from "./commands/removeClipboardHistory";
@@ -57,6 +58,7 @@ export async function activate(context: vscode.ExtensionContext) {
   disposable.push(new RemoveClipboardHistory(manager));
   disposable.push(new ShowClipboardInFile(manager));
   disposable.push(new ClearClipboardHistory(manager));
+  disposable.push(new ClearUnpinnedHistory(manager));
   disposable.push(new ClearBannedClipsCommand(manager.banList));
   disposable.push(new UnbanLastClipCommand(manager.banList));
   disposable.push(new CopyToHistoryCommand(monitor));

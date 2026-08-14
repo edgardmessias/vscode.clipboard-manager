@@ -1,12 +1,21 @@
 import * as os from "os";
 import * as vscode from "vscode";
 import { BanList } from "./banList";
+import {
+  applyMaxClips,
+  isPinnedClip,
+  moveClipToTop,
+  placeAfterPinChange,
+  sortClips,
+  sortClipsByRecency,
+} from "./clipList";
 import { IClipboardTextChange, Monitor } from "./monitor";
 import { AppendLogStorage } from "./storage/appendLogStorage";
 import {
   computeChecksum,
   createClipItem,
   IClipboardItem,
+  normalizeNote,
 } from "./storage/types";
 
 export type { IClipboardItem } from "./storage/types";
@@ -55,10 +64,31 @@ export class ClipboardManager implements vscode.Disposable {
       this._disposable
     );
 
-    vscode.workspace.onDidChangeConfiguration(
-      e =>
-        e.affectsConfiguration("clipboard-manager") && void this.saveClips(true)
-    );
+    vscode.workspace.onDidChangeConfiguration(e => {
+      if (!e.affectsConfiguration("clipboard-manager")) {
+        return;
+      }
+      if (e.affectsConfiguration("clipboard-manager.ui.pinnedToTop")) {
+        this.normalizeClipOrder();
+        this._onDidClipListChange.fire();
+      }
+      void this.saveClips(true);
+    });
+  }
+
+  protected getPinnedToTop(): boolean {
+    return vscode.workspace
+      .getConfiguration("clipboard-manager")
+      .get<boolean>("ui.pinnedToTop", true);
+  }
+
+  protected normalizeClipOrder(): void {
+    if (this.getPinnedToTop()) {
+      this._clips = sortClips(this._clips, true);
+    } else {
+      this._clips = sortClipsByRecency(this._clips);
+    }
+    this.rebuildChecksumMap();
   }
 
   get banList(): BanList {
@@ -128,11 +158,12 @@ export class ClipboardManager implements vscode.Disposable {
 
     this._clips.unshift(item);
     this.rebuildChecksumMap();
-
-    if (maxClips > 0) {
-      this._clips = this._clips.slice(0, maxClips);
-      this.rebuildChecksumMap();
-    }
+    this._clips = applyMaxClips(
+      sortClips(this._clips, this.getPinnedToTop()),
+      maxClips,
+      this.getPinnedToTop()
+    );
+    this.rebuildChecksumMap();
 
     this._onDidClipListChange.fire();
     this._storage.touchActivity();
@@ -153,8 +184,7 @@ export class ClipboardManager implements vscode.Disposable {
       this._clips[index].useCount++;
 
       if (moveToTop) {
-        const clips = this.clips.splice(index, 1);
-        this._clips.unshift(...clips);
+        this._clips = moveClipToTop(this._clips, index, this.getPinnedToTop());
         this.rebuildChecksumMap();
         this._onDidClipListChange.fire();
         await this.saveClips();
@@ -196,6 +226,79 @@ export class ClipboardManager implements vscode.Disposable {
     await this._storage.prune(true);
 
     return removed;
+  }
+
+  public findClipById(id: string): IClipboardItem | undefined {
+    return this._clips.find(clip => (clip.id ?? clip.checksum) === id);
+  }
+
+  public async updateClipById(
+    id: string,
+    patch: Partial<Pick<IClipboardItem, "pinned" | "note">>
+  ): Promise<boolean> {
+    await this.checkClipsUpdate();
+
+    const index = this._clips.findIndex(
+      clip => (clip.id ?? clip.checksum) === id
+    );
+    if (index < 0) {
+      return false;
+    }
+
+    let clips = this._clips.slice();
+    const current = clips[index];
+    const next: IClipboardItem = { ...current };
+
+    if (Object.hasOwn(patch, "note")) {
+      next.note = normalizeNote(patch.note);
+    }
+    if (Object.hasOwn(patch, "pinned")) {
+      next.pinned = patch.pinned;
+    }
+
+    clips[index] = next;
+
+    if (Object.hasOwn(patch, "pinned") && patch.pinned !== undefined) {
+      clips = placeAfterPinChange(
+        clips,
+        id,
+        patch.pinned,
+        this.getPinnedToTop()
+      );
+    } else if (this.getPinnedToTop()) {
+      clips = sortClips(clips, true);
+    }
+
+    const maxClips = vscode.workspace
+      .getConfiguration("clipboard-manager")
+      .get("maxClips", 100);
+    this._clips = applyMaxClips(clips, maxClips, this.getPinnedToTop());
+    this.rebuildChecksumMap();
+    this._onDidClipListChange.fire();
+    await this.saveClips();
+
+    return true;
+  }
+
+  public async setPinned(id: string, pinned: boolean): Promise<boolean> {
+    return this.updateClipById(id, { pinned });
+  }
+
+  public async setNote(id: string, note: string | undefined): Promise<boolean> {
+    return this.updateClipById(id, { note });
+  }
+
+  public async clearUnpinned(): Promise<boolean> {
+    await this.checkClipsUpdate();
+
+    const prevLength = this._clips.length;
+    this._clips = this._clips.filter(isPinnedClip);
+    this.rebuildChecksumMap();
+    this._onDidClipListChange.fire();
+    await this.saveClips(true);
+    await this._storage.prune(true);
+
+    return prevLength !== this._clips.length;
   }
 
   public async clearAll() {
@@ -250,7 +353,7 @@ export class ClipboardManager implements vscode.Disposable {
       const filtered = loaded.filter(clip => !this._banList.has(clip.checksum));
 
       this._clips = filtered;
-      this.rebuildChecksumMap();
+      this.normalizeClipOrder();
       this._onDidClipListChange.fire();
 
       if (filtered.length !== loaded.length) {
