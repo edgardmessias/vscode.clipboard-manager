@@ -3,7 +3,7 @@
     "name": "clipboard-manager",
     "displayName": "Clipboard Manager",
     "description": "Clipboard Manager",
-    "version": "1.7.1",
+    "version": "1.8.1",
     "icon": "media/clipboard.png",
     "extensionKind": [
         "ui"
@@ -80,11 +80,6 @@
                 "category": "Clipboard Manager"
             },
             {
-                "command": "clipboard-manager.ui.togglePinnedToTop",
-                "title": "Toggle Pinned to Top",
-                "category": "Clipboard Manager"
-            },
-            {
                 "command": "clipboard-manager.editor.copyToHistory",
                 "title": "Copy to Clipboard History",
                 "category": "Clipboard Manager"
@@ -126,6 +121,11 @@
                 "command": "clipboard-manager.statusBar.click",
                 "title": "Status Bar Actions",
                 "category": "Clipboard Manager"
+            },
+            {
+                "command": "clipboard-manager.ui.togglePinnedToTop",
+                "title": "Toggle Pinned to Top",
+                "category": "Clipboard Manager"
             }
         ],
         "menus": {
@@ -145,15 +145,15 @@
                     "command": "clipboard-manager.history.clearUnpinned"
                 },
                 {
-                    "command": "clipboard-manager.ui.togglePinnedToTop"
-                },
-                {
                     "command": "clipboard-manager.history.remove",
                     "when": "false"
                 },
                 {
                     "command": "clipboard-manager.statusBar.click",
                     "when": "false"
+                },
+                {
+                    "command": "clipboard-manager.ui.togglePinnedToTop"
                 }
             ],
             "view/title": [
@@ -268,15 +268,15 @@
                         "default": true,
                         "description": "Show Clipboard Manager status bar item (clip count and capture state)"
                     },
-                    "clipboard-manager.ui.relativeTime": {
-                        "type": "boolean",
-                        "default": true,
-                        "description": "Show compact relative timestamps in History and Quick Pick (absolute time remains in the tooltip)"
-                    },
                     "clipboard-manager.ui.pinnedToTop": {
                         "type": "boolean",
                         "default": true,
                         "description": "When enabled, pinned clips appear in a dedicated section at the top. When disabled, pinned clips stay in normal list order."
+                    },
+                    "clipboard-manager.ui.relativeTime": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Show compact relative timestamps in History and Quick Pick (absolute time remains in the tooltip)"
                     }
                 }
             }

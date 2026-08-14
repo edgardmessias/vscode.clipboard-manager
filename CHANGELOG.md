@@ -1,3 +1,12 @@
+## [1.8.1](https://github.com/edgardmessias/vscode.clipboard-manager/compare/v1.7.1...v1.8.1) (2026-08-14)
+
+
+### Features
+
+* add pin, notes, and clear unpinned history ([8a09a95](https://github.com/edgardmessias/vscode.clipboard-manager/commit/8a09a953e5302e7571f08b442f9ed282612de2a3)), closes [#272](https://github.com/edgardmessias/vscode.clipboard-manager/issues/272) [#275](https://github.com/edgardmessias/vscode.clipboard-manager/issues/275) [#276](https://github.com/edgardmessias/vscode.clipboard-manager/issues/276)
+* add toggle pinned-to-top command and status bar action ([a48cffc](https://github.com/edgardmessias/vscode.clipboard-manager/commit/a48cffcbd20d005f4e93b6dd81dcb4a415212736))
+* improve expanded clip view with action toolbar ([a8d52c4](https://github.com/edgardmessias/vscode.clipboard-manager/commit/a8d52c47512f8edd11255773dd9a00eada2cc8a0))
+
 ## [1.7.1](https://github.com/edgardmessias/vscode.clipboard-manager/compare/v1.7.0...v1.7.1) (2026-08-14)
 
 

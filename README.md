@@ -146,6 +146,9 @@ Default settings contributed by this extension:
   // Show Clipboard Manager status bar item (clip count and capture state)
   "clipboard-manager.statusBar.enabled": true,
 
+  // When enabled, pinned clips appear in a dedicated section at the top. When disabled, pinned clips stay in normal list order.
+  "clipboard-manager.ui.pinnedToTop": true,
+
   // Show compact relative timestamps in History and Quick Pick (absolute time remains in the tooltip)
   "clipboard-manager.ui.relativeTime": true
 }
