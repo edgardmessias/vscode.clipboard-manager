@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import type { ClipDetail, ClipSummary } from "./messages";
+import { getClipActionGroups } from "./clipActions";
 import { formatRelativeTime } from "./relativeTime";
 import { useClipPreviewHover } from "./useClipPreviewHover";
 import { onHostMessage, postToHost } from "./vscode";
@@ -65,6 +66,16 @@ function ClipRow({
       <div
         className={`clip-row-main${clip.note ? " has-note" : ""}${clip.pinned ? " has-pin" : ""}`}
         title={tooltip}
+        onClick={() => onToggleExpand(clip.id)}
+        onKeyDown={event => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            onToggleExpand(clip.id);
+          }
+        }}
+        role="button"
+        tabIndex={0}
+        aria-expanded={expanded}
       >
         <span className="clip-index">{String(index + 1).padStart(2, "0")}</span>
         {clip.pinned && (
@@ -109,9 +120,62 @@ function ClipRow({
         </div>
       </div>
       {expanded && (
-        <pre className="clip-preview">{detail?.value ?? "Loading…"}</pre>
+        <div className="clip-expanded">
+          <ClipActionBar
+            clip={clip}
+            expanded={expanded}
+            onToggleExpand={onToggleExpand}
+          />
+          <pre className="clip-preview">{detail?.value ?? "Loading…"}</pre>
+        </div>
       )}
     </article>
+  );
+}
+
+function ClipActionBar({
+  clip,
+  expanded,
+  onToggleExpand,
+}: {
+  clip: ClipSummary;
+  expanded: boolean;
+  onToggleExpand: (id: string) => void;
+}) {
+  const groups = useMemo(
+    () => getClipActionGroups(clip, { expanded, onToggleExpand }),
+    [clip, expanded, onToggleExpand]
+  );
+
+  return (
+    <div
+      className="clip-action-bar"
+      role="toolbar"
+      aria-label="Clip actions"
+      onClick={event => event.stopPropagation()}
+    >
+      {groups.map((group, groupIndex) => (
+        <Fragment key={groupIndex}>
+          {groupIndex > 0 && (
+            <span className="clip-action-bar-sep" aria-hidden="true" />
+          )}
+          <div className="clip-action-bar-group">
+            {group
+              .filter(action => action.key !== "expand")
+              .map(action => (
+                <IconButton
+                  key={action.key}
+                  icon={action.icon}
+                  label={action.label}
+                  danger={action.danger}
+                  className="clip-action-bar-btn"
+                  onClick={action.run}
+                />
+              ))}
+          </div>
+        </Fragment>
+      ))}
+    </div>
   );
 }
 
@@ -154,6 +218,11 @@ function ContextMenu({
     onClose();
   };
 
+  const groups = useMemo(
+    () => getClipActionGroups(clip, { expanded, onToggleExpand }),
+    [clip, expanded, onToggleExpand]
+  );
+
   return (
     <div
       ref={ref}
@@ -161,84 +230,22 @@ function ContextMenu({
       style={{ top: state.y, left: state.x }}
       role="menu"
     >
-      <button
-        type="button"
-        className="context-menu-item"
-        onClick={() =>
-          run(() =>
-            postToHost({
-              type: "clip/setPinned",
-              id: clip.id,
-              pinned: !clip.pinned,
-            })
-          )
-        }
-      >
-        {clip.pinned ? "Unpin" : "Pin"}
-      </button>
-      <button
-        type="button"
-        className="context-menu-item"
-        onClick={() => run(() => postToHost({ type: "clip/editNote", id: clip.id }))}
-      >
-        Edit note…
-      </button>
-      {clip.note && (
-        <button
-          type="button"
-          className="context-menu-item"
-          onClick={() =>
-            run(() => postToHost({ type: "clip/clearNote", id: clip.id }))
-          }
-        >
-          Clear note
-        </button>
-      )}
-      <div className="context-menu-sep" />
-      <button
-        type="button"
-        className="context-menu-item"
-        onClick={() =>
-          run(() => postToHost({ type: "clip/copy", id: clip.id }))
-        }
-      >
-        Copy to clipboard
-      </button>
-      {clip.hasLocation && (
-        <button
-          type="button"
-          className="context-menu-item"
-          onClick={() =>
-            run(() => postToHost({ type: "clip/showInFile", id: clip.id }))
-          }
-        >
-          Open in file
-        </button>
-      )}
-      <button
-        type="button"
-        className="context-menu-item"
-        onClick={() => run(() => onToggleExpand(clip.id))}
-      >
-        {expanded ? "Collapse content" : "Expand content"}
-      </button>
-      <div className="context-menu-sep" />
-      <button
-        type="button"
-        className="context-menu-item context-menu-danger"
-        onClick={() => run(() => postToHost({ type: "clip/ban", id: clip.id }))}
-      >
-        Ban clip
-      </button>
-      <button
-        type="button"
-        className="context-menu-item context-menu-danger"
-        onClick={() =>
-          run(() => postToHost({ type: "clip/remove", id: clip.id }))
-        }
-      >
-        Remove
-      </button>
+      {groups.map((group, groupIndex) => (
+        <Fragment key={groupIndex}>
+          {groupIndex > 0 && <div className="context-menu-sep" />}
+          {group.map(action => (
+            <button
+              key={action.key}
+              type="button"
+              className={`context-menu-item${action.danger ? " context-menu-danger" : ""}`}
+              onClick={() => run(action.run)}
+            >
+              <Icon name={action.icon} className="context-menu-icon" />
+              <span className="context-menu-label">{action.label}</span>
+            </button>
+          ))}
+        </Fragment>
+      ))}
     </div>
   );
 }

@@ -8,13 +8,20 @@ type IconName =
   | "copy"
   | "file"
   | "remove"
+  | "trash"
   | "clear"
   | "clearUnpinned"
   | "pin"
+  | "unpin"
+  | "note"
+  | "eraser"
+  | "ban"
   | "chevron"
   | "search"
   | "settings"
   | "history";
+
+export type { IconName };
 
 type IconConfig = {
   children: SVGProps<SVGSVGElement>["children"];
@@ -84,6 +91,57 @@ const paths: Record<IconName, IconConfig> = {
         <path d="M16 6H3" />
         <path d="M16 18H3" />
         <path d="M21 12h-6" />
+      </>
+    ),
+  },
+  // https://lucide.dev/icons/pin-off
+  unpin: {
+    children: (
+      <>
+        <path d="M12 17v5" />
+        <path d="M15 9.34V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H7.89" />
+        <path d="m2 2 20 20" />
+        <path d="M9 9v1.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h11" />
+      </>
+    ),
+  },
+  // https://lucide.dev/icons/sticky-note
+  note: {
+    children: (
+      <>
+        <path d="M16 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8Z" />
+        <path d="M15 3v4a2 2 0 0 0 2 2h4" />
+      </>
+    ),
+  },
+  // https://lucide.dev/icons/eraser
+  eraser: {
+    children: (
+      <>
+        <path d="M21 21H8a2 2 0 0 1-1.42-.59l-3.58-3.58a2 2 0 0 1 0-2.82L9.42 5.6a2 2 0 0 1 2.82 0L21 14.36" />
+        <path d="m12 13 7 7" />
+        <path d="M5 8 9 12" />
+      </>
+    ),
+  },
+  // https://lucide.dev/icons/ban
+  ban: {
+    children: (
+      <>
+        <circle cx="12" cy="12" r="10" />
+        <path d="m4.9 4.9 14.2 14.2" />
+      </>
+    ),
+  },
+  // https://lucide.dev/icons/trash-2
+  trash: {
+    children: (
+      <>
+        <path d="M3 6h18" />
+        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+        <line x1="10" x2="10" y1="11" y2="17" />
+        <line x1="14" x2="14" y1="11" y2="17" />
       </>
     ),
   },
@@ -160,17 +218,19 @@ export function IconButton({
   icon,
   label,
   primary,
+  danger,
   className,
   ...props
 }: {
   icon: IconName;
   label: string;
   primary?: boolean;
+  danger?: boolean;
 } & ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
     <button
       type="button"
-      className={`icon-btn${primary ? " icon-btn-primary" : ""}${className ? ` ${className}` : ""}`}
+      className={`icon-btn${primary ? " icon-btn-primary" : ""}${danger ? " icon-btn-danger" : ""}${className ? ` ${className}` : ""}`}
       title={label}
       aria-label={label}
       {...props}

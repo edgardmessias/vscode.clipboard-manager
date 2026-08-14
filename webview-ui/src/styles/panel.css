@@ -120,6 +120,10 @@ body {
   background: color-mix(in srgb, var(--cm-primary) 14%, transparent);
 }
 
+.icon-btn-danger {
+  color: var(--vscode-errorForeground);
+}
+
 .icon-btn-chevron.is-open svg {
   transform: rotate(180deg);
 }
@@ -285,7 +289,9 @@ body {
 }
 
 .context-menu-item {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   width: 100%;
   padding: 6px 10px;
   border: none;
@@ -296,6 +302,16 @@ body {
   font-size: 12px;
   text-align: left;
   cursor: pointer;
+}
+
+.context-menu-icon {
+  flex: 0 0 14px;
+  opacity: 0.85;
+}
+
+.context-menu-label {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .context-menu-item:hover {
@@ -311,6 +327,36 @@ body {
   height: 1px;
   margin: 4px 6px;
   background: var(--cm-border-subtle);
+}
+
+.clip-expanded {
+  border-top: 1px solid var(--cm-border-subtle);
+}
+
+.clip-action-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px 4px;
+  padding: 4px 4px 4px 2rem;
+}
+
+.clip-action-bar-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+}
+
+.clip-action-bar-sep {
+  flex: 0 0 1px;
+  align-self: stretch;
+  min-height: 1.25rem;
+  margin: 2px 4px;
+  background: var(--cm-border-subtle);
+}
+
+.clip-action-bar-btn {
+  flex: 0 0 auto;
 }
 
 .clip-preview {

@@ -64,7 +64,7 @@ Keep a searchable history of everything you copy and cut in the editor, then pas
 | --- | --- |
 | Filter clips | Type in the search box (matches title and content) |
 | Paste | Click the paste button on a row (hover to preview when enabled) |
-| Expand content | Click the chevron or use the context menu |
+| Expand content | Click the chevron or use the context menu; expanded rows show the same actions in a toolbar above the preview |
 | Relative time | Shown on each row when enabled; hover the row for the absolute timestamp |
 | Pin / note | Right-click a clip to pin, unpin, edit note, or clear note |
 | Copy / open source / ban / remove | Right-click a clip |
