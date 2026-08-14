@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { ConfigTarget, SettingSnapshot } from "../messages";
 import {
   SETTING_DEFINITIONS,
@@ -55,6 +55,64 @@ function getSaveToValue(mode: SaveToMode, customPath: string): unknown {
     default:
       return null;
   }
+}
+
+function serializeStringList(value: unknown): string {
+  return Array.isArray(value) ? value.map(item => String(item)).join("\n") : "";
+}
+
+function parseStringList(text: string): string[] {
+  return text
+    .split(/\r?\n/)
+    .map(line => line.trim())
+    .filter(Boolean);
+}
+
+interface StringListInputProps {
+  value: unknown;
+  disabled: boolean;
+  placeholder?: string;
+  onCommit: (value: string[]) => void;
+}
+
+function StringListInput({
+  value,
+  disabled,
+  placeholder,
+  onCommit,
+}: StringListInputProps) {
+  const [draft, setDraft] = useState(() => serializeStringList(value));
+  const isFocusedRef = useRef(false);
+
+  useEffect(() => {
+    if (!isFocusedRef.current) {
+      setDraft(serializeStringList(value));
+    }
+  }, [value]);
+
+  const commit = (text: string) => {
+    const next = parseStringList(text);
+    onCommit(next);
+    setDraft(serializeStringList(next));
+  };
+
+  return (
+    <textarea
+      className="setting-input setting-textarea"
+      rows={4}
+      value={draft}
+      disabled={disabled}
+      placeholder={placeholder}
+      onFocus={() => {
+        isFocusedRef.current = true;
+      }}
+      onBlur={() => {
+        isFocusedRef.current = false;
+        commit(draft);
+      }}
+      onChange={event => setDraft(event.target.value)}
+    />
+  );
 }
 
 interface SettingRowProps {
@@ -137,27 +195,15 @@ function SettingRow({
           />
         );
 
-      case "stringList": {
-        const lines = Array.isArray(effectiveValue)
-          ? effectiveValue.map(item => String(item)).join("\n")
-          : "";
+      case "stringList":
         return (
-          <textarea
-            className="setting-input setting-textarea"
-            rows={4}
-            value={lines}
+          <StringListInput
+            value={effectiveValue}
             disabled={disabled}
             placeholder={".env\n**/.env\n*.pem"}
-            onChange={event => {
-              const next = event.target.value
-                .split(/\r?\n/)
-                .map(line => line.trim())
-                .filter(Boolean);
-              setValue(next);
-            }}
+            onCommit={setValue}
           />
         );
-      }
 
       case "saveTo": {
         const mode = getSaveToMode(effectiveValue);
