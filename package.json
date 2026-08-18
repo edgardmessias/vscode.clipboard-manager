@@ -315,7 +315,7 @@
         "@vitejs/plugin-react": "^6.0.5",
         "@vscode/test-electron": "^3.1.0",
         "@vscode/vsce": "^3.9.2",
-        "concurrently": "^10.0.4",
+        "concurrently": "^10.0.5",
         "conventional-changelog-cli": "^5.0.0",
         "eslint": "^10.8.0",
         "eslint-config-prettier": "^10.1.8",
