@@ -309,7 +309,7 @@
         "@types/mocha": "^10.0.10",
         "@types/node": "^26.1.2",
         "@types/react": "^19.2.7",
-        "@types/react-dom": "^19.2.3",
+        "@types/react-dom": "^19.2.5",
         "@types/sinon": "^22.0.0",
         "@types/vscode": "^1.97.0",
         "@vitejs/plugin-react": "^6.0.5",
