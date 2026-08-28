@@ -334,7 +334,7 @@
         "vitest": "^4.1.10"
     },
     "dependencies": {
-        "msgpackr": "^2.0.5"
+        "msgpackr": "^2.0.6"
     },
     "overrides": {
         "diff": "^9.0.0",
